@@ -288,8 +288,8 @@ export function useSystemConfig() {
 
   const save = useCallback(async (): Promise<SaveResult> => {
     if (!hasDirty) {
-      setToast({ type: 'success', message: '当前没有可保存的修改。' });
-      return { success: true, message: '当前没有可保存的修改' };
+      setToast({ type: 'success', message: '當前沒有可儲存的修改。' });
+      return { success: true, message: '當前沒有可儲存的修改' };
     }
 
     setIsSaving(true);
@@ -304,15 +304,15 @@ export function useSystemConfig() {
 
       if (!validateResult.valid) {
         setSaveError(createParsedApiError({
-          title: '配置校验未通过',
-          message: '请先修正表单错误后再保存。',
-          rawMessage: '配置校验未通过，请先修正表单错误。',
+          title: '配置校驗未透過',
+          message: '請先修正表單錯誤後再儲存。',
+          rawMessage: '配置校驗未透過，請先修正表單錯誤。',
           category: 'http_error',
         }));
         setRetryAction('save');
         return {
           success: false,
-          message: '配置校验未通过',
+          message: '配置校驗未透過',
           issues: validateResult.issues,
         };
       }
@@ -338,8 +338,8 @@ export function useSystemConfig() {
         setSaveError(error.parsedError);
       } else if (error instanceof SystemConfigConflictError) {
         setSaveError(createParsedApiError({
-          title: '配置版本冲突',
-          message: `${error.message}，请先重新加载配置。`,
+          title: '配置版本衝突',
+          message: `${error.message}，請先重新載入配置。`,
           rawMessage: error.parsedError.rawMessage,
           status: error.parsedError.status,
           category: error.parsedError.category,
@@ -350,7 +350,7 @@ export function useSystemConfig() {
 
       setToast({ type: 'error', error: getParsedApiError(error) });
       setRetryAction('save');
-      return { success: false, message: '保存失败' };
+      return { success: false, message: '儲存失敗' };
     } finally {
       setIsSaving(false);
     }

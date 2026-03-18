@@ -8,12 +8,12 @@ import { historyApi } from '../../api/history';
 import type { NewsIntelItem } from '../../types/analysis';
 
 interface ReportNewsProps {
-  recordId?: number;  // 分析历史记录主键 ID
+  recordId?: number;  // 分析歷史記錄主鍵 ID
   limit?: number;
 }
 
 /**
- * 资讯区组件 - 终端风格
+ * 資訊區元件 - 終端風格
  */
 export const ReportNews: React.FC<ReportNewsProps> = ({ recordId, limit = 8 }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -53,7 +53,7 @@ export const ReportNews: React.FC<ReportNewsProps> = ({ recordId, limit = 8 }) =
       <div className="mb-4 flex items-center justify-between gap-3">
         <div className="flex items-baseline gap-2">
           <span className="label-uppercase">NEWS FEED</span>
-          <h3 className="text-base font-semibold text-white">相关资讯</h3>
+          <h3 className="text-base font-semibold text-white">相關資訊</h3>
         </div>
         <div className="flex items-center gap-2">
           {isLoading && (
@@ -64,7 +64,7 @@ export const ReportNews: React.FC<ReportNewsProps> = ({ recordId, limit = 8 }) =
             onClick={fetchNews}
             className="text-xs text-cyan hover:text-white transition-colors"
           >
-            刷新
+            重新整理
           </button>
         </div>
       </div>
@@ -72,7 +72,7 @@ export const ReportNews: React.FC<ReportNewsProps> = ({ recordId, limit = 8 }) =
       {error && !isLoading && (
         <ApiErrorAlert
           error={error}
-          actionLabel="重试"
+          actionLabel="重試"
           onAction={() => void fetchNews()}
         />
       )}
@@ -80,12 +80,12 @@ export const ReportNews: React.FC<ReportNewsProps> = ({ recordId, limit = 8 }) =
       {isLoading && !error && (
         <div className="flex items-center gap-2 text-xs text-secondary-text">
           <div className="w-4 h-4 border-2 border-cyan/20 border-t-cyan rounded-full animate-spin" />
-          加载资讯中...
+          載入資訊中...
         </div>
       )}
 
       {!isLoading && !error && items.length === 0 && (
-        <div className="text-xs text-muted-text">暂无相关资讯</div>
+        <div className="text-xs text-muted-text">暫無相關資訊</div>
       )}
 
       {!isLoading && !error && items.length > 0 && (
@@ -113,7 +113,7 @@ export const ReportNews: React.FC<ReportNewsProps> = ({ recordId, limit = 8 }) =
                     rel="noopener noreferrer"
                     className="inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded-full border border-cyan/18 bg-cyan/10 px-2.5 py-1 text-xs text-cyan transition-colors hover:border-cyan/30 hover:text-white"
                   >
-                    跳转
+                    跳轉
                     <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
                         strokeLinecap="round"

@@ -35,8 +35,8 @@ vi.mock('../../hooks', () => ({
 }));
 
 vi.mock('../../components/settings', () => ({
-  AuthSettingsCard: () => <div>认证与登录保护</div>,
-  ChangePasswordCard: () => <div>修改密码</div>,
+  AuthSettingsCard: () => <div>認證與登入保護</div>,
+  ChangePasswordCard: () => <div>修改密碼</div>,
   IntelligentImport: ({ onMerged }: { onMerged: (value: string) => void }) => (
     <button type="button" onClick={() => onMerged('SZ000001,SZ000002')}>
       merge stock list
@@ -101,8 +101,8 @@ vi.mock('../../components/settings', () => ({
 }));
 
 const baseCategories = [
-  { category: 'system', title: 'System', description: '系统设置', displayOrder: 1, fields: [] },
-  { category: 'base', title: 'Base', description: '基础配置', displayOrder: 2, fields: [] },
+  { category: 'system', title: 'System', description: '系統設定', displayOrder: 1, fields: [] },
+  { category: 'base', title: 'Base', description: '基礎配置', displayOrder: 2, fields: [] },
   { category: 'ai_model', title: 'AI', description: '模型配置', displayOrder: 3, fields: [] },
 ];
 
@@ -238,9 +238,9 @@ describe('SettingsPage', () => {
   it('renders category navigation and auth settings modules', async () => {
     render(<SettingsPage />);
 
-    expect(await screen.findByRole('heading', { name: '系统设置' })).toBeInTheDocument();
-    expect(screen.getByText('认证与登录保护')).toBeInTheDocument();
-    expect(screen.getByText('修改密码')).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: '系統設定' })).toBeInTheDocument();
+    expect(screen.getByText('認證與登入保護')).toBeInTheDocument();
+    expect(screen.getByText('修改密碼')).toBeInTheDocument();
     expect(load).toHaveBeenCalled();
   });
 

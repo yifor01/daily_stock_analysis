@@ -21,7 +21,7 @@ const SettingsPage: React.FC = () => {
 
   // Set page title
   useEffect(() => {
-    document.title = '系统设置 - DSA';
+    document.title = '系統設定 - DSA';
   }, []);
 
   const {
@@ -124,9 +124,9 @@ const SettingsPage: React.FC = () => {
       <div className="mb-5 rounded-xl bg-card/50 px-5 py-5 shadow-soft-card-strong">
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div>
-            <h1 className="text-xl font-semibold tracking-tight text-foreground">系统设置</h1>
+            <h1 className="text-xl font-semibold tracking-tight text-foreground">系統設定</h1>
             <p className="text-xs leading-6 text-muted-text">
-              统一管理模型、数据源、通知、安全认证与导入能力。
+              統一管理模型、資料來源、通知、安全認證與匯入能力。
             </p>
           </div>
 
@@ -145,9 +145,9 @@ const SettingsPage: React.FC = () => {
               onClick={() => void save()}
               disabled={!hasDirty || isSaving || isLoading}
               isLoading={isSaving}
-              loadingText="保存中..."
+              loadingText="儲存中..."
             >
-              {isSaving ? '保存中...' : `保存配置${dirtyCount ? ` (${dirtyCount})` : ''}`}
+              {isSaving ? '儲存中...' : `儲存配置${dirtyCount ? ` (${dirtyCount})` : ''}`}
             </Button>
           </div>
         </div>
@@ -156,7 +156,7 @@ const SettingsPage: React.FC = () => {
           <ApiErrorAlert
             className="mt-3"
             error={saveError}
-            actionLabel={retryAction === 'save' ? '重试保存' : undefined}
+            actionLabel={retryAction === 'save' ? '重試儲存' : undefined}
             onAction={retryAction === 'save' ? () => void retry() : undefined}
           />
         ) : null}
@@ -165,7 +165,7 @@ const SettingsPage: React.FC = () => {
       {loadError ? (
         <ApiErrorAlert
           error={loadError}
-          actionLabel={retryAction === 'load' ? '重试加载' : '重新加载'}
+          actionLabel={retryAction === 'load' ? '重試載入' : '重新載入'}
           onAction={() => void retry()}
           className="mb-4"
         />
@@ -188,8 +188,8 @@ const SettingsPage: React.FC = () => {
             {activeCategory === 'system' ? <AuthSettingsCard /> : null}
             {activeCategory === 'base' ? (
               <SettingsSectionCard
-                title="智能导入"
-                description="从图片、文件或剪贴板中提取股票代码，并合并到自选股列表。"
+                title="智慧匯入"
+                description="從圖片、檔案或剪貼簿中提取股票程式碼，併合併到自選股列表。"
               >
                 <IntelligentImport
                   stockListValue={
@@ -206,8 +206,8 @@ const SettingsPage: React.FC = () => {
             ) : null}
             {activeCategory === 'ai_model' ? (
               <SettingsSectionCard
-                title="LLM 渠道与模型"
-                description="统一管理渠道协议、基础地址、API Key、主模型与回退模型。"
+                title="LLM 渠道與模型"
+                description="統一管理渠道協議、基礎地址、API Key、主模型與回退模型。"
               >
                 <LLMChannelEditor
                   items={rawActiveItems}
@@ -225,8 +225,8 @@ const SettingsPage: React.FC = () => {
             ) : null}
             {activeItems.length ? (
               <SettingsSectionCard
-                title="当前分类配置项"
-                description={getCategoryDescriptionZh(activeCategory as SystemConfigCategory, '') || '使用统一字段卡片维护当前分类的系统配置。'}
+                title="當前分類配置項"
+                description={getCategoryDescriptionZh(activeCategory as SystemConfigCategory, '') || '使用統一欄位卡片維護當前分類的系統配置。'}
               >
                 {activeItems.map((item) => (
                   <SettingsField
@@ -241,7 +241,7 @@ const SettingsPage: React.FC = () => {
               </SettingsSectionCard>
             ) : (
               <div className="rounded-[1.5rem] border border-border/45 bg-card/92 p-5 text-sm text-secondary-text shadow-soft-card">
-                当前分类下暂无配置项。
+                當前分類下暫無配置項。
               </div>
             )}
           </section>

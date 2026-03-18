@@ -1,34 +1,34 @@
 # ===================================
 # LiteLLM Router 配置模板
 # ===================================
-# 配套文档：docs/LLM_CONFIG_GUIDE.md 第 3.2 节
+# 配套文件：docs/LLM_CONFIG_GUIDE.md 第 3.2 節
 #
 # 用法：
-# 1. 复制此文件为 litellm_config.yaml
-# 2. 在 .env 中设置 LITELLM_CONFIG=./litellm_config.yaml
+# 1. 複製此檔案為 litellm_config.yaml
+# 2. 在 .env 中設定 LITELLM_CONFIG=./litellm_config.yaml
 # 3. 按需配置下面的 model_list
 #
-# 密钥引用格式：
-#   api_key: "os.environ/ENV_VAR_NAME"  → 从环境变量读取，避免明文写入文件
-#   api_key: "sk-xxxxxxxx"              → 直接写入（不推荐）
+# 金鑰引用格式：
+#   api_key: "os.environ/ENV_VAR_NAME"  → 從環境變數讀取，避免明文寫入檔案
+#   api_key: "sk-xxxxxxxx"              → 直接寫入（不推薦）
 #
-# 更多文档: https://docs.litellm.ai/docs/proxy/configs
+# 更多文件: https://docs.litellm.ai/docs/proxy/configs
 # ===================================
 
 model_list:
-  # --- siliconflow (OpenAI 兼容，一个 Key 使用多种模型) ---
-  # 这是一个关于如何配置在LiteLLM自定义OpenAI兼容API接口的示例
+  # --- siliconflow (OpenAI 相容，一個 Key 使用多種模型) ---
+  # 這是一個關於如何配置在LiteLLM自定義OpenAI相容API介面的示例
   - model_name: openai/Qwen/Qwen3.5-397B-A17B
     litellm_params:
       model: openai/Qwen/Qwen3.5-397B-A17B
-      api_key: "os.environ/LITELLM_API_KEY" # 从环境变量读取 Key，安全防泄漏
+      api_key: "os.environ/LITELLM_API_KEY" # 從環境變數讀取 Key，安全防洩漏
       api_base: https://api.siliconflow.cn/v1
-      # 以下配置是表示如何启用Qwen模型的enable_thinking开关
+      # 以下配置是表示如何啟用Qwen模型的enable_thinking開關
       extra_body:
         chat_template_kwargs:
           enable_thinking: true
 
-  # --- AIHubmix (OpenAI 兼容，一个 Key 使用多种模型) ---
+  # --- AIHubmix (OpenAI 相容，一個 Key 使用多種模型) ---
   - model_name: openai/gpt-4o-mini
     litellm_params:
       model: openai/gpt-4o-mini
@@ -41,7 +41,7 @@ model_list:
       api_key: "os.environ/AIHUBMIX_KEY"
       api_base: https://aihubmix.com/v1
 
-  # --- DeepSeek 官方 API (原生 provider，自动解析 base_url) ---
+  # --- DeepSeek 官方 API (原生 provider，自動解析 base_url) ---
   - model_name: deepseek/deepseek-chat
     litellm_params:
       model: deepseek/deepseek-chat
@@ -52,7 +52,7 @@ model_list:
       model: deepseek/deepseek-reasoner
       api_key: "os.environ/DEEPSEEK_API_KEY"
 
-  # --- Google Gemini (原生，多 Key 负载均衡) ---
+  # --- Google Gemini (原生，多 Key 負載均衡) ---
   - model_name: gemini/gemini-2.5-flash
     litellm_params:
       model: gemini/gemini-2.5-flash
@@ -69,7 +69,7 @@ model_list:
   #     model: anthropic/claude-3-5-sonnet-20241022
   #     api_key: "os.environ/ANTHROPIC_API_KEY"
 
-  # --- OpenRouter (聚合平台) ---
+  # --- OpenRouter (聚合平臺) ---
   # - model_name: openai/meta-llama/llama-3-70b-instruct
   #   litellm_params:
   #     model: openai/meta-llama/llama-3-70b-instruct
@@ -77,11 +77,11 @@ model_list:
   #     api_base: https://openrouter.ai/api/v1
 
 # ===================================
-# Router 设置（可选）
+# Router 設定（可選）
 # ===================================
 router_settings:
   routing_strategy: simple-shuffle    # simple-shuffle / least-busy / latency-based
-  num_retries: 2                      # 单个 deployment 失败后重试次数
-  # timeout: 30                       # 请求超时（秒）
-  # allowed_fails: 3                  # deployment 被冷却前允许的失败次数
-  # cooldown_time: 60                 # deployment 冷却时间（秒）
+  num_retries: 2                      # 單個 deployment 失敗後重試次數
+  # timeout: 30                       # 請求超時（秒）
+  # allowed_fails: 3                  # deployment 被冷卻前允許的失敗次數
+  # cooldown_time: 60                 # deployment 冷卻時間（秒）

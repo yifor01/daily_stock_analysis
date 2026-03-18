@@ -1,92 +1,92 @@
-# 贡献指南
+# 貢獻指南
 
-感谢你对本项目的关注！欢迎任何形式的贡献。
+感謝你對本專案的關注！歡迎任何形式的貢獻。
 
-## 🐛 报告 Bug
+## 🐛 報告 Bug
 
-1. 先搜索 [Issues](https://github.com/ZhuLinsen/daily_stock_analysis/issues) 确认问题未被报告
-2. 使用 Bug Report 模板创建新 Issue
-3. 提供详细的复现步骤和环境信息
+1. 先搜尋 [Issues](https://github.com/ZhuLinsen/daily_stock_analysis/issues) 確認問題未被報告
+2. 使用 Bug Report 模板建立新 Issue
+3. 提供詳細的復現步驟和環境資訊
 
-## 💡 功能建议
+## 💡 功能建議
 
-1. 先搜索 Issues 确认建议未被提出
-2. 使用 Feature Request 模板创建新 Issue
-3. 详细描述你的使用场景和期望功能
+1. 先搜尋 Issues 確認建議未被提出
+2. 使用 Feature Request 模板建立新 Issue
+3. 詳細描述你的使用場景和期望功能
 
-## 🔧 提交代码
+## 🔧 提交程式碼
 
-### 开发环境
+### 開發環境
 
 ```bash
-# 克隆仓库
+# 克隆倉庫
 git clone https://github.com/ZhuLinsen/daily_stock_analysis.git
 cd daily_stock_analysis
 
-# 创建虚拟环境
+# 建立虛擬環境
 python -m venv venv
 source venv/bin/activate  # Linux/Mac
 # venv\Scripts\activate   # Windows
 
-# 安装依赖
+# 安裝依賴
 pip install -r requirements.txt
 
-# 配置环境变量
+# 配置環境變數
 cp .env.example .env
 ```
 
 ### 提交流程
 
-1. Fork 本仓库
-2. 创建特性分支：`git checkout -b feature/your-feature`
-3. 提交改动：`git commit -m 'feat: add some feature'`
+1. Fork 本倉庫
+2. 建立特性分支：`git checkout -b feature/your-feature`
+3. 提交改動：`git commit -m 'feat: add some feature'`
 4. 推送分支：`git push origin feature/your-feature`
-5. 创建 Pull Request
+5. 建立 Pull Request
 
-### Commit 规范
+### Commit 規範
 
-使用 [Conventional Commits](https://www.conventionalcommits.org/) 规范：
+使用 [Conventional Commits](https://www.conventionalcommits.org/) 規範：
 
 ```
 feat: 新功能
-fix: Bug 修复
-docs: 文档更新
-style: 代码格式（不影响功能）
-refactor: 重构
-perf: 性能优化
-test: 测试相关
-chore: 构建/工具相关
+fix: Bug 修復
+docs: 文件更新
+style: 程式碼格式（不影響功能）
+refactor: 重構
+perf: 效能最佳化
+test: 測試相關
+chore: 構建/工具相關
 ```
 
 示例：
 ```
-feat: 添加钉钉机器人支持
-fix: 修复 429 限流重试逻辑
-docs: 更新 README 部署说明
+feat: 新增釘釘機器人支援
+fix: 修復 429 限流重試邏輯
+docs: 更新 README 部署說明
 ```
 
-### 代码规范
+### 程式碼規範
 
-- Python 代码遵循 PEP 8
-- 函数和类需要添加 docstring
-- 重要逻辑添加注释
-- 新功能需要更新相关文档
+- Python 程式碼遵循 PEP 8
+- 函式和類需要新增 docstring
+- 重要邏輯新增註釋
+- 新功能需要更新相關文件
 
-### CI 自动检查
+### CI 自動檢查
 
-提交 PR 后，CI 会自动运行以下检查：
+提交 PR 後，CI 會自動執行以下檢查：
 
-| 检查项 | 说明 | 必须通过 |
+| 檢查項 | 說明 | 必須透過 |
 |--------|------|:--------:|
-| backend-gate | `scripts/ci_gate.sh`（py_compile + flake8 严重错误 + 本地核心脚本 + offline pytest） | ✅ |
-| docker-build | Docker 镜像构建与关键模块导入 smoke | ✅ |
-| web-gate | 前端变更时执行 `npm run lint` + `npm run build` | ✅（触发时） |
-| network-smoke | 定时/手动执行 `pytest -m network` + `test.sh quick`（非阻断） | ❌（观测项） |
+| backend-gate | `scripts/ci_gate.sh`（py_compile + flake8 嚴重錯誤 + 本地核心指令碼 + offline pytest） | ✅ |
+| docker-build | Docker 映象構建與關鍵模組匯入 smoke | ✅ |
+| web-gate | 前端變更時執行 `npm run lint` + `npm run build` | ✅（觸發時） |
+| network-smoke | 定時/手動執行 `pytest -m network` + `test.sh quick`（非阻斷） | ❌（觀測項） |
 
-**本地运行检查：**
+**本地執行檢查：**
 
 ```bash
-# backend gate（推荐）
+# backend gate（推薦）
 pip install -r requirements.txt
 pip install flake8 pytest
 ./scripts/ci_gate.sh
@@ -98,20 +98,20 @@ npm run lint
 npm run build
 ```
 
-## 📋 优先贡献方向
+## 📋 優先貢獻方向
 
-查看 [Roadmap](README.md#-roadmap) 了解当前需要的功能：
+檢視 [Roadmap](README.md#-roadmap) 瞭解當前需要的功能：
 
-- 🔔 新通知渠道（钉钉、飞书、Telegram）
-- 🤖 新 AI 模型支持（GPT-4、Claude）
-- 📊 新数据源接入
-- 🐛 Bug 修复和性能优化
-- 📖 文档完善和翻译
+- 🔔 新通知渠道（釘釘、飛書、Telegram）
+- 🤖 新 AI 模型支援（GPT-4、Claude）
+- 📊 新資料來源接入
+- 🐛 Bug 修復和效能最佳化
+- 📖 文件完善和翻譯
 
-## ❓ 问题解答
+## ❓ 問題解答
 
-如有任何问题，欢迎：
-- 创建 Issue 讨论
-- 查看已有 Issue 和 Discussion
+如有任何問題，歡迎：
+- 建立 Issue 討論
+- 檢視已有 Issue 和 Discussion
 
-再次感谢你的贡献！ 🎉
+再次感謝你的貢獻！ 🎉

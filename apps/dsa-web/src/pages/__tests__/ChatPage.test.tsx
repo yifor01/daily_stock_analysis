@@ -18,7 +18,7 @@ const mockStoreState = {
   sessions: [
     {
       session_id: 'session-1',
-      title: '请简要分析 600519',
+      title: '請簡要分析 600519',
       message_count: 2,
       created_at: '2026-03-15T09:00:00Z',
       last_active: '2026-03-15T09:05:00Z',
@@ -37,7 +37,7 @@ vi.mock('../../api/agent', () => ({
   agentApi: {
     getStrategies: vi.fn().mockResolvedValue({
       strategies: [
-        { id: 'bull_trend', name: '趋势分析', description: '测试策略' },
+        { id: 'bull_trend', name: '趨勢分析', description: '測試策略' },
       ],
     }),
     deleteChatSession: vi.fn().mockResolvedValue(undefined),
@@ -121,7 +121,7 @@ describe('ChatPage', () => {
     );
 
     const sessionCard = await screen.findByRole('button', {
-      name: /切换到对话 请简要分析 600519/,
+      name: /切換到對話 請簡要分析 600519/,
     });
 
     fireEvent.click(sessionCard);

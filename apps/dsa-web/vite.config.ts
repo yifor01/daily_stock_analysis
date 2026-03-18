@@ -12,8 +12,8 @@ export default defineConfig({
     }),
   ],
   server: {
-    host: '0.0.0.0',  // 允许公网访问
-    port: 5173,       // 默认端口
+    host: '0.0.0.0',  // 允許公網訪問
+    port: 5173,       // 預設埠
     proxy: {
       '/api': {
         target: 'http://127.0.0.1:8000',
@@ -22,7 +22,7 @@ export default defineConfig({
     },
   },
   build: {
-    // 打包输出到项目根目录的 static 文件夹
+    // 打包輸出到專案根目錄的 static 資料夾
     outDir: path.resolve(__dirname, '../../static'),
     emptyOutDir: true,
   },

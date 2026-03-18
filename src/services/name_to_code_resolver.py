@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 ===================================
-名称→代码解析引擎
+名稱→程式碼解析引擎
 ===================================
 
 Resolve stock name to code: local mapping + pinyin + AkShare fallback + fuzzy matching.
@@ -149,7 +149,7 @@ def resolve_name_to_code(name: str) -> Optional[str]:
     # 4. AkShare fallback
     akshare_map = _get_akshare_name_to_code()
     if akshare_map and s in akshare_map:
-        logger.debug(f"[NameResolver] 命中 AkShare 映射: {s} -> {akshare_map[s]}")
+        logger.debug(f"[NameResolver] 命中 AkShare 對映: {s} -> {akshare_map[s]}")
         return akshare_map[s]
 
     # 5. Fuzzy match (local + akshare, local takes precedence)
@@ -157,7 +157,7 @@ def resolve_name_to_code(name: str) -> Optional[str]:
     if akshare_map:
         all_name_to_code.update(akshare_map)
     # Skip fuzzy matching for very short inputs (<=2 chars) to avoid false positives,
-    # e.g. '中国' matching arbitrary company names in a pool of 5000+ stocks.
+    # e.g. '中國' matching arbitrary company names in a pool of 5000+ stocks.
     # Use a higher cutoff (0.8) to reduce mis-hits on longer inputs as well.
     if len(s) > 2:
         names = list(all_name_to_code.keys())
@@ -168,11 +168,11 @@ def resolve_name_to_code(name: str) -> Optional[str]:
 
         # Conservative fallback for one-character typo in medium/long names.
         # This keeps the strict default threshold while fixing obvious misspellings
-        # such as "贵州茅苔" -> "贵州茅台".
+        # such as "貴州茅苔" -> "貴州茅臺".
         typo_matches = difflib.get_close_matches(s, names, n=1, cutoff=0.7)
         if typo_matches and _is_single_char_typo(s, typo_matches[0]):
-            logger.debug(f"[NameResolver] 命中单字误写兜底: input={s}, matched={typo_matches[0]}")
+            logger.debug(f"[NameResolver] 命中單字誤寫兜底: input={s}, matched={typo_matches[0]}")
             return all_name_to_code[typo_matches[0]]
 
-    logger.debug(f"[NameResolver] 解析失败: {s}")
+    logger.debug(f"[NameResolver] 解析失敗: {s}")
     return None

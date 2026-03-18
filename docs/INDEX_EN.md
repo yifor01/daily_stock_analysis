@@ -48,15 +48,15 @@ Some terms in this project are specific to Chinese financial markets. Here is a 
 | Term | Meaning |
 |------|---------|
 | **A-shares** | Stocks listed on the Shanghai (SSE) or Shenzhen (SZSE) stock exchanges, denominated in CNY |
-| **Northbound capital flow** (北向资金) | Net buy/sell flow from foreign investors via the Stock Connect programs (Shanghai/Shenzhen–Hong Kong Connect) |
-| **Dragon-Tiger List** (龙虎榜) | Daily SSE/SZSE disclosure of the top 5 institutional seats by turnover for heavily traded stocks |
-| **Chip distribution** (筹码分布) | Cost-basis distribution of all outstanding shares, used to estimate support/resistance levels |
-| **三板块涨跌榜** (boards / sectors) | Intraday sector rotation ranking published by SSE/SZSE |
+| **Northbound capital flow** (北向資金) | Net buy/sell flow from foreign investors via the Stock Connect programs (Shanghai/Shenzhen–Hong Kong Connect) |
+| **Dragon-Tiger List** (龍虎榜) | Daily SSE/SZSE disclosure of the top 5 institutional seats by turnover for heavily traded stocks |
+| **Chip distribution** (籌碼分佈) | Cost-basis distribution of all outstanding shares, used to estimate support/resistance levels |
+| **三板塊漲跌榜** (boards / sectors) | Intraday sector rotation ranking published by SSE/SZSE |
 | **Tushare** | A popular Chinese financial data API; requires a token (free tier available) |
 | **AkShare** | An open-source Python library for Chinese/HK/US market data; no key required for most endpoints |
 | **Baostock** | A free Python SDK for historical A-share data |
-| **WeChat Work** (企业微信) | Tencent's enterprise messaging platform; supports webhook-based notifications |
-| **Feishu** (飞书) | ByteDance's enterprise collaboration platform (similar to Slack); also supports webhooks |
+| **WeChat Work** (企業微信) | Tencent's enterprise messaging platform; supports webhook-based notifications |
+| **Feishu** (飛書) | ByteDance's enterprise collaboration platform (similar to Slack); also supports webhooks |
 | **PushPlus / ServerChan** | Chinese mobile push notification services |
 
 ---

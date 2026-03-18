@@ -22,16 +22,16 @@ from src.services.report_renderer import render
 
 def _make_result(
     code: str = "600519",
-    name: str = "贵州茅台",
+    name: str = "貴州茅臺",
     sentiment_score: int = 72,
     operation_advice: str = "持有",
-    analysis_summary: str = "稳健",
+    analysis_summary: str = "穩健",
     decision_type: str = "hold",
     dashboard: dict = None,
 ) -> AnalysisResult:
     if dashboard is None:
         dashboard = {
-            "core_conclusion": {"one_sentence": "持有观望"},
+            "core_conclusion": {"one_sentence": "持有觀望"},
             "intelligence": {"risk_alerts": []},
             "battle_plan": {"sniper_points": {"stop_loss": "110"}},
         }
@@ -55,8 +55,8 @@ class TestReportRenderer(unittest.TestCase):
         r = _make_result()
         out = render("markdown", [r], summary_only=True)
         self.assertIsNotNone(out)
-        self.assertIn("决策仪表盘", out)
-        self.assertIn("贵州茅台", out)
+        self.assertIn("決策儀表盤", out)
+        self.assertIn("貴州茅臺", out)
         self.assertIn("持有", out)
 
     def test_render_markdown_full(self) -> None:
@@ -64,23 +64,23 @@ class TestReportRenderer(unittest.TestCase):
         r = _make_result()
         out = render("markdown", [r], summary_only=False)
         self.assertIsNotNone(out)
-        self.assertIn("核心结论", out)
-        self.assertIn("作战计划", out)
+        self.assertIn("核心結論", out)
+        self.assertIn("作戰計劃", out)
 
     def test_render_wechat(self) -> None:
         """Wechat platform renders."""
         r = _make_result()
         out = render("wechat", [r])
         self.assertIsNotNone(out)
-        self.assertIn("贵州茅台", out)
+        self.assertIn("貴州茅臺", out)
 
     def test_render_brief(self) -> None:
         """Brief platform renders 3-5 sentence summary."""
         r = _make_result()
         out = render("brief", [r])
         self.assertIsNotNone(out)
-        self.assertIn("决策简报", out)
-        self.assertIn("贵州茅台", out)
+        self.assertIn("決策簡報", out)
+        self.assertIn("貴州茅臺", out)
 
     def test_render_unknown_platform_returns_none(self) -> None:
         """Unknown platform returns None (caller fallback)."""

@@ -26,11 +26,11 @@ describe('Input', () => {
       <Input
         label="Password"
         name="password"
-        trailingAction={<button type="button">显示</button>}
+        trailingAction={<button type="button">顯示</button>}
       />
     );
 
-    expect(screen.getByRole('button', { name: '显示' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '顯示' })).toBeInTheDocument();
   });
 
   it('renders a key icon and applies leading padding', () => {
@@ -41,12 +41,12 @@ describe('Input', () => {
   });
 
   it('toggles password visibility in uncontrolled mode', () => {
-    render(<Input label="密码" type="password" allowTogglePassword />);
+    render(<Input label="密碼" type="password" allowTogglePassword />);
 
-    const input = screen.getByLabelText('密码');
+    const input = screen.getByLabelText('密碼');
     expect(input).toHaveAttribute('type', 'password');
 
-    fireEvent.click(screen.getByRole('button', { name: '显示内容' }));
+    fireEvent.click(screen.getByRole('button', { name: '顯示內容' }));
     expect(input).toHaveAttribute('type', 'text');
   });
 
@@ -65,7 +65,7 @@ describe('Input', () => {
 
     expect(screen.getByLabelText('API Key')).toHaveAttribute('type', 'text');
 
-    fireEvent.click(screen.getByRole('button', { name: '隐藏内容' }));
+    fireEvent.click(screen.getByRole('button', { name: '隱藏內容' }));
     expect(onPasswordVisibleChange).toHaveBeenCalledWith(false);
   });
 });

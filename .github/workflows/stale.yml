@@ -1,13 +1,13 @@
-# 自动关闭过期的 Issues 和 PR
-# 每天检查一次，标记长时间无响应的 issues/PRs
+# 自動關閉過期的 Issues 和 PR
+# 每天檢查一次，標記長時間無響應的 issues/PRs
 
 name: Stale Issues & PRs
 
 on:
   schedule:
-    # 每天 UTC 0:00（北京时间 8:00）检查一次
+    # 每天 UTC 0:00（北京時間 8:00）檢查一次
     - cron: '0 0 * * *'
-  # 支持手动触发
+  # 支援手動觸發
   workflow_dispatch:
 
 permissions:
@@ -16,11 +16,11 @@ permissions:
 
 jobs:
   stale:
-    name: 🧹 清理过期 Issues/PRs
+    name: 🧹 清理過期 Issues/PRs
     runs-on: ubuntu-latest
     
     steps:
-      - name: 🏷️ 标记并关闭过期内容
+      - name: 🏷️ 標記並關閉過期內容
         uses: actions/stale@v10
         with:
           # ===== Issue 配置 =====
@@ -28,37 +28,37 @@ jobs:
           days-before-issue-close: 7
           stale-issue-label: 'stale'
           stale-issue-message: |
-            👋 这个 Issue 已经 **7 天** 没有活动了。
+            👋 這個 Issue 已經 **7 天** 沒有活動了。
             
-            如果问题仍然存在，请回复说明最新情况，我们会继续跟进。
-            如果问题已解决或不再需要，可以直接关闭此 Issue。
+            如果問題仍然存在，請回復說明最新情況，我們會繼續跟進。
+            如果問題已解決或不再需要，可以直接關閉此 Issue。
             
-            **如果 7 天内没有回复，此 Issue 将自动关闭。**
+            **如果 7 天內沒有回覆，此 Issue 將自動關閉。**
           close-issue-message: |
-            🔒 由于长时间没有活动，此 Issue 已自动关闭。
+            🔒 由於長時間沒有活動，此 Issue 已自動關閉。
             
-            如果问题仍然存在，欢迎重新打开或创建新的 Issue。
+            如果問題仍然存在，歡迎重新開啟或建立新的 Issue。
           
           # ===== PR 配置 =====
           days-before-pr-stale: 21
           days-before-pr-close: 14
           stale-pr-label: 'stale'
           stale-pr-message: |
-            👋 这个 PR 已经 **21 天** 没有活动了。
+            👋 這個 PR 已經 **21 天** 沒有活動了。
             
-            请检查是否需要：
-            - 解决合并冲突
-            - 回复 review 意见
-            - 更新代码
+            請檢查是否需要：
+            - 解決合併衝突
+            - 回覆 review 意見
+            - 更新程式碼
             
-            **如果 14 天内没有更新，此 PR 将自动关闭。**
+            **如果 14 天內沒有更新，此 PR 將自動關閉。**
           close-pr-message: |
-            🔒 由于长时间没有活动，此 PR 已自动关闭。
+            🔒 由於長時間沒有活動，此 PR 已自動關閉。
             
-            如果您仍希望合入这些更改，请重新打开或创建新的 PR。
+            如果您仍希望合入這些更改，請重新開啟或建立新的 PR。
           
-          # ===== 排除规则 =====
-          # 带有这些标签的不会被标记为 stale
+          # ===== 排除規則 =====
+          # 帶有這些標籤的不會被標記為 stale
           exempt-issue-labels: 'pinned,security,enhancement,help wanted,good first issue'
           exempt-pr-labels: 'pinned,security,work-in-progress,wip'
           
@@ -66,14 +66,14 @@ jobs:
           exempt-draft-pr: true
           
           # ===== 其他配置 =====
-          # 每次运行最多处理的数量
+          # 每次執行最多處理的數量
           operations-per-run: 50
           
-          # 只处理这些状态的
+          # 只處理這些狀態的
           only-labels: ''
           
-          # 移除 stale 标签（当有新活动时）
+          # 移除 stale 標籤（當有新活動時）
           remove-stale-when-updated: true
           
-          # 调试模式（设为 true 时只打印不实际操作）
+          # 除錯模式（設為 true 時只列印不實際操作）
           debug-only: false

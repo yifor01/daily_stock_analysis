@@ -54,10 +54,10 @@ class TestExtractStockCode(unittest.TestCase):
         self.assertEqual(_extract_stock_code("分析600519"), "600519")
 
     def test_a_share_chinese_suffix(self):
-        self.assertEqual(_extract_stock_code("600519怎么样"), "600519")
+        self.assertEqual(_extract_stock_code("600519怎麼樣"), "600519")
 
     def test_a_share_in_sentence(self):
-        self.assertEqual(_extract_stock_code("请帮我看看600519的走势"), "600519")
+        self.assertEqual(_extract_stock_code("請幫我看看600519的走勢"), "600519")
 
     def test_a_share_with_prefix_0(self):
         self.assertEqual(_extract_stock_code("分析000858"), "000858")
@@ -409,7 +409,7 @@ class TestDecisionAgentPostProcess(unittest.TestCase):
             "decision_type": "strong_buy",
             "sentiment_score": 88,
             "analysis_summary": "High conviction",
-            "stock_name": "贵州茅台",
+            "stock_name": "貴州茅臺",
         }
 
         opinion = agent.post_process(ctx, json.dumps(dashboard))
@@ -431,9 +431,9 @@ class TestIntelAgentPostProcess(unittest.TestCase):
         {
           "signal": "hold",
           "confidence": 0.72,
-          "reasoning": "情绪中性偏谨慎",
-          "risk_alerts": ["股东减持"],
-          "positive_catalysts": ["行业复苏"],
+          "reasoning": "情緒中性偏謹慎",
+          "risk_alerts": ["股東減持"],
+          "positive_catalysts": ["行業復甦"],
         }
         ```"""
 
@@ -441,8 +441,8 @@ class TestIntelAgentPostProcess(unittest.TestCase):
 
         self.assertIsNotNone(opinion)
         self.assertEqual(opinion.signal, "hold")
-        self.assertEqual(ctx.get_data("intel_opinion")["positive_catalysts"], ["行业复苏"])
-        self.assertEqual(ctx.risk_flags[0]["description"], "股东减持")
+        self.assertEqual(ctx.get_data("intel_opinion")["positive_catalysts"], ["行業復甦"])
+        self.assertEqual(ctx.risk_flags[0]["description"], "股東減持")
 
 
 # ============================================================
@@ -499,20 +499,20 @@ class TestOrchestratorModes(unittest.TestCase):
         orch = self._make_orchestrator()
         ctx = orch._build_context(
             "Analyze 600519",
-            context={"stock_code": "600519", "stock_name": "贵州茅台", "strategies": ["bull_trend"]},
+            context={"stock_code": "600519", "stock_name": "貴州茅臺", "strategies": ["bull_trend"]},
         )
         self.assertEqual(ctx.stock_code, "600519")
-        self.assertEqual(ctx.stock_name, "贵州茅台")
+        self.assertEqual(ctx.stock_name, "貴州茅臺")
         self.assertEqual(ctx.meta["strategies_requested"], ["bull_trend"])
 
     def test_build_context_extracts_code_from_query(self):
         orch = self._make_orchestrator()
-        ctx = orch._build_context("分析600519的走势")
+        ctx = orch._build_context("分析600519的走勢")
         self.assertEqual(ctx.stock_code, "600519")
 
     def test_fallback_summary(self):
         orch = self._make_orchestrator()
-        ctx = AgentContext(query="test", stock_code="600519", stock_name="贵州茅台")
+        ctx = AgentContext(query="test", stock_code="600519", stock_name="貴州茅臺")
         ctx.add_opinion(AgentOpinion(agent_name="tech", signal="buy", confidence=0.8, reasoning="Strong trend"))
         ctx.add_risk_flag("insider", "Minor sell-down", severity="low")
         summary = orch._fallback_summary(ctx)
@@ -582,19 +582,19 @@ class TestOrchestratorExecution(unittest.TestCase):
 
     def test_execute_pipeline_timeout_after_decision_preserves_dashboard(self):
         orch = self._make_orchestrator(config=SimpleNamespace(agent_orchestrator_timeout_s=1, agent_risk_override=True))
-        ctx = AgentContext(query="test", stock_code="600519", stock_name="贵州茅台")
+        ctx = AgentContext(query="test", stock_code="600519", stock_name="貴州茅臺")
         decision = MagicMock(agent_name="decision")
 
         def _run_decision(run_ctx, progress_callback=None):
             dashboard = {
-                "stock_name": "贵州茅台",
+                "stock_name": "貴州茅臺",
                 "decision_type": "strong_buy",
                 "sentiment_score": 88,
                 "operation_advice": {
-                    "no_position": "分批布局",
-                    "has_position": "继续持有",
+                    "no_position": "分批佈局",
+                    "has_position": "繼續持有",
                 },
-                "analysis_summary": "趋势仍强，回踩可观察。",
+                "analysis_summary": "趨勢仍強，回踩可觀察。",
                 "dashboard": {
                     "key_levels": {
                         "support": 1800,
@@ -608,7 +608,7 @@ class TestOrchestratorExecution(unittest.TestCase):
                 agent_name="decision",
                 signal="buy",
                 confidence=0.88,
-                reasoning="趋势仍强，回踩可观察。",
+                reasoning="趨勢仍強，回踩可觀察。",
                 raw_data=dashboard,
             ))
             return self._stage_result("decision")
@@ -622,7 +622,7 @@ class TestOrchestratorExecution(unittest.TestCase):
         self.assertTrue(result.success)
         self.assertIn("timed out", result.error)
         self.assertEqual(result.dashboard["decision_type"], "buy")
-        self.assertEqual(result.dashboard["operation_advice"], "买入")
+        self.assertEqual(result.dashboard["operation_advice"], "買入")
         self.assertEqual(
             result.dashboard["dashboard"]["battle_plan"]["sniper_points"]["stop_loss"],
             1760.0,
@@ -630,7 +630,7 @@ class TestOrchestratorExecution(unittest.TestCase):
 
     def test_execute_pipeline_timeout_after_intel_synthesizes_dashboard(self):
         orch = self._make_orchestrator(config=SimpleNamespace(agent_orchestrator_timeout_s=1, agent_risk_override=True))
-        ctx = AgentContext(query="test", stock_code="301308", stock_name="江波龙")
+        ctx = AgentContext(query="test", stock_code="301308", stock_name="江波龍")
         ctx.set_data("realtime_quote", {"price": 326.17, "volume_ratio": 1.0, "turnover_rate": 6.77})
         ctx.set_data("chip_distribution", {"profit_ratio": 68.8, "avg_cost": 307.67, "concentration_90": 15.28})
 
@@ -642,7 +642,7 @@ class TestOrchestratorExecution(unittest.TestCase):
                 agent_name="technical",
                 signal="buy",
                 confidence=0.75,
-                reasoning="强势多头排列，价格回踩 MA5。",
+                reasoning="強勢多頭排列，價格回踩 MA5。",
                 key_levels={"support": 301.61, "resistance": 340.44, "stop_loss": 295.0},
                 raw_data={"ma_alignment": "bullish", "trend_score": 73, "volume_status": "normal"},
             ))
@@ -658,7 +658,7 @@ class TestOrchestratorExecution(unittest.TestCase):
         self.assertTrue(result.success)
         self.assertIn("timed out", result.error)
         self.assertEqual(result.dashboard["decision_type"], "buy")
-        self.assertIn("降级结果", result.dashboard["analysis_summary"])
+        self.assertIn("降級結果", result.dashboard["analysis_summary"])
         self.assertEqual(
             result.dashboard["dashboard"]["battle_plan"]["sniper_points"]["stop_loss"],
             295.0,
@@ -681,7 +681,7 @@ class TestOrchestratorExecution(unittest.TestCase):
 
         orch = self._make_orchestrator()
         history = [
-            {"role": "user", "content": "之前的问题"},
+            {"role": "user", "content": "之前的問題"},
             {"role": "assistant", "content": "之前的回答"},
         ]
         captured = {}
@@ -724,7 +724,7 @@ class TestOrchestratorExecution(unittest.TestCase):
                 result = orch.chat("hello", "session-2")
 
         self.assertFalse(result.success)
-        add_message.assert_any_call("session-2", "assistant", "[分析失败] boom")
+        add_message.assert_any_call("session-2", "assistant", "[分析失敗] boom")
 
     def test_execute_pipeline_fails_when_dashboard_parse_fails(self):
         orch = self._make_orchestrator()
@@ -745,14 +745,14 @@ class TestOrchestratorExecution(unittest.TestCase):
 
     def test_execute_pipeline_chat_prefers_free_form_response(self):
         orch = self._make_orchestrator()
-        ctx = AgentContext(query="请总结一下", stock_code="600519")
+        ctx = AgentContext(query="請總結一下", stock_code="600519")
         ctx.meta["response_mode"] = "chat"
         decision = MagicMock(agent_name="decision")
 
         def fake_run(pipeline_ctx, progress_callback=None):
             pipeline_ctx.set_data("final_dashboard", {"decision_type": "buy", "analysis_summary": "json dashboard"})
-            pipeline_ctx.set_data("final_response_text", "这是自然语言回复")
-            return self._stage_result("decision", raw_text="这是自然语言回复")
+            pipeline_ctx.set_data("final_response_text", "這是自然語言回覆")
+            return self._stage_result("decision", raw_text="這是自然語言回覆")
 
         decision.run.side_effect = fake_run
 
@@ -760,7 +760,7 @@ class TestOrchestratorExecution(unittest.TestCase):
             result = orch._execute_pipeline(ctx, parse_dashboard=False)
 
         self.assertTrue(result.success)
-        self.assertEqual(result.content, "这是自然语言回复")
+        self.assertEqual(result.content, "這是自然語言回覆")
 
     def test_strategy_agents_are_selected_after_technical_stage(self):
         orch = self._make_orchestrator()
@@ -825,14 +825,14 @@ class TestDecisionAgentChatMode(unittest.TestCase):
         from src.agent.agents.decision_agent import DecisionAgent
 
         agent = DecisionAgent(tool_registry=MagicMock(), llm_adapter=MagicMock())
-        ctx = AgentContext(query="帮我总结一下", stock_code="600519")
+        ctx = AgentContext(query="幫我總結一下", stock_code="600519")
         ctx.meta["response_mode"] = "chat"
-        ctx.add_opinion(AgentOpinion(agent_name="technical", signal="buy", confidence=0.8, reasoning="趋势偏强"))
+        ctx.add_opinion(AgentOpinion(agent_name="technical", signal="buy", confidence=0.8, reasoning="趨勢偏強"))
 
-        opinion = agent.post_process(ctx, "建议继续观察量价配合，分批参与。")
+        opinion = agent.post_process(ctx, "建議繼續觀察量價配合，分批參與。")
 
         self.assertIsNotNone(opinion)
-        self.assertEqual(ctx.get_data("final_response_text"), "建议继续观察量价配合，分批参与。")
+        self.assertEqual(ctx.get_data("final_response_text"), "建議繼續觀察量價配合，分批參與。")
         self.assertIsNone(ctx.get_data("final_dashboard"))
         self.assertEqual(opinion.signal, "buy")
 
@@ -902,7 +902,7 @@ class TestAgentMemory(unittest.TestCase):
             created_at=SimpleNamespace(date=lambda: SimpleNamespace(isoformat=lambda: "2026-03-01")),
             raw_result=json.dumps({"decision_type": "buy", "current_price": 1880.0}),
             sentiment_score=72,
-            operation_advice="买入",
+            operation_advice="買入",
         )
         db = MagicMock()
         db.get_analysis_history.return_value = [record]
@@ -1038,16 +1038,16 @@ class TestRiskOverride(unittest.TestCase):
         return {
             "decision_type": "buy",
             "sentiment_score": 76,
-            "operation_advice": "买入",
-            "analysis_summary": "原始结论",
-            "risk_warning": "原风险提示",
+            "operation_advice": "買入",
+            "analysis_summary": "原始結論",
+            "risk_warning": "原風險提示",
             "dashboard": {
                 "core_conclusion": {
-                    "one_sentence": "可以参与",
-                    "signal_type": "🟢买入信号",
+                    "one_sentence": "可以參與",
+                    "signal_type": "🟢買入訊號",
                     "position_advice": {
-                        "no_position": "分批买入",
-                        "has_position": "继续持有",
+                        "no_position": "分批買入",
+                        "has_position": "繼續持有",
                     },
                 }
             },
@@ -1063,22 +1063,22 @@ class TestRiskOverride(unittest.TestCase):
         )
         ctx = AgentContext(query="test", stock_code="600519")
         ctx.set_data("final_dashboard", self._make_dashboard())
-        ctx.add_opinion(AgentOpinion(agent_name="decision", signal="buy", confidence=0.8, reasoning="原始结论"))
+        ctx.add_opinion(AgentOpinion(agent_name="decision", signal="buy", confidence=0.8, reasoning="原始結論"))
         ctx.add_opinion(AgentOpinion(
             agent_name="risk",
             signal="strong_sell",
             confidence=0.9,
-            reasoning="重大风险",
-            raw_data={"veto_buy": True, "reasoning": "存在重大减持风险"},
+            reasoning="重大風險",
+            raw_data={"veto_buy": True, "reasoning": "存在重大減持風險"},
         ))
-        ctx.add_risk_flag("insider", "大股东减持", severity="high")
+        ctx.add_risk_flag("insider", "大股東減持", severity="high")
 
         orch._apply_risk_override(ctx)
         dashboard = ctx.get_data("final_dashboard")
 
         self.assertEqual(dashboard["decision_type"], "hold")
         self.assertLessEqual(dashboard["sentiment_score"], 59)
-        self.assertIn("风控接管", dashboard["risk_warning"])
+        self.assertIn("風控接管", dashboard["risk_warning"])
         self.assertEqual(ctx.opinions[0].signal, "hold")
 
     def test_risk_override_normalizes_strong_buy_before_veto(self):
@@ -1094,14 +1094,14 @@ class TestRiskOverride(unittest.TestCase):
         dashboard["decision_type"] = "strong_buy"
         dashboard["sentiment_score"] = 92
         ctx.set_data("final_dashboard", dashboard)
-        ctx.add_opinion(AgentOpinion(agent_name="decision", signal="strong_buy", confidence=0.9, reasoning="原始结论"))
+        ctx.add_opinion(AgentOpinion(agent_name="decision", signal="strong_buy", confidence=0.9, reasoning="原始結論"))
         ctx.add_opinion(AgentOpinion(
             agent_name="risk",
             signal="strong_sell",
             confidence=0.9,
-            raw_data={"veto_buy": True, "reasoning": "存在重大风险"},
+            raw_data={"veto_buy": True, "reasoning": "存在重大風險"},
         ))
-        ctx.add_risk_flag("insider", "大股东减持", severity="high")
+        ctx.add_risk_flag("insider", "大股東減持", severity="high")
 
         orch._apply_risk_override(ctx)
 
@@ -1125,7 +1125,7 @@ class TestRiskOverride(unittest.TestCase):
             confidence=0.9,
             raw_data={"veto_buy": True},
         ))
-        ctx.add_risk_flag("insider", "大股东减持", severity="high")
+        ctx.add_risk_flag("insider", "大股東減持", severity="high")
 
         orch._apply_risk_override(ctx)
 

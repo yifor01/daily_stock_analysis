@@ -58,7 +58,7 @@ def _make_mock_adapter():
 
 
 SAMPLE_DASHBOARD = {
-    "stock_name": "贵州茅台",
+    "stock_name": "貴州茅臺",
     "sentiment_score": 75,
     "trend_prediction": "看多",
     "operation_advice": "持有",
@@ -66,8 +66,8 @@ SAMPLE_DASHBOARD = {
     "confidence_level": "中",
     "dashboard": {
         "core_conclusion": {
-            "one_sentence": "茅台近期震荡走强",
-            "signal_type": "🟡持有观望",
+            "one_sentence": "茅臺近期震盪走強",
+            "signal_type": "🟡持有觀望",
         },
     },
     "analysis_summary": "Overall bullish trend",
@@ -457,15 +457,15 @@ class TestBuildUserMessage(unittest.TestCase):
     def test_basic_message(self):
         msg = self.executor._build_user_message("Analyze 600519")
         self.assertIn("Analyze 600519", msg)
-        self.assertIn("决策仪表盘", msg)
+        self.assertIn("決策儀表盤", msg)
 
     def test_message_with_context(self):
         msg = self.executor._build_user_message(
             "Analyze",
             context={"stock_code": "600519", "report_type": "daily"},
         )
-        self.assertIn("股票代码: 600519", msg)
-        self.assertIn("报告类型: daily", msg)
+        self.assertIn("股票程式碼: 600519", msg)
+        self.assertIn("報告型別: daily", msg)
 
 
 # ============================================================

@@ -217,7 +217,7 @@ class TestSearXNGSearchProvider(unittest.TestCase):
         resp = provider.search("query", max_results=5)
 
         self.assertFalse(resp.success)
-        self.assertIn("超时", resp.error_message or "")
+        self.assertIn("超時", resp.error_message or "")
 
     @patch("src.search_service.time.sleep")
     @patch("src.search_service.requests.get")
@@ -230,7 +230,7 @@ class TestSearXNGSearchProvider(unittest.TestCase):
         resp = provider.search("query", max_results=5)
 
         self.assertFalse(resp.success)
-        self.assertIn("网络请求失败", resp.error_message or "")
+        self.assertIn("網路請求失敗", resp.error_message or "")
 
     @patch("src.search_service.time.sleep")
     @patch("src.search_service.requests.get")

@@ -26,12 +26,12 @@ interface FollowUpContext {
 
 // Quick question examples shown on empty state
 const QUICK_QUESTIONS = [
-  { label: '用缠论分析茅台', strategy: 'chan_theory' },
-  { label: '波浪理论看宁德时代', strategy: 'wave_theory' },
-  { label: '分析比亚迪趋势', strategy: 'bull_trend' },
-  { label: '箱体震荡策略看中芯国际', strategy: 'box_oscillation' },
-  { label: '分析腾讯 hk00700', strategy: 'bull_trend' },
-  { label: '用情绪周期分析东方财富', strategy: 'emotion_cycle' },
+  { label: '用纏論分析茅臺', strategy: 'chan_theory' },
+  { label: '波浪理論看寧德時代', strategy: 'wave_theory' },
+  { label: '分析比亞迪趨勢', strategy: 'bull_trend' },
+  { label: '箱體震盪策略看中芯國際', strategy: 'box_oscillation' },
+  { label: '分析騰訊 hk00700', strategy: 'bull_trend' },
+  { label: '用情緒週期分析東方財富', strategy: 'emotion_cycle' },
 ];
 
 const ChatPage: React.FC = () => {
@@ -57,7 +57,7 @@ const ChatPage: React.FC = () => {
 
   // Set page title
   useEffect(() => {
-    document.title = '策略问股 - DSA';
+    document.title = '策略問股 - DSA';
   }, []);
 
   const {
@@ -164,7 +164,7 @@ const ChatPage: React.FC = () => {
     setDeleteConfirmId(null);
   }, [deleteConfirmId, sessionId, loadSessions, handleStartNewChat]);
 
-  // Handle follow-up from report page: ?stock=600519&name=贵州茅台&recordId=xxx
+  // Handle follow-up from report page: ?stock=600519&name=貴州茅臺&recordId=xxx
   useEffect(() => {
     if (initialFollowUpHandled.current) return;
     const stock = searchParams.get('stock');
@@ -173,7 +173,7 @@ const ChatPage: React.FC = () => {
     if (stock) {
       initialFollowUpHandled.current = true;
       const displayName = name ? `${name}(${stock})` : stock;
-      setInput(`请深入分析 ${displayName}`);
+      setInput(`請深入分析 ${displayName}`);
       if (recordId) {
         historyApi.getDetail(Number(recordId)).then((report) => {
           const ctx: FollowUpContext = { stock_code: stock, stock_name: name };
@@ -236,7 +236,7 @@ const ChatPage: React.FC = () => {
   };
 
   const getCurrentStage = (steps: ProgressStep[]): string => {
-    if (steps.length === 0) return '正在连接...';
+    if (steps.length === 0) return '正在連線...';
     const last = steps[steps.length - 1];
     if (last.type === 'thinking') return last.message || 'AI 正在思考...';
     if (last.type === 'tool_start')
@@ -244,8 +244,8 @@ const ChatPage: React.FC = () => {
     if (last.type === 'tool_done')
       return `${last.display_name || last.tool} 完成`;
     if (last.type === 'generating')
-      return last.message || '正在生成最终分析...';
-    return '处理中...';
+      return last.message || '正在生成最終分析...';
+    return '處理中...';
   };
 
   const renderThinkingBlock = (msg: Message) => {
@@ -256,7 +256,7 @@ const ChatPage: React.FC = () => {
       (sum, s) => sum + (s.duration || 0),
       0,
     );
-    const summary = `${toolSteps.length} 个工具调用 · ${totalDuration.toFixed(1)}s`;
+    const summary = `${toolSteps.length} 個工具呼叫 · ${totalDuration.toFixed(1)}s`;
 
     return (
       <button
@@ -277,7 +277,7 @@ const ChatPage: React.FC = () => {
           />
         </svg>
         <span className="flex items-center gap-1.5">
-          <span className="opacity-60">思考过程</span>
+          <span className="opacity-60">思考過程</span>
           <span className="text-muted-text/50">·</span>
           <span className="opacity-50">{summary}</span>
         </span>
@@ -328,12 +328,12 @@ const ChatPage: React.FC = () => {
           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          历史对话
+          歷史對話
         </h2>
         <button
           onClick={handleStartNewChat}
           className="rounded-lg p-1.5 text-muted-text transition-all hover:bg-white/10 hover:text-white"
-          title="开启新对话"
+          title="開啟新對話"
         >
           <svg
             className="w-4 h-4"
@@ -352,9 +352,9 @@ const ChatPage: React.FC = () => {
       </div>
       <ScrollArea testId="chat-session-list-scroll">
         {sessionsLoading ? (
-          <div className="p-4 text-center text-xs text-muted-text">加载中...</div>
+          <div className="p-4 text-center text-xs text-muted-text">載入中...</div>
         ) : sessions.length === 0 ? (
-          <div className="p-4 text-center text-xs text-muted-text">暂无历史对话</div>
+          <div className="p-4 text-center text-xs text-muted-text">暫無歷史對話</div>
         ) : (
           <div className="space-y-2 p-3">
             {sessions.map((s) => (
@@ -374,9 +374,9 @@ const ChatPage: React.FC = () => {
                     ? 'border-cyan bg-cyan/10 shadow-[0_0_15px_rgba(0,212,255,0.1)]'
                     : 'border-white/5 bg-white/2 hover:border-white/10 hover:bg-white/5'
                 }`}
-                aria-label={`切换到对话 ${s.title}`}
+                aria-label={`切換到對話 ${s.title}`}
               >
-                {/* 装饰条 */}
+                {/* 裝飾條 */}
                 <div 
                   className={`h-10 w-1 rounded-full flex-shrink-0 transition-colors ${
                     s.session_id === sessionId ? 'bg-cyan' : 'bg-white/10'
@@ -399,7 +399,7 @@ const ChatPage: React.FC = () => {
                         setDeleteConfirmId(s.session_id);
                       }}
                       className="flex-shrink-0 rounded p-1 text-muted-text opacity-0 transition-all hover:bg-white/10 hover:text-rose-400 group-hover:opacity-100"
-                      title="删除"
+                      title="刪除"
                     >
                       <svg
                         className="w-3.5 h-3.5"
@@ -418,7 +418,7 @@ const ChatPage: React.FC = () => {
                   </div>
                   <div className="mt-1 flex items-center gap-2">
                     <span className="text-[11px] text-muted-text">
-                      {s.message_count} 条对话
+                      {s.message_count} 條對話
                     </span>
                     {s.last_active && (
                       <>
@@ -467,9 +467,9 @@ const ChatPage: React.FC = () => {
       {/* Delete confirmation dialog */}
       <ConfirmDialog
         isOpen={Boolean(deleteConfirmId)}
-        title="删除对话"
-        message="删除后，该对话将不可恢复，确认删除吗？"
-        confirmText="删除"
+        title="刪除對話"
+        message="刪除後，該對話將不可恢復，確認刪除嗎？"
+        confirmText="刪除"
         cancelText="取消"
         isDanger
         onConfirm={confirmDelete}
@@ -483,7 +483,7 @@ const ChatPage: React.FC = () => {
             <button
               onClick={() => setSidebarOpen(true)}
               className="md:hidden p-1.5 -ml-1 rounded-lg hover:bg-hover transition-colors text-secondary-text hover:text-foreground"
-              title="历史对话"
+              title="歷史對話"
             >
               <svg
                 className="w-5 h-5"
@@ -512,10 +512,10 @@ const ChatPage: React.FC = () => {
                 d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
               />
             </svg>
-            问股
+            問股
           </h1>
           <p className="text-secondary-text text-sm">
-            向 AI 询问个股分析，获取基于策略的交易建议与实时决策报告。
+            向 AI 詢問個股分析，獲取基於策略的交易建議與實時決策報告。
           </p>
           {messages.length > 0 && (
             <div className="mt-2 flex gap-2 items-center">
@@ -523,7 +523,7 @@ const ChatPage: React.FC = () => {
                 type="button"
                 onClick={() => downloadSession(messages)}
                 className="px-3 py-1.5 rounded-lg text-sm text-secondary-text hover:text-foreground hover:bg-hover border border-border/70 transition-colors flex items-center gap-1.5"
-                title="导出会话为 Markdown 文件"
+                title="匯出會話為 Markdown 檔案"
               >
                 <svg
                   className="w-4 h-4"
@@ -538,7 +538,7 @@ const ChatPage: React.FC = () => {
                     d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
                   />
                 </svg>
-                导出会话
+                匯出會話
               </button>
               <button
                 type="button"
@@ -549,13 +549,13 @@ const ChatPage: React.FC = () => {
                   try {
                     const content = formatSessionAsMarkdown(messages);
                     await agentApi.sendChat(content);
-                    setSendToast({ type: 'success', message: '已发送到通知渠道' });
+                    setSendToast({ type: 'success', message: '已傳送到通知渠道' });
                     setTimeout(() => setSendToast(null), 3000);
                   } catch (err) {
                     const parsed = getParsedApiError(err);
                     setSendToast({
                       type: 'error',
-                      message: parsed.message || '发送失败',
+                      message: parsed.message || '傳送失敗',
                     });
                     setTimeout(() => setSendToast(null), 5000);
                   } finally {
@@ -564,7 +564,7 @@ const ChatPage: React.FC = () => {
                 }}
                 disabled={sending}
                 className="px-3 py-1.5 rounded-lg text-sm text-secondary-text hover:text-foreground hover:bg-hover border border-border/70 transition-colors flex items-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed"
-                title="发送到已配置的通知机器人/邮箱"
+                title="傳送到已配置的通知機器人/郵箱"
               >
                 {sending ? (
                   <svg
@@ -601,7 +601,7 @@ const ChatPage: React.FC = () => {
                     />
                   </svg>
                 )}
-                发送
+                傳送
               </button>
               {sendToast && (
                 <span
@@ -641,11 +641,11 @@ const ChatPage: React.FC = () => {
                   </svg>
                 </div>
                 <h3 className="text-lg font-medium text-foreground mb-2">
-                  开始问股
+                  開始問股
                 </h3>
                 <p className="text-sm text-secondary-text max-w-sm mb-6">
-                  输入「分析 600519」或「茅台现在能买吗」，AI
-                  将调用实时数据工具为您生成决策报告。
+                  輸入「分析 600519」或「茅臺現在能買嗎」，AI
+                  將呼叫實時資料工具為您生成決策報告。
                 </p>
                 <div className="flex flex-wrap gap-2 justify-center max-w-lg">
                   {QUICK_QUESTIONS.map((q, i) => (
@@ -830,7 +830,7 @@ const ChatPage: React.FC = () => {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="例如：分析 600519 / 茅台现在适合买入吗？ (Enter 发送, Shift+Enter 换行)"
+                placeholder="例如：分析 600519 / 茅臺現在適合買入嗎？ (Enter 傳送, Shift+Enter 換行)"
                 disabled={loading}
                 rows={1}
                 className="input-terminal flex-1 min-h-[44px] max-h-[200px] py-2.5 resize-none"
@@ -848,7 +848,7 @@ const ChatPage: React.FC = () => {
                 isLoading={loading}
                 className="h-[44px] px-6 flex-shrink-0"
               >
-                发送
+                傳送
               </Button>
             </div>
           </div>

@@ -1,28 +1,28 @@
-# openclaw Skill 集成指南
+# openclaw Skill 整合指南
 
-本文档说明如何通过 [openclaw](https://github.com/openclaw/openclaw) Skill 调用 daily_stock_analysis 的 REST API，实现在 openclaw 对话中触发股票分析的能力。
+本文件說明如何透過 [openclaw](https://github.com/openclaw/openclaw) Skill 呼叫 daily_stock_analysis 的 REST API，實現在 openclaw 對話中觸發股票分析的能力。
 
 ## 概述
 
-- **集成方式**：openclaw Skill 通过 HTTP 调用 daily_stock_analysis（DSA）REST API
-- **适用场景**：已部署 DSA API 服务，希望在 openclaw 对话中触发分析（如「帮我分析茅台」「analyze AAPL」）
+- **整合方式**：openclaw Skill 透過 HTTP 呼叫 daily_stock_analysis（DSA）REST API
+- **適用場景**：已部署 DSA API 服務，希望在 openclaw 對話中觸發分析（如「幫我分析茅臺」「analyze AAPL」）
 
-## 前置条件
+## 前置條件
 
-1. **daily_stock_analysis 必须已运行**：执行 `python main.py --serve-only` 或通过 Docker 部署，使 API 长期可用
-2. **openclaw 需具备 HTTP 调用能力**：如 `system.run` 执行 curl，或内置 HTTP 工具（如 api-tester 等）
-3. **说明**：GitHub Actions 仅做定时任务，不长期暴露 API，需本地或 Docker 运行 DSA
+1. **daily_stock_analysis 必須已執行**：執行 `python main.py --serve-only` 或透過 Docker 部署，使 API 長期可用
+2. **openclaw 需具備 HTTP 呼叫能力**：如 `system.run` 執行 curl，或內建 HTTP 工具（如 api-tester 等）
+3. **說明**：GitHub Actions 僅做定時任務，不長期暴露 API，需本地或 Docker 執行 DSA
 
-## 核心 API 参考
+## 核心 API 參考
 
-| 接口 | 方法 | 用途 |
+| 介面 | 方法 | 用途 |
 |------|------|------|
-| `/api/v1/analysis/analyze` | POST | 触发分析（主入口） |
-| `/api/v1/analysis/status/{task_id}` | GET | 异步任务状态 |
-| `/api/v1/agent/chat` | POST | Agent 策略问股（需 `AGENT_MODE=true`） |
-| `/api/health` | GET | 健康检查 |
+| `/api/v1/analysis/analyze` | POST | 觸發分析（主入口） |
+| `/api/v1/analysis/status/{task_id}` | GET | 非同步任務狀態 |
+| `/api/v1/agent/chat` | POST | Agent 策略問股（需 `AGENT_MODE=true`） |
+| `/api/health` | GET | 健康檢查 |
 
-### 触发分析请求体
+### 觸發分析請求體
 
 ```json
 {
@@ -33,20 +33,20 @@
 }
 ```
 
-- `stock_code`：股票代码（必填）
+- `stock_code`：股票程式碼（必填）
 - `report_type`：`simple` | `detailed` | `brief`
-- `force_refresh`：布尔值，是否强制刷新（忽略缓存）
-- `async_mode`：布尔值，`false` 时同步返回，`true` 时返回 202 + `task_id` 需轮询
+- `force_refresh`：布林值，是否強制重新整理（忽略快取）
+- `async_mode`：布林值，`false` 時同步返回，`true` 時返回 202 + `task_id` 需輪詢
 
-**注意**：`force_refresh`、`async_mode` 为布尔类型，非字符串。
+**注意**：`force_refresh`、`async_mode` 為布林型別，非字串。
 
-### 响应示例（同步模式）
+### 響應示例（同步模式）
 
 ```json
 {
   "query_id": "abc123def456",
   "stock_code": "600519",
-  "stock_name": "贵州茅台",
+  "stock_name": "貴州茅臺",
   "report": {
     "summary": {
       "analysis_summary": "...",
@@ -64,21 +64,21 @@
 }
 ```
 
-## 重要限制与说明
+## 重要限制與說明
 
-- **仅支持股票代码**：API 不接受中文名称（如「茅台」），需在 Skill 侧解析或提示用户提供代码（如 600519、AAPL）
-- **同步模式耗时**：`async_mode: false` 时，单次分析约 2–5 分钟，需确保 openclaw 或 HTTP 客户端超时足够
-- **异步模式**：`async_mode: true` 返回 202 + `task_id`，需轮询 `GET /api/v1/analysis/status/{task_id}` 直至 `status: completed`
+- **僅支援股票程式碼**：API 不接受中文名稱（如「茅臺」），需在 Skill 側解析或提示使用者提供程式碼（如 600519、AAPL）
+- **同步模式耗時**：`async_mode: false` 時，單次分析約 2–5 分鐘，需確保 openclaw 或 HTTP 客戶端超時足夠
+- **非同步模式**：`async_mode: true` 返回 202 + `task_id`，需輪詢 `GET /api/v1/analysis/status/{task_id}` 直至 `status: completed`
 
-## 股票代码格式
+## 股票程式碼格式
 
-| 类型 | 格式 | 示例 |
+| 型別 | 格式 | 示例 |
 |------|------|------|
-| A股 | 6位数字 | `600519`、`000001`、`300750` |
-| 北交所 | 8/4/92 开头 6 位 | `920748`、`838163`、`430047` |
-| 港股 | hk + 5位数字 | `hk00700`、`hk09988` |
-| 美股 | 1-5 字母（可选 .X 后缀） | `AAPL`、`TSLA`、`BRK.B` |
-| 美股指数 | SPX/DJI/IXIC 等 | `SPX`、`DJI`、`NASDAQ`、`VIX` |
+| A股 | 6位數字 | `600519`、`000001`、`300750` |
+| 北交所 | 8/4/92 開頭 6 位 | `920748`、`838163`、`430047` |
+| 港股 | hk + 5位數字 | `hk00700`、`hk09988` |
+| 美股 | 1-5 字母（可選 .X 字尾） | `AAPL`、`TSLA`、`BRK.B` |
+| 美股指數 | SPX/DJI/IXIC 等 | `SPX`、`DJI`、`NASDAQ`、`VIX` |
 
 ## 配置方式
 
@@ -100,79 +100,79 @@
 ```
 
 - 本地部署：`http://localhost:8000` 或 `http://127.0.0.1:8000`
-- 远程部署：替换为实际 URL
-- **建议**：`DSA_BASE_URL` 勿以 `/` 结尾
+- 遠端部署：替換為實際 URL
+- **建議**：`DSA_BASE_URL` 勿以 `/` 結尾
 
-## 错误响应格式
+## 錯誤響應格式
 
-| 状态码 | error 字段 | 说明 |
+| 狀態碼 | error 欄位 | 說明 |
 |--------|-------------|------|
-| 400 | `validation_error` | 参数错误（如缺少 stock_code） |
-| 409 | `duplicate_task` | 该股票正在分析中，拒绝重复提交 |
-| 500 | `internal_error` / `analysis_failed` | 分析过程发生错误 |
+| 400 | `validation_error` | 引數錯誤（如缺少 stock_code） |
+| 409 | `duplicate_task` | 該股票正在分析中，拒絕重複提交 |
+| 500 | `internal_error` / `analysis_failed` | 分析過程發生錯誤 |
 
 ## 完整 SKILL.md 示例
 
-将以下内容保存到 `~/.openclaw/skills/daily-stock-analysis/SKILL.md`：
+將以下內容儲存到 `~/.openclaw/skills/daily-stock-analysis/SKILL.md`：
 
 ```markdown
 ---
 name: daily-stock-analysis
-description: 调用 daily_stock_analysis API 进行股票智能分析。当用户询问「分析茅台」「analyze AAPL」「帮我看看 600519」等时使用。仅支持股票代码，不支持中文名称。
+description: 呼叫 daily_stock_analysis API 進行股票智慧分析。當使用者詢問「分析茅臺」「analyze AAPL」「幫我看看 600519」等時使用。僅支援股票程式碼，不支援中文名稱。
 metadata:
   {"openclaw": {"requires": {"env": ["DSA_BASE_URL"]}, "primaryEnv": "DSA_BASE_URL"}}
 ---
 
-## 触发条件
+## 觸發條件
 
-当用户请求分析某只股票时（如「分析茅台」「analyze AAPL」「帮我看看 600519」），使用本 Skill。
+當使用者請求分析某隻股票時（如「分析茅臺」「analyze AAPL」「幫我看看 600519」），使用本 Skill。
 
 ## 工作流程
 
-1. **提取股票代码**：从用户消息中识别股票代码（如 600519、AAPL、hk00700）。若用户仅提供中文名称（如「茅台」），需提示用户提供股票代码，或使用常见映射（茅台→600519）。
-2. **调用 API**：向 `{DSA_BASE_URL}/api/v1/analysis/analyze` 发送 POST 请求，请求体：
+1. **提取股票程式碼**：從使用者訊息中識別股票程式碼（如 600519、AAPL、hk00700）。若使用者僅提供中文名稱（如「茅臺」），需提示使用者提供股票程式碼，或使用常見對映（茅臺→600519）。
+2. **呼叫 API**：向 `{DSA_BASE_URL}/api/v1/analysis/analyze` 傳送 POST 請求，請求體：
    ```json
-   {"stock_code": "<提取的代码>", "report_type": "detailed", "force_refresh": true, "async_mode": false}
+   {"stock_code": "<提取的程式碼>", "report_type": "detailed", "force_refresh": true, "async_mode": false}
    ```
-3. **等待响应**：同步模式下分析约需 2–5 分钟，请确保 HTTP 客户端超时足够（建议 ≥300 秒）。
-4. **解析结果**：从响应的 `report.summary` 中提取 `operation_advice`、`trend_prediction`、`analysis_summary`，从 `report.strategy` 中提取 `ideal_buy`、`stop_loss`、`take_profit`，以简洁格式呈现给用户。
-5. **错误处理**：
-   - 连接失败：提示检查 DSA 是否运行、DSA_BASE_URL 是否正确
-   - 400：检查 stock_code 格式
-   - 409：该股票正在分析中，可稍后重试或查询任务状态
-   - 500：提示查看 DSA 日志排查
+3. **等待響應**：同步模式下分析約需 2–5 分鐘，請確保 HTTP 客戶端超時足夠（建議 ≥300 秒）。
+4. **解析結果**：從響應的 `report.summary` 中提取 `operation_advice`、`trend_prediction`、`analysis_summary`，從 `report.strategy` 中提取 `ideal_buy`、`stop_loss`、`take_profit`，以簡潔格式呈現給使用者。
+5. **錯誤處理**：
+   - 連線失敗：提示檢查 DSA 是否執行、DSA_BASE_URL 是否正確
+   - 400：檢查 stock_code 格式
+   - 409：該股票正在分析中，可稍後重試或查詢任務狀態
+   - 500：提示檢視 DSA 日誌排查
 
-## 股票代码格式
+## 股票程式碼格式
 
-- A股：6位数字（600519、000001）
-- 港股：hk + 5位数字（hk00700）
+- A股：6位數字（600519、000001）
+- 港股：hk + 5位數字（hk00700）
 - 美股：1–5 字母（AAPL、TSLA、BRK.B）
-- 美股指数：SPX、DJI、IXIC 等
+- 美股指數：SPX、DJI、IXIC 等
 ```
 
-## Agent 策略问股（可选）
+## Agent 策略問股（可選）
 
-若 daily_stock_analysis 已启用 `AGENT_MODE=true`，可调用 Agent 策略问股接口，支持多轮对话与多种策略（缠论、均线金叉等）：
+若 daily_stock_analysis 已啟用 `AGENT_MODE=true`，可呼叫 Agent 策略問股介面，支援多輪對話與多種策略（纏論、均線金叉等）：
 
 ```bash
-# 将 {DSA_BASE_URL} 替换为实际配置的 API 地址（如 http://localhost:8000）
+# 將 {DSA_BASE_URL} 替換為實際配置的 API 地址（如 http://localhost:8000）
 curl -X POST {DSA_BASE_URL}/api/v1/agent/chat \
   -H 'Content-Type: application/json' \
-  -d '{"message": "用缠论分析 600519", "session_id": "optional-session-id"}'
+  -d '{"message": "用纏論分析 600519", "session_id": "optional-session-id"}'
 ```
 
-响应包含 `content`（分析结论）和 `session_id`（用于多轮对话）。
+響應包含 `content`（分析結論）和 `session_id`（用於多輪對話）。
 
 ## 故障排查
 
-| 现象 | 可能原因 | 处理建议 |
+| 現象 | 可能原因 | 處理建議 |
 |------|----------|----------|
-| 连接失败 | DSA 未运行、端口错误、防火墙 | 确认 `python main.py --serve-only` 已启动，检查 `DSA_BASE_URL` |
-| 400 错误 | stock_code 格式错误或缺失 | 检查代码格式（见上文表格），确保请求体包含 `stock_code` |
-| 500 错误 | AI 配置、数据源、网络问题 | 查看 DSA 日志，确认 GEMINI_API_KEY 等已配置 |
-| Agent 400 | Agent 模式未启用 | 在 DSA 的 `.env` 中设置 `AGENT_MODE=true` |
-| 分析超时 | 同步模式等待时间过长 | 增加 HTTP 客户端超时，或改用 `async_mode: true` 轮询状态 |
+| 連線失敗 | DSA 未執行、埠錯誤、防火牆 | 確認 `python main.py --serve-only` 已啟動，檢查 `DSA_BASE_URL` |
+| 400 錯誤 | stock_code 格式錯誤或缺失 | 檢查程式碼格式（見上文表格），確保請求體包含 `stock_code` |
+| 500 錯誤 | AI 配置、資料來源、網路問題 | 檢視 DSA 日誌，確認 GEMINI_API_KEY 等已配置 |
+| Agent 400 | Agent 模式未啟用 | 在 DSA 的 `.env` 中設定 `AGENT_MODE=true` |
+| 分析超時 | 同步模式等待時間過長 | 增加 HTTP 客戶端超時，或改用 `async_mode: true` 輪詢狀態 |
 
-## 认证说明
+## 認證說明
 
-默认情况下 DSA API 无需认证。若在 `.env` 中启用了 `ADMIN_AUTH_ENABLED=true`，则需在 Skill 调用时携带登录后获得的 Cookie，具体方式取决于 openclaw 的 HTTP 工具能力（当前 API 仅支持 Cookie 认证，不支持 Bearer Token）。
+預設情況下 DSA API 無需認證。若在 `.env` 中啟用了 `ADMIN_AUTH_ENABLED=true`，則需在 Skill 呼叫時攜帶登入後獲得的 Cookie，具體方式取決於 openclaw 的 HTTP 工具能力（當前 API 僅支援 Cookie 認證，不支援 Bearer Token）。

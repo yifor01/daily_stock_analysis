@@ -434,18 +434,18 @@ class TestYAMLStrategyLoading(unittest.TestCase):
 
         yaml_content = """
 name: test_yaml_strategy
-display_name: 测试YAML策略
-description: 一个用于测试的策略
+display_name: 測試YAML策略
+description: 一個用於測試的策略
 category: trend
 core_rules: [1, 3]
 required_tools:
   - analyze_trend
   - get_daily_history
 instructions: |
-  **测试策略**
+  **測試策略**
 
-  这是一个用自然语言编写的测试策略。
-  判断标准：当 MA5 > MA10 时买入。
+  這是一個用自然語言編寫的測試策略。
+  判斷標準：當 MA5 > MA10 時買入。
 """
         with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False, encoding='utf-8') as f:
             f.write(yaml_content)
@@ -455,11 +455,11 @@ instructions: |
             skill = load_skill_from_yaml(tmp_path)
             self.assertIsInstance(skill, Skill)
             self.assertEqual(skill.name, "test_yaml_strategy")
-            self.assertEqual(skill.display_name, "测试YAML策略")
+            self.assertEqual(skill.display_name, "測試YAML策略")
             self.assertEqual(skill.category, "trend")
             self.assertEqual(skill.core_rules, [1, 3])
             self.assertEqual(skill.required_tools, ["analyze_trend", "get_daily_history"])
-            self.assertIn("自然语言", skill.instructions)
+            self.assertIn("自然語言", skill.instructions)
             self.assertFalse(skill.enabled)
         finally:
             os.unlink(tmp_path)
@@ -471,9 +471,9 @@ instructions: |
 
         yaml_content = """
 name: minimal
-display_name: 最简策略
-description: 最简描述
-instructions: 用自然语言描述的策略内容
+display_name: 最簡策略
+description: 最簡描述
+instructions: 用自然語言描述的策略內容
 """
         with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False, encoding='utf-8') as f:
             f.write(yaml_content)
@@ -527,7 +527,7 @@ display_name: 不完整
 name: {name}
 display_name: 策略{chr(65 + i)}
 description: 描述{chr(65 + i)}
-instructions: 自然语言策略描述 {name}
+instructions: 自然語言策略描述 {name}
 """)
 
             # Create an invalid YAML file (should be skipped)
@@ -566,14 +566,14 @@ instructions: 自然语言策略描述 {name}
             with open(os.path.join(tmpdir, "dragon_head.yaml"), 'w', encoding='utf-8') as f:
                 f.write("""
 name: dragon_head
-display_name: 自定义龙头策略
-description: 我自己的龙头策略
-instructions: 按照我的规则分析龙头股
+display_name: 自定義龍頭策略
+description: 我自己的龍頭策略
+instructions: 按照我的規則分析龍頭股
 """)
             manager.load_custom_strategies(tmpdir)
 
             overridden = manager.get("dragon_head")
-            self.assertEqual(overridden.display_name, "自定义龙头策略")
+            self.assertEqual(overridden.display_name, "自定義龍頭策略")
             self.assertIn(tmpdir, overridden.source)
         finally:
             import shutil

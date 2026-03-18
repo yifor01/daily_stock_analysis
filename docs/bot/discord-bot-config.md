@@ -1,108 +1,108 @@
-# Discord机器人配置
+# Discord機器人配置
 
-## Discord机器人
-Discord机器人接收消息需要使用Discord Developer Portal创建机器人应用
+## Discord機器人
+Discord機器人接收訊息需要使用Discord Developer Portal建立機器人應用
 https://discord.com/developers/applications
 
-Discord机器人支持两种消息发送方式：
-1. **Webhook模式**：配置简单，权限低，适合只需要发送消息的场景
-2. **Bot API模式**：权限高，支持接收命令，需要配置Bot Token和频道ID
+Discord機器人支援兩種訊息傳送方式：
+1. **Webhook模式**：配置簡單，許可權低，適合只需要傳送訊息的場景
+2. **Bot API模式**：許可權高，支援接收命令，需要配置Bot Token和頻道ID
 
-## 创建Discord机器人
+## 建立Discord機器人
 
-### 1. 登录Discord Developer Portal
-访问 https://discord.com/developers/applications 并使用你的Discord账号登录
+### 1. 登入Discord Developer Portal
+訪問 https://discord.com/developers/applications 並使用你的Discord賬號登入
 
-### 2. 创建应用
-点击"New Application"按钮，输入应用名称（例如：A股智能分析机器人），然后点击"Create"
+### 2. 建立應用
+點選"New Application"按鈕，輸入應用名稱（例如：A股智慧分析機器人），然後點選"Create"
 
-### 3. 配置机器人
-在左侧导航栏中点击"Bot"，然后点击"Add Bot"按钮，确认添加
+### 3. 配置機器人
+在左側導航欄中點選"Bot"，然後點選"Add Bot"按鈕，確認新增
 
-### 4. 获取Bot Token
-在Bot页面，点击"Reset Token"按钮，然后复制生成的Token（这是你的`DISCORD_BOT_TOKEN`）
+### 4. 獲取Bot Token
+在Bot頁面，點選"Reset Token"按鈕，然後複製生成的Token（這是你的`DISCORD_BOT_TOKEN`）
 
-### 5. 配置权限
-在Bot页面的"Privileged Gateway Intents"部分，开启以下选项：
+### 5. 配置許可權
+在Bot頁面的"Privileged Gateway Intents"部分，開啟以下選項：
 - Presence Intent
 - Server Members Intent
 - Message Content Intent
 
-### 6. 添加到服务器
-1. 在左侧导航栏中点击"OAuth2" > "URL Generator"
-2. 在"Scopes"中选择：
+### 6. 新增到伺服器
+1. 在左側導航欄中點選"OAuth2" > "URL Generator"
+2. 在"Scopes"中選擇：
    - `bot`
    - `applications.commands`
-3. 在"Bot Permissions"中选择：
+3. 在"Bot Permissions"中選擇：
    - Send Messages
    - Embed Links
    - Attach Files
    - Read Message History
    - Use Slash Commands
-4. 复制生成的URL，在浏览器中打开，选择要添加机器人的服务器
+4. 複製生成的URL，在瀏覽器中開啟，選擇要新增機器人的伺服器
 
-### 7. 获取频道ID
-1. 在Discord客户端中，开启开发者模式：设置 > 高级 > 开发者模式
-2. 右键点击你想要机器人发送消息的频道，选择"Copy ID"（这是你的`DISCORD_MAIN_CHANNEL_ID`）
+### 7. 獲取頻道ID
+1. 在Discord客戶端中，開啟開發者模式：設定 > 高階 > 開發者模式
+2. 右鍵點選你想要機器人傳送訊息的頻道，選擇"Copy ID"（這是你的`DISCORD_MAIN_CHANNEL_ID`）
 
-## 配置环境变量
+## 配置環境變數
 
-将以下配置添加到你的`.env`文件中：
+將以下配置新增到你的`.env`檔案中：
 
 ```env
-# Discord 机器人配置
+# Discord 機器人配置
 DISCORD_BOT_TOKEN=your-discord-bot-token
 DISCORD_MAIN_CHANNEL_ID=your-channel-id
-DISCORD_WEBHOOK_URL=your-webhook-url (可选)
-DISCORD_BOT_STATUS=A股智能分析 | /help
+DISCORD_WEBHOOK_URL=your-webhook-url (可選)
+DISCORD_BOT_STATUS=A股智慧分析 | /help
 ```
 
-## Webhook模式配置（可选）
+## Webhook模式配置（可選）
 
-如果你只想使用Webhook模式发送消息，不需要Bot Token，可以按照以下步骤配置：
+如果你只想使用Webhook模式傳送訊息，不需要Bot Token，可以按照以下步驟配置：
 
-1. 右键点击频道，选择"编辑频道"
-2. 点击"集成" > "Webhooks" > "新建Webhook"
-3. 配置Webhook名称和头像
-4. 复制Webhook URL（这是你的`DISCORD_WEBHOOK_URL`）
+1. 右鍵點選頻道，選擇"編輯頻道"
+2. 點選"整合" > "Webhooks" > "新建Webhook"
+3. 配置Webhook名稱和頭像
+4. 複製Webhook URL（這是你的`DISCORD_WEBHOOK_URL`）
 
-## 支持的命令
+## 支援的命令
 
-Discord机器人支持以下Slash命令：
+Discord機器人支援以下Slash命令：
 
-1. `/analyze <stock_code> [full_report]` - 分析指定股票代码
-   - `stock_code`: 股票代码，如 600519
-   - `full_report`: 可选，是否生成完整报告（包含大盘）
+1. `/analyze <stock_code> [full_report]` - 分析指定股票程式碼
+   - `stock_code`: 股票程式碼，如 600519
+   - `full_report`: 可選，是否生成完整報告（包含大盤）
 
-2. `/market_review` - 获取大盘复盘报告
+2. `/market_review` - 獲取大盤覆盤報告
 
-3. `/help` - 查看帮助信息
+3. `/help` - 檢視幫助資訊
 
-## 测试机器人
+## 測試機器人
 
-1. 确保机器人已成功添加到你的服务器
-2. 在频道中输入`/help`，机器人会返回帮助信息
-3. 输入`/analyze 600519`测试股票分析功能
-4. 输入`/market_review`测试大盘复盘功能
+1. 確保機器人已成功新增到你的伺服器
+2. 在頻道中輸入`/help`，機器人會返回幫助資訊
+3. 輸入`/analyze 600519`測試股票分析功能
+4. 輸入`/market_review`測試大盤覆盤功能
 
-## 注意事项
+## 注意事項
 
-1. 确保你的机器人有足够的权限在频道中发送消息和使用Slash命令
-2. 定期更新你的Bot Token，确保安全性
-3. 不要将你的Bot Token分享给任何人
-4. 如果机器人没有响应，检查：
-   - Bot Token是否正确
-   - 频道ID是否正确
-   - 机器人是否在线
-   - 机器人是否有消息发送权限
+1. 確保你的機器人有足夠的許可權在頻道中傳送訊息和使用Slash命令
+2. 定期更新你的Bot Token，確保安全性
+3. 不要將你的Bot Token分享給任何人
+4. 如果機器人沒有響應，檢查：
+   - Bot Token是否正確
+   - 頻道ID是否正確
+   - 機器人是否線上
+   - 機器人是否有訊息傳送許可權
 
 ## 故障排除
 
-- **机器人不响应命令**：检查Bot Token和频道ID是否正确，确保机器人已添加到服务器
-- **Slash命令不显示**：等待一段时间（Discord需要同步命令），或重新添加机器人
-- **消息发送失败**：检查频道权限，确保机器人有发送消息的权限
+- **機器人不響應命令**：檢查Bot Token和頻道ID是否正確，確保機器人已新增到伺服器
+- **Slash命令不顯示**：等待一段時間（Discord需要同步命令），或重新新增機器人
+- **訊息傳送失敗**：檢查頻道許可權，確保機器人有傳送訊息的許可權
 
-## 相关链接
+## 相關連結
 
 - [Discord Developer Portal](https://discord.com/developers/applications)
 - [Discord Bot Documentation](https://discordpy.readthedocs.io/en/stable/)

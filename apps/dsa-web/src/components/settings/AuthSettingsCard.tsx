@@ -9,12 +9,12 @@ import { SettingsSectionCard } from './SettingsSectionCard';
 
 function createNextModeLabel(authEnabled: boolean, desiredEnabled: boolean) {
   if (authEnabled && !desiredEnabled) {
-    return '关闭认证';
+    return '關閉認證';
   }
   if (!authEnabled && desiredEnabled) {
-    return '开启认证';
+    return '開啟認證';
   }
-  return authEnabled ? '保持已开启' : '保持已关闭';
+  return authEnabled ? '保持已開啟' : '保持已關閉';
 }
 
 export const AuthSettingsCard: React.FC = () => {
@@ -33,15 +33,15 @@ export const AuthSettingsCard: React.FC = () => {
   const helperText = useMemo(() => {
     switch (setupState) {
       case 'no_password':
-        return '系统尚未设置密码。启用认证前请先设置初始管理员密码，设置后请妥善保管。';
+        return '系統尚未設定密碼。啟用認證前請先設定初始管理員密碼，設定後請妥善保管。';
       case 'password_retained':
-        return '系统已保留之前设置的管理员密码。输入当前密码即可快速重新启用认证。';
+        return '系統已保留之前設定的管理員密碼。輸入當前密碼即可快速重新啟用認證。';
       case 'enabled':
         return !desiredEnabled 
-          ? '若当前登录会话仍有效，可直接关闭认证；若会话已失效，请输入当前管理员密码。'
-          : '管理员认证已启用。如需更新密码，请使用下方的“修改密码”功能。';
+          ? '若當前登入會話仍有效，可直接關閉認證；若會話已失效，請輸入當前管理員密碼。'
+          : '管理員認證已啟用。如需更新密碼，請使用下方的“修改密碼”功能。';
       default:
-        return '管理员认证可保护 Web 设置页及 API 接口，防止未经授权的访问。';
+        return '管理員認證可保護 Web 設定頁及 API 介面，防止未經授權的訪問。';
     }
   }, [setupState, desiredEnabled]);
 
@@ -63,11 +63,11 @@ export const AuthSettingsCard: React.FC = () => {
     // Initial setup validation
     if (setupState === 'no_password' && desiredEnabled) {
       if (!password) {
-        setError('设置新密码是必填项');
+        setError('設定新密碼是必填項');
         return;
       }
       if (password !== passwordConfirm) {
-        setError('两次输入的新密码不一致');
+        setError('兩次輸入的新密碼不一致');
         return;
       }
     }
@@ -81,7 +81,7 @@ export const AuthSettingsCard: React.FC = () => {
         currentPassword.trim() || undefined,
       );
       await refreshStatus();
-      setSuccessMessage(desiredEnabled ? '认证设置已更新' : '认证已关闭');
+      setSuccessMessage(desiredEnabled ? '認證設定已更新' : '認證已關閉');
       resetForm();
     } catch (err: unknown) {
       setError(getParsedApiError(err));
@@ -92,11 +92,11 @@ export const AuthSettingsCard: React.FC = () => {
 
   return (
     <SettingsSectionCard
-      title="认证与登录保护"
-      description="管理管理员密码认证，保护您的系统配置安全。"
+      title="認證與登入保護"
+      description="管理管理員密碼認證，保護您的系統配置安全。"
       actions={
         <Badge variant={authEnabled ? 'success' : 'default'} size="sm">
-          {authEnabled ? '已启用' : '未启用'}
+          {authEnabled ? '已啟用' : '未啟用'}
         </Badge>
       }
     >
@@ -104,13 +104,13 @@ export const AuthSettingsCard: React.FC = () => {
         <div className="rounded-xl border border-border/50 bg-muted/20 p-4 shadow-soft-card-strong transition-all hover:bg-muted/30">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="space-y-1">
-              <p className="text-sm font-semibold text-foreground">管理员认证</p>
+              <p className="text-sm font-semibold text-foreground">管理員認證</p>
               <p className="text-xs leading-6 text-muted-text">{helperText}</p>
             </div>
             <Checkbox
               checked={desiredEnabled}
               disabled={isSubmitting}
-              label={desiredEnabled ? '开启' : '关闭'}
+              label={desiredEnabled ? '開啟' : '關閉'}
               onChange={(event) => setDesiredEnabled(event.target.checked)}
               containerClassName="bg-muted/30 border border-border/50 rounded-full px-4 py-2 shadow-soft-card-strong transition-all hover:bg-muted/40"
             />
@@ -125,7 +125,7 @@ export const AuthSettingsCard: React.FC = () => {
              (setupState === 'enabled' && !desiredEnabled) ? (
               <div className="space-y-3">
                 <Input
-                  label="当前管理员密码"
+                  label="當前管理員密碼"
                   type="password"
                   allowTogglePassword
                   iconType="password"
@@ -133,8 +133,8 @@ export const AuthSettingsCard: React.FC = () => {
                   onChange={(event) => setCurrentPassword(event.target.value)}
                   autoComplete="current-password"
                   disabled={isSubmitting}
-                  placeholder="请输入当前密码"
-                  hint={setupState === 'password_retained' ? '输入旧密码以重新激活认证' : '关闭认证前可能需要验证身份'}
+                  placeholder="請輸入當前密碼"
+                  hint={setupState === 'password_retained' ? '輸入舊密碼以重新啟用認證' : '關閉認證前可能需要驗證身份'}
                 />
               </div>
             ) : null}
@@ -144,7 +144,7 @@ export const AuthSettingsCard: React.FC = () => {
               <>
                 <div className="space-y-3">
                   <Input
-                    label="设置管理员密码"
+                    label="設定管理員密碼"
                     type="password"
                     allowTogglePassword
                     iconType="password"
@@ -152,12 +152,12 @@ export const AuthSettingsCard: React.FC = () => {
                     onChange={(event) => setPassword(event.target.value)}
                     autoComplete="new-password"
                     disabled={isSubmitting}
-                    placeholder="输入新密码 (至少 6 位)"
+                    placeholder="輸入新密碼 (至少 6 位)"
                   />
                 </div>
                 <div className="space-y-3">
                   <Input
-                    label="确认新密码"
+                    label="確認新密碼"
                     type="password"
                     allowTogglePassword
                     iconType="password"
@@ -165,7 +165,7 @@ export const AuthSettingsCard: React.FC = () => {
                     onChange={(event) => setPasswordConfirm(event.target.value)}
                     autoComplete="new-password"
                     disabled={isSubmitting}
-                    placeholder="再次输入以确认"
+                    placeholder="再次輸入以確認"
                   />
                 </div>
               </>
@@ -176,12 +176,12 @@ export const AuthSettingsCard: React.FC = () => {
         {error ? (
           isParsedApiError(error) ? (
             <SettingsAlert
-              title="认证设置失败"
+              title="認證設定失敗"
               message={error.message}
               variant="error"
             />
           ) : (
-            <SettingsAlert title="认证设置失败" message={error} variant="error" />
+            <SettingsAlert title="認證設定失敗" message={error} variant="error" />
           )
         ) : null}
 
@@ -204,7 +204,7 @@ export const AuthSettingsCard: React.FC = () => {
             }}
             disabled={isSubmitting || !isDirty}
           >
-            还原
+            還原
           </Button>
         </div>
       </form>

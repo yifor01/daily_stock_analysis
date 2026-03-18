@@ -26,7 +26,7 @@ function resolveEnvExamplePath() {
 
 function resolveAppDir() {
   if (app.isPackaged) {
-    // exe 所在目录
+    // exe 所在目錄
     return path.dirname(app.getPath('exe'));
   }
   return app.getPath('userData');
@@ -54,7 +54,7 @@ function initLogging() {
   const appDir = app.isPackaged ? path.dirname(app.getPath('exe')) : app.getPath('userData');
   logFilePath = path.join(appDir, 'logs', 'desktop.log');
   
-  // 确保日志目录存在
+  // 確保日誌目錄存在
   const logDir = path.dirname(logFilePath);
   if (!fs.existsSync(logDir)) {
     fs.mkdirSync(logDir, { recursive: true });

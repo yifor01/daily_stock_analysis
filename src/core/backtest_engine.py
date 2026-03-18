@@ -52,20 +52,20 @@ class BacktestEngine:
 
     # Operation advice keywords (Chinese + English)
     _BULLISH_KEYWORDS = (
-        "买入",
-        "加仓",
-        "强烈买入",
+        "買入",
+        "加倉",
+        "強烈買入",
         "增持",
-        "建仓",
+        "建倉",
         "strong buy",
         "buy",
         "add",
     )
     _BEARISH_KEYWORDS = (
-        "卖出",
-        "减仓",
-        "强烈卖出",
-        "清仓",
+        "賣出",
+        "減倉",
+        "強烈賣出",
+        "清倉",
         "strong sell",
         "sell",
         "reduce",
@@ -75,7 +75,7 @@ class BacktestEngine:
         "hold",
     )
     _WAIT_KEYWORDS = (
-        "观望",
+        "觀望",
         "等待",
         "wait",
     )
@@ -85,7 +85,7 @@ class BacktestEngine:
     # applied during matching so "do not" matches prefix "do not " or "do not".
     _NEGATION_PATTERNS = (
         "not", "don't", "do not", "no", "never", "avoid",  # English
-        "不要", "不", "别", "勿", "没有",  # Chinese
+        "不要", "不", "別", "勿", "沒有",  # Chinese
     )
 
     @classmethod
@@ -356,7 +356,7 @@ class BacktestEngine:
     def _matches_intent(cls, text: str, keywords: Sequence[str]) -> bool:
         """Check if text expresses the intent of any keyword, accounting for negation.
 
-        Tier 1: exact match (covers clean labels like "买入", "hold").
+        Tier 1: exact match (covers clean labels like "買入", "hold").
         Tier 2: substring match with negation guard.
         Keywords are assumed to be lowercase (matching _normalize_text output).
         """

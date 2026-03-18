@@ -22,7 +22,7 @@ Analyze your watchlist daily → generate a decision dashboard → push to multi
 
 [**Quick Start**](#-quick-start) · [**Key Features**](#-key-features) · [**Sample Output**](#-sample-output) · [**Full Guide**](full-guide_EN.md) · [**FAQ**](FAQ_EN.md) · [**Contributing**](CONTRIBUTING_EN.md) · [**All Docs**](INDEX_EN.md)
 
-English | [简体中文](../README.md) | [繁體中文](README_CHT.md)
+English | [簡體中文](../README.md) | [繁體中文](README_CHT.md)
 
 </div>
 

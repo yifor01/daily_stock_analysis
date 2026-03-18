@@ -80,13 +80,13 @@ class HistoryService:
                 try:
                     start_dt = datetime.strptime(start_date, "%Y-%m-%d").date()
                 except ValueError:
-                    logger.warning(f"无效的 start_date 格式: {start_date}")
+                    logger.warning(f"無效的 start_date 格式: {start_date}")
             
             if end_date:
                 try:
                     end_dt = datetime.strptime(end_date, "%Y-%m-%d").date()
                 except ValueError:
-                    logger.warning(f"无效的 end_date 格式: {end_date}")
+                    logger.warning(f"無效的 end_date 格式: {end_date}")
             
             # Calculate offset
             offset = (page - 1) * limit
@@ -120,7 +120,7 @@ class HistoryService:
             }
             
         except Exception as e:
-            logger.error(f"查询历史列表失败: {e}", exc_info=True)
+            logger.error(f"查詢歷史列表失敗: {e}", exc_info=True)
             return {"total": 0, "items": []}
 
     def _resolve_record(self, record_id: str):
@@ -205,7 +205,7 @@ class HistoryService:
                 return None
             return self._record_to_detail_dict(record)
         except Exception as e:
-            logger.error(f"根据 ID 查询历史详情失败: {e}", exc_info=True)
+            logger.error(f"根據 ID 查詢歷史詳情失敗: {e}", exc_info=True)
             return None
 
     @staticmethod
@@ -325,7 +325,7 @@ class HistoryService:
             return items
 
         except Exception as e:
-            logger.error(f"查询新闻情报失败: {e}", exc_info=True)
+            logger.error(f"查詢新聞情報失敗: {e}", exc_info=True)
             return []
 
     def get_news_intel_by_record_id(self, record_id: int, limit: int = 20) -> List[Dict[str, str]]:
@@ -352,7 +352,7 @@ class HistoryService:
             return self.get_news_intel(query_id=record.query_id, limit=limit)
 
         except Exception as e:
-            logger.error(f"根据 record_id 查询新闻情报失败: {e}", exc_info=True)
+            logger.error(f"根據 record_id 查詢新聞情報失敗: {e}", exc_info=True)
             return []
 
     def _fallback_news_by_analysis_context(self, query_id: str, limit: int) -> List[Any]:
@@ -382,7 +382,7 @@ class HistoryService:
             if item.fetched_at and start_time <= item.fetched_at <= end_time
         ]
 
-        # 历史兜底链路也做发布时间硬过滤，避免旧库脏数据重新冒出。
+        # 歷史兜底鏈路也做釋出時間硬過濾，避免舊庫髒資料重新冒出。
         cfg = get_config()
         window_days = resolve_news_window_days(
             news_max_age_days=getattr(cfg, "news_max_age_days", 3),
@@ -419,15 +419,15 @@ class HistoryService:
             Sentiment label
         """
         if score >= 80:
-            return "极度乐观"
+            return "極度樂觀"
         elif score >= 60:
-            return "乐观"
+            return "樂觀"
         elif score >= 40:
             return "中性"
         elif score >= 20:
-            return "悲观"
+            return "悲觀"
         else:
-            return "极度悲观"
+            return "極度悲觀"
 
     def get_markdown_report(self, record_id: str) -> Optional[str]:
         """
@@ -574,32 +574,32 @@ class HistoryService:
         dashboard = result.dashboard if hasattr(result, 'dashboard') and result.dashboard else {}
 
         report_lines = [
-            f"# 📊 {name_escaped} ({result.code}) 分析报告",
+            f"# 📊 {name_escaped} ({result.code}) 分析報告",
             "",
-            f"> 分析日期：**{report_date}** | 报告生成时间：{report_time}",
+            f"> 分析日期：**{report_date}** | 報告生成時間：{report_time}",
             "",
             "---",
             "",
         ]
 
-        # ========== 舆情与基本面概览（放在最前面）==========
+        # ========== 輿情與基本面概覽（放在最前面）==========
         intel = dashboard.get('intelligence', {}) if dashboard else {}
         if intel:
             report_lines.extend([
-                "### 📰 重要信息速览",
+                "### 📰 重要資訊速覽",
                 "",
             ])
-            # 舆情情绪总结
+            # 輿情情緒總結
             if intel.get('sentiment_summary'):
-                report_lines.append(f"**💭 舆情情绪**: {intel['sentiment_summary']}")
-            # 业绩预期
+                report_lines.append(f"**💭 輿情情緒**: {intel['sentiment_summary']}")
+            # 業績預期
             if intel.get('earnings_outlook'):
-                report_lines.append(f"**📊 业绩预期**: {intel['earnings_outlook']}")
-            # 风险警报（醒目显示）
+                report_lines.append(f"**📊 業績預期**: {intel['earnings_outlook']}")
+            # 風險警報（醒目顯示）
             risk_alerts = intel.get('risk_alerts', [])
             if risk_alerts:
                 report_lines.append("")
-                report_lines.append("**🚨 风险警报**:")
+                report_lines.append("**🚨 風險警報**:")
                 for alert in risk_alerts:
                     report_lines.append(f"- {alert}")
             # 利好催化
@@ -609,42 +609,42 @@ class HistoryService:
                 report_lines.append("**✨ 利好催化**:")
                 for cat in catalysts:
                     report_lines.append(f"- {cat}")
-            # 最新消息
+            # 最新訊息
             if intel.get('latest_news'):
                 report_lines.append("")
-                report_lines.append(f"**📢 最新动态**: {intel['latest_news']}")
+                report_lines.append(f"**📢 最新動態**: {intel['latest_news']}")
             report_lines.append("")
 
-        # ========== 核心结论 ==========
+        # ========== 核心結論 ==========
         core = dashboard.get('core_conclusion', {}) if dashboard else {}
         one_sentence = core.get('one_sentence', result.analysis_summary)
-        time_sense = core.get('time_sensitivity', '本周内')
+        time_sense = core.get('time_sensitivity', '本週內')
         pos_advice = core.get('position_advice', {})
 
         report_lines.extend([
-            "### 📌 核心结论",
+            "### 📌 核心結論",
             "",
             f"**{signal_emoji} {signal_text}** | {result.trend_prediction}",
             "",
-            f"> **一句话决策**: {one_sentence}",
+            f"> **一句話決策**: {one_sentence}",
             "",
-            f"⏰ **时效性**: {time_sense}",
+            f"⏰ **時效性**: {time_sense}",
             "",
         ])
-        # 持仓分类建议
+        # 持倉分類建議
         if pos_advice:
             report_lines.extend([
-                "| 持仓情况 | 操作建议 |",
+                "| 持倉情況 | 操作建議 |",
                 "|---------|---------|",
-                f"| 🆕 **空仓者** | {pos_advice.get('no_position', result.operation_advice)} |",
-                f"| 💼 **持仓者** | {pos_advice.get('has_position', '继续持有')} |",
+                f"| 🆕 **空倉者** | {pos_advice.get('no_position', result.operation_advice)} |",
+                f"| 💼 **持倉者** | {pos_advice.get('has_position', '繼續持有')} |",
                 "",
             ])
 
         # ========== 行情快照 ==========
         self._append_market_snapshot_to_report(report_lines, result)
 
-        # ========== 数据透视 ==========
+        # ========== 資料透視 ==========
         data_persp = dashboard.get('data_perspective', {}) if dashboard else {}
         if data_persp:
             trend_data = data_persp.get('trend_status', {})
@@ -653,90 +653,90 @@ class HistoryService:
             chip_data = data_persp.get('chip_structure', {})
 
             report_lines.extend([
-                "### 📊 数据透视",
+                "### 📊 資料透視",
                 "",
             ])
-            # 趋势状态
+            # 趨勢狀態
             if trend_data:
                 is_bullish = "✅ 是" if trend_data.get('is_bullish', False) else "❌ 否"
                 report_lines.extend([
-                    f"**均线排列**: {trend_data.get('ma_alignment', 'N/A')} | 多头排列: {is_bullish} | 趋势强度: {trend_data.get('trend_score', 'N/A')}/100",
+                    f"**均線排列**: {trend_data.get('ma_alignment', 'N/A')} | 多頭排列: {is_bullish} | 趨勢強度: {trend_data.get('trend_score', 'N/A')}/100",
                     "",
                 ])
-            # 价格位置
+            # 價格位置
             if price_data:
                 bias_status = price_data.get('bias_status', 'N/A')
                 bias_emoji = "✅" if bias_status == "安全" else ("⚠️" if bias_status == "警戒" else "🚨")
                 report_lines.extend([
-                    "| 价格指标 | 数值 |",
+                    "| 價格指標 | 數值 |",
                     "|---------|------|",
-                    f"| 当前价 | {price_data.get('current_price', 'N/A')} |",
+                    f"| 當前價 | {price_data.get('current_price', 'N/A')} |",
                     f"| MA5 | {price_data.get('ma5', 'N/A')} |",
                     f"| MA10 | {price_data.get('ma10', 'N/A')} |",
                     f"| MA20 | {price_data.get('ma20', 'N/A')} |",
-                    f"| 乖离率(MA5) | {price_data.get('bias_ma5', 'N/A')}% {bias_emoji}{bias_status} |",
-                    f"| 支撑位 | {price_data.get('support_level', 'N/A')} |",
-                    f"| 压力位 | {price_data.get('resistance_level', 'N/A')} |",
+                    f"| 乖離率(MA5) | {price_data.get('bias_ma5', 'N/A')}% {bias_emoji}{bias_status} |",
+                    f"| 支撐位 | {price_data.get('support_level', 'N/A')} |",
+                    f"| 壓力位 | {price_data.get('resistance_level', 'N/A')} |",
                     "",
                 ])
             # 量能分析
             if vol_data:
                 report_lines.extend([
-                    f"**量能**: 量比 {vol_data.get('volume_ratio', 'N/A')} ({vol_data.get('volume_status', '')}) | 换手率 {vol_data.get('turnover_rate', 'N/A')}%",
+                    f"**量能**: 量比 {vol_data.get('volume_ratio', 'N/A')} ({vol_data.get('volume_status', '')}) | 換手率 {vol_data.get('turnover_rate', 'N/A')}%",
                     f"💡 *{vol_data.get('volume_meaning', '')}*",
                     "",
                 ])
-            # 筹码结构
+            # 籌碼結構
             if chip_data:
                 chip_health = chip_data.get('chip_health', 'N/A')
                 chip_emoji = "✅" if chip_health == "健康" else ("⚠️" if chip_health == "一般" else "🚨")
                 report_lines.extend([
-                    f"**筹码**: 获利比例 {chip_data.get('profit_ratio', 'N/A')} | 平均成本 {chip_data.get('avg_cost', 'N/A')} | 集中度 {chip_data.get('concentration', 'N/A')} {chip_emoji}{chip_health}",
+                    f"**籌碼**: 獲利比例 {chip_data.get('profit_ratio', 'N/A')} | 平均成本 {chip_data.get('avg_cost', 'N/A')} | 集中度 {chip_data.get('concentration', 'N/A')} {chip_emoji}{chip_health}",
                     "",
                 ])
 
-        # ========== 作战计划 ==========
+        # ========== 作戰計劃 ==========
         battle = dashboard.get('battle_plan', {}) if dashboard else {}
         if battle:
             report_lines.extend([
-                "### 🎯 作战计划",
+                "### 🎯 作戰計劃",
                 "",
             ])
-            # 狙击点位
+            # 狙擊點位
             sniper = battle.get('sniper_points', {})
             if sniper:
                 report_lines.extend([
-                    "**📍 狙击点位**",
+                    "**📍 狙擊點位**",
                     "",
-                    "| 点位类型 | 价格 |",
+                    "| 點位型別 | 價格 |",
                     "|---------|------|",
-                    f"| 🎯 理想买入点 | {self._clean_sniper_value(sniper.get('ideal_buy', 'N/A'))} |",
-                    f"| 🔵 次优买入点 | {self._clean_sniper_value(sniper.get('secondary_buy', 'N/A'))} |",
-                    f"| 🛑 止损位 | {self._clean_sniper_value(sniper.get('stop_loss', 'N/A'))} |",
-                    f"| 🎊 目标位 | {self._clean_sniper_value(sniper.get('take_profit', 'N/A'))} |",
+                    f"| 🎯 理想買入點 | {self._clean_sniper_value(sniper.get('ideal_buy', 'N/A'))} |",
+                    f"| 🔵 次優買入點 | {self._clean_sniper_value(sniper.get('secondary_buy', 'N/A'))} |",
+                    f"| 🛑 止損位 | {self._clean_sniper_value(sniper.get('stop_loss', 'N/A'))} |",
+                    f"| 🎊 目標位 | {self._clean_sniper_value(sniper.get('take_profit', 'N/A'))} |",
                     "",
                 ])
-            # 仓位策略
+            # 倉位策略
             position = battle.get('position_strategy', {})
             if position:
                 report_lines.extend([
-                    f"**💰 仓位建议**: {position.get('suggested_position', 'N/A')}",
-                    f"- 建仓策略: {position.get('entry_plan', 'N/A')}",
-                    f"- 风控策略: {position.get('risk_control', 'N/A')}",
+                    f"**💰 倉位建議**: {position.get('suggested_position', 'N/A')}",
+                    f"- 建倉策略: {position.get('entry_plan', 'N/A')}",
+                    f"- 風控策略: {position.get('risk_control', 'N/A')}",
                     "",
                 ])
-            # 检查清单
+            # 檢查清單
             checklist = battle.get('action_checklist', []) if battle else []
             if checklist:
                 report_lines.extend([
-                    "**✅ 检查清单**",
+                    "**✅ 檢查清單**",
                     "",
                 ])
                 for item in checklist:
                     report_lines.append(f"- {item}")
                 report_lines.append("")
 
-        # ========== 如果没有 dashboard，显示传统格式 ==========
+        # ========== 如果沒有 dashboard，顯示傳統格式 ==========
         if not dashboard:
             # 操作理由
             if result.buy_reason:
@@ -744,27 +744,27 @@ class HistoryService:
                     f"**💡 操作理由**: {result.buy_reason}",
                     "",
                 ])
-            # 风险提示
+            # 風險提示
             if result.risk_warning:
                 report_lines.extend([
-                    f"**⚠️ 风险提示**: {result.risk_warning}",
+                    f"**⚠️ 風險提示**: {result.risk_warning}",
                     "",
                 ])
-            # 技术面分析
+            # 技術面分析
             if result.ma_analysis or result.volume_analysis:
                 report_lines.extend([
-                    "### 📊 技术面",
+                    "### 📊 技術面",
                     "",
                 ])
                 if result.ma_analysis:
-                    report_lines.append(f"**均线**: {result.ma_analysis}")
+                    report_lines.append(f"**均線**: {result.ma_analysis}")
                 if result.volume_analysis:
                     report_lines.append(f"**量能**: {result.volume_analysis}")
                 report_lines.append("")
-            # 消息面
+            # 訊息面
             if result.news_summary:
                 report_lines.extend([
-                    "### 📰 消息面",
+                    "### 📰 訊息面",
                     f"{result.news_summary}",
                     "",
                 ])
@@ -773,7 +773,7 @@ class HistoryService:
         report_lines.extend([
             "---",
             "",
-            f"*报告生成时间：{report_time}*",
+            f"*報告生成時間：{report_time}*",
         ])
 
         return "\n".join(report_lines)
@@ -801,11 +801,11 @@ class HistoryService:
         decision = getattr(result, 'decision_type', '')
 
         if decision == 'buy' or score >= 70:
-            return ('买入', '🟢', '买入')
+            return ('買入', '🟢', '買入')
         elif decision == 'sell' or score < 35:
-            return ('卖出', '🔴', '卖出')
+            return ('賣出', '🔴', '賣出')
         else:
-            return ('观望', '⚪', '观望')
+            return ('觀望', '⚪', '觀望')
 
     @staticmethod
     def _safe_format_number(value: Any, fmt: str = ".2f") -> str:
@@ -843,7 +843,7 @@ class HistoryService:
         lines.extend([
             "### 📈 行情快照",
             "",
-            "| 指标 | 数值 |",
+            "| 指標 | 數值 |",
             "|------|------|",
         ])
 
@@ -856,15 +856,15 @@ class HistoryService:
                 change_str = f"{HistoryService._safe_format_number(change_pct, '+.2f')}%"
             else:
                 change_str = "--"
-            lines.append(f"| 当前价 | **{current_str}** ({change_str}) |")
+            lines.append(f"| 當前價 | **{current_str}** ({change_str}) |")
 
         # Other metrics
         metrics = [
-            ("开盘价", "open", ".2f"),
-            ("最高价", "high", ".2f"),
-            ("最低价", "low", ".2f"),
+            ("開盤價", "open", ".2f"),
+            ("最高價", "high", ".2f"),
+            ("最低價", "low", ".2f"),
             ("成交量", "volume", ",.0f"),
-            ("成交额", "amount", ",.0f"),
+            ("成交額", "amount", ",.0f"),
         ]
         for label, key, fmt in metrics:
             value = snapshot.get(key)

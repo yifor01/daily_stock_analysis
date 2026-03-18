@@ -52,13 +52,13 @@ describe('agentChatStore.startStream', () => {
       createStreamResponse([
         'data: {"type":"thinking","step":1,"message":"分析中"}',
         'data: {"type":"tool_done","tool":"quote","display_name":"行情","success":true,"duration":0.3}',
-        'data: {"type":"done","success":true,"content":"最终分析结果"}',
+        'data: {"type":"done","success":true,"content":"最終分析結果"}',
       ]),
     );
 
     await useAgentChatStore
       .getState()
-      .startStream({ message: '分析茅台', session_id: 'session-test' }, { strategyName: '趋势策略' });
+      .startStream({ message: '分析茅臺', session_id: 'session-test' }, { strategyName: '趨勢策略' });
 
     const state = useAgentChatStore.getState();
     expect(state.loading).toBe(false);
@@ -66,13 +66,13 @@ describe('agentChatStore.startStream', () => {
     expect(state.messages).toHaveLength(2);
     expect(state.messages[0]).toMatchObject({
       role: 'user',
-      content: '分析茅台',
-      strategyName: '趋势策略',
+      content: '分析茅臺',
+      strategyName: '趨勢策略',
     });
     expect(state.messages[1]).toMatchObject({
       role: 'assistant',
-      content: '最终分析结果',
-      strategyName: '趋势策略',
+      content: '最終分析結果',
+      strategyName: '趨勢策略',
     });
     expect(state.messages[1].thinkingSteps).toHaveLength(2);
     expect(state.progressSteps).toEqual([]);

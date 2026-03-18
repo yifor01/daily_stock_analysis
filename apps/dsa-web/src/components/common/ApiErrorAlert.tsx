@@ -15,7 +15,7 @@ export const ApiErrorAlert: React.FC<ApiErrorAlertProps> = ({
   className = '',
   actionLabel,
   onAction,
-  dismissLabel = '关闭',
+  dismissLabel = '關閉',
   onDismiss,
 }) => {
   const showDetails = error.rawMessage.trim() && error.rawMessage.trim() !== error.message.trim();
@@ -42,7 +42,7 @@ export const ApiErrorAlert: React.FC<ApiErrorAlertProps> = ({
       </div>
       {showDetails ? (
         <details className="mt-3 rounded-lg border border-white/8 bg-black/15 px-3 py-2">
-          <summary className="cursor-pointer text-xs text-red-100/90">查看详情</summary>
+          <summary className="cursor-pointer text-xs text-red-100/90">檢視詳情</summary>
           <pre className="mt-2 whitespace-pre-wrap break-words text-[11px] leading-5 text-red-100/85">
             {error.rawMessage}
           </pre>

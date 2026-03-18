@@ -244,7 +244,7 @@ class TestEmailSender(unittest.TestCase):
         )
         sender = EmailSender(cfg)
 
-        result = sender.send_to_email("body", subject="测试主题")
+        result = sender.send_to_email("body", subject="測試主題")
 
         self.assertTrue(result)
         server = mock_smtp_ssl.return_value
