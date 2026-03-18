@@ -1,111 +1,111 @@
-# ❓ 常见问题解答 (FAQ)
+# ❓ 常見問題解答 (FAQ)
 
-本文档整理了用户在使用过程中遇到的常见问题及解决方案。
+本文件整理了使用者在使用過程中遇到的常見問題及解決方案。
 
 ---
 
-## 📊 数据相关
+## 📊 資料相關
 
-### Q1: 美股代码（如 AMD, AAPL）分析时价格显示不正确？
+### Q1: 美股程式碼（如 AMD, AAPL）分析時價格顯示不正確？
 
-**现象**：输入美股代码后，显示的价格明显不对（如 AMD 显示 7.33 元），或被误识别为 A 股。
+**現象**：輸入美股程式碼後，顯示的價格明顯不對（如 AMD 顯示 7.33 元），或被誤識別為 A 股。
 
-**原因**：早期版本代码匹配逻辑优先尝试国内 A 股规则，导致代码冲突。
+**原因**：早期版本程式碼匹配邏輯優先嚐試國內 A 股規則，導致程式碼衝突。
 
-**解决方案**：
-1. 已在 v2.3.0 修复，系统现在支持美股代码自动识别
-2. 如仍有问题，可在 `.env` 中设置：
+**解決方案**：
+1. 已在 v2.3.0 修復，系統現在支援美股程式碼自動識別
+2. 如仍有問題，可在 `.env` 中設定：
    ```bash
    YFINANCE_PRIORITY=0
    ```
-   这将优先使用 Yahoo Finance 数据源获取美股数据
+   這將優先使用 Yahoo Finance 資料來源獲取美股資料
 
-> 📌 相关 Issue: [#153](https://github.com/ZhuLinsen/daily_stock_analysis/issues/153)
+> 📌 相關 Issue: [#153](https://github.com/ZhuLinsen/daily_stock_analysis/issues/153)
 
 ---
 
-### Q2: 报告中"量比"字段显示为空或 N/A？
+### Q2: 報告中"量比"欄位顯示為空或 N/A？
 
-**现象**：分析报告中量比数据缺失，影响 AI 对缩放量的判断。
+**現象**：分析報告中量比資料缺失，影響 AI 對縮放量的判斷。
 
-**原因**：默认的某些实时行情源（如新浪接口）不提供量比字段。
+**原因**：預設的某些實時行情源（如新浪介面）不提供量比欄位。
 
-**解决方案**：
-1. 已在 v2.3.0 修复，腾讯接口现已支持量比解析
-2. 推荐配置实时行情源优先级：
+**解決方案**：
+1. 已在 v2.3.0 修復，騰訊介面現已支援量比解析
+2. 推薦配置實時行情源優先順序：
    ```bash
    REALTIME_SOURCE_PRIORITY=tencent,akshare_sina,efinance,akshare_em
    ```
-3. 系统已内置 5 日均量计算作为兜底逻辑
+3. 系統已內建 5 日均量計算作為兜底邏輯
 
-> 📌 相关 Issue: [#155](https://github.com/ZhuLinsen/daily_stock_analysis/issues/155)
-
----
-
-### Q3: Tushare 获取数据失败，提示 Token 不对？
-
-**现象**：日志显示 `Tushare 获取数据失败: 您的token不对，请确认`
-
-**解决方案**：
-1. **无 Tushare 账号**：无需配置 `TUSHARE_TOKEN`，系统会自动使用免费数据源（AkShare、Efinance）
-2. **有 Tushare 账号**：确认 Token 是否正确，可在 [Tushare Pro](https://tushare.pro/weborder/#/login?reg=834638 ) 个人中心查看
-3. 本项目所有核心功能均可在无 Tushare 的情况下正常运行
+> 📌 相關 Issue: [#155](https://github.com/ZhuLinsen/daily_stock_analysis/issues/155)
 
 ---
 
-### Q4: 数据获取被限流或返回为空？
+### Q3: Tushare 獲取資料失敗，提示 Token 不對？
 
-**现象**：日志显示 `熔断器触发` 或数据返回 `None`，或出现 `RemoteDisconnected`、`push2his.eastmoney.com` 连接被关闭等
+**現象**：日誌顯示 `Tushare 獲取資料失敗: 您的token不對，請確認`
 
-**原因**：免费数据源（东方财富、新浪等）有反爬机制，短时间大量请求会被限流。
-
-**解决方案**：
-1. 系统已内置多数据源自动切换和熔断保护
-2. 减少自选股数量，或增加请求间隔
-3. 避免频繁手动触发分析
-4. 若东财接口频繁失败，可设置 `ENABLE_EASTMONEY_PATCH=true` 启用东财补丁（注入 NID 令牌与随机 User-Agent，降低被限流概率）
-5. 将 `MAX_WORKERS=1` 改为串行获取，减少对东财的并发压力
+**解決方案**：
+1. **無 Tushare 賬號**：無需配置 `TUSHARE_TOKEN`，系統會自動使用免費資料來源（AkShare、Efinance）
+2. **有 Tushare 賬號**：確認 Token 是否正確，可在 [Tushare Pro](https://tushare.pro/weborder/#/login?reg=834638 ) 個人中心檢視
+3. 本專案所有核心功能均可在無 Tushare 的情況下正常執行
 
 ---
 
-## ⚙️ 配置相关
+### Q4: 資料獲取被限流或返回為空？
 
-### Q5: GitHub Actions 运行失败，提示找不到环境变量？
+**現象**：日誌顯示 `熔斷器觸發` 或資料返回 `None`，或出現 `RemoteDisconnected`、`push2his.eastmoney.com` 連線被關閉等
 
-**现象**：Actions 日志显示 `GEMINI_API_KEY` 或 `STOCK_LIST` 未定义
+**原因**：免費資料來源（東方財富、新浪等）有反爬機制，短時間大量請求會被限流。
 
-**原因**：GitHub 区分 `Secrets`（加密）和 `Variables`（普通变量），配置位置不对会导致读取失败。
+**解決方案**：
+1. 系統已內建多資料來源自動切換和熔斷保護
+2. 減少自選股數量，或增加請求間隔
+3. 避免頻繁手動觸發分析
+4. 若東財介面頻繁失敗，可設定 `ENABLE_EASTMONEY_PATCH=true` 啟用東財補丁（注入 NID 令牌與隨機 User-Agent，降低被限流機率）
+5. 將 `MAX_WORKERS=1` 改為序列獲取，減少對東財的併發壓力
 
-**解决方案**：
-1. 进入仓库 `Settings` → `Secrets and variables` → `Actions`
-2. **Secrets**（点击 `New repository secret`）：存放敏感信息
+---
+
+## ⚙️ 配置相關
+
+### Q5: GitHub Actions 執行失敗，提示找不到環境變數？
+
+**現象**：Actions 日誌顯示 `GEMINI_API_KEY` 或 `STOCK_LIST` 未定義
+
+**原因**：GitHub 區分 `Secrets`（加密）和 `Variables`（普通變數），配置位置不對會導致讀取失敗。
+
+**解決方案**：
+1. 進入倉庫 `Settings` → `Secrets and variables` → `Actions`
+2. **Secrets**（點選 `New repository secret`）：存放敏感資訊
    - `GEMINI_API_KEY`
    - `OPENAI_API_KEY`
    - `TELEGRAM_BOT_TOKEN`
-   - 各类 Webhook URL
-3. **Variables**（点击 `Variables` 标签）：存放非敏感配置
+   - 各類 Webhook URL
+3. **Variables**（點選 `Variables` 標籤）：存放非敏感配置
    - `STOCK_LIST`
    - `GEMINI_MODEL`
    - `REPORT_TYPE`
 
 ---
 
-### Q6: 修改 .env 文件后配置没有生效？
+### Q6: 修改 .env 檔案後配置沒有生效？
 
-**解决方案**：
-1. 确保 `.env` 文件位于项目根目录
-2. **Docker 部署**：修改后需重启容器
+**解決方案**：
+1. 確保 `.env` 檔案位於專案根目錄
+2. **Docker 部署**：修改後需重啟容器
    ```bash
    docker-compose down && docker-compose up -d
    ```
-3. **GitHub Actions**：`.env` 文件不生效，必须在 Secrets/Variables 中配置
-4. 检查是否有多个 `.env` 文件（如 `.env.local`）导致覆盖
+3. **GitHub Actions**：`.env` 檔案不生效，必須在 Secrets/Variables 中配置
+4. 檢查是否有多個 `.env` 檔案（如 `.env.local`）導致覆蓋
 
 ---
 
-### Q7: 如何配置代理访问 Gemini/OpenAI API？
+### Q7: 如何配置代理訪問 Gemini/OpenAI API？
 
-**解决方案**：
+**解決方案**：
 
 在 `.env` 中配置：
 ```bash
@@ -114,89 +114,89 @@ PROXY_HOST=127.0.0.1
 PROXY_PORT=10809
 ```
 
-> ⚠️ 注意：代理配置仅对本地运行生效，GitHub Actions 环境无需配置代理。
+> ⚠️ 注意：代理配置僅對本地執行生效，GitHub Actions 環境無需配置代理。
 
 ---
 
-### LLM 配置常见问题
+### LLM 配置常見問題
 
-> 完整说明见 [LLM 配置指南](LLM_CONFIG_GUIDE.md)。
+> 完整說明見 [LLM 配置指南](LLM_CONFIG_GUIDE.md)。
 
-**Q: 配置了 GEMINI_API_KEY 和 LLM_CHANNELS，为什么只用渠道？**
+**Q: 配置了 GEMINI_API_KEY 和 LLM_CHANNELS，為什麼只用渠道？**
 
-系统按优先级只取一种：`LITELLM_CONFIG` (YAML) > `LLM_CHANNELS` > legacy keys。一旦配置了渠道或 YAML，legacy 区域（`GEMINI_API_KEY` 等）不参与解析。
+系統按優先順序只取一種：`LITELLM_CONFIG` (YAML) > `LLM_CHANNELS` > legacy keys。一旦配置了渠道或 YAML，legacy 區域（`GEMINI_API_KEY` 等）不參與解析。
 
-**Q: test_env 输出 ✗ 未配置任何 LLM 怎么办？**
+**Q: test_env 輸出 ✗ 未配置任何 LLM 怎麼辦？**
 
-配置 `LITELLM_CONFIG` / `LLM_CHANNELS` 或至少一个 `*_API_KEY`（如 `GEMINI_API_KEY`、`DEEPSEEK_API_KEY`、`AIHUBMIX_KEY`）。运行 `python test_env.py --config` 校验配置，`python test_env.py --llm` 实际调用 API 测试。
+配置 `LITELLM_CONFIG` / `LLM_CHANNELS` 或至少一個 `*_API_KEY`（如 `GEMINI_API_KEY`、`DEEPSEEK_API_KEY`、`AIHUBMIX_KEY`）。執行 `python test_env.py --config` 校驗配置，`python test_env.py --llm` 實際呼叫 API 測試。
 
-**Q: 如何同时使用多个模型（如 AIHubmix + DeepSeek + Gemini）？**
+**Q: 如何同時使用多個模型（如 AIHubmix + DeepSeek + Gemini）？**
 
-使用渠道模式：设置 `LLM_CHANNELS=aihubmix,deepseek,gemini`，并配置各渠道的 `LLM_{NAME}_BASE_URL`、`LLM_{NAME}_API_KEY`、`LLM_{NAME}_MODELS`。也可在 Web 设置页 → AI 模型 → 渠道编辑器中可视化配置。
-
----
-
-## 📱 推送相关
-
-### Q8: 机器人推送失败，提示消息过长？
-
-**现象**：分析成功但未收到推送，日志显示 400 错误或 `Message too long`
-
-**原因**：不同平台消息长度限制不同：
-- 企业微信：4KB
-- 飞书：20KB
-- 钉钉：20KB
-
-**解决方案**：
-1. **自动分块**：最新版本已实现长消息自动切割
-2. **单股推送模式**：设置 `SINGLE_STOCK_NOTIFY=true`，每分析完一只股票立即推送
-3. **精简报告**：设置 `REPORT_TYPE=simple` 使用精简格式
+使用渠道模式：設定 `LLM_CHANNELS=aihubmix,deepseek,gemini`，並配置各渠道的 `LLM_{NAME}_BASE_URL`、`LLM_{NAME}_API_KEY`、`LLM_{NAME}_MODELS`。也可在 Web 設定頁 → AI 模型 → 渠道編輯器中視覺化配置。
 
 ---
 
-### Q9: Telegram 推送收不到消息？
+## 📱 推送相關
 
-**解决方案**：
-1. 确认 `TELEGRAM_BOT_TOKEN` 和 `TELEGRAM_CHAT_ID` 都已配置
-2. 获取 Chat ID 方法：
-   - 给 Bot 发送任意消息
-   - 访问 `https://api.telegram.org/bot<TOKEN>/getUpdates`
+### Q8: 機器人推送失敗，提示訊息過長？
+
+**現象**：分析成功但未收到推送，日誌顯示 400 錯誤或 `Message too long`
+
+**原因**：不同平臺訊息長度限制不同：
+- 企業微信：4KB
+- 飛書：20KB
+- 釘釘：20KB
+
+**解決方案**：
+1. **自動分塊**：最新版本已實現長訊息自動切割
+2. **單股推送模式**：設定 `SINGLE_STOCK_NOTIFY=true`，每分析完一隻股票立即推送
+3. **精簡報告**：設定 `REPORT_TYPE=simple` 使用精簡格式
+
+---
+
+### Q9: Telegram 推送收不到訊息？
+
+**解決方案**：
+1. 確認 `TELEGRAM_BOT_TOKEN` 和 `TELEGRAM_CHAT_ID` 都已配置
+2. 獲取 Chat ID 方法：
+   - 給 Bot 傳送任意訊息
+   - 訪問 `https://api.telegram.org/bot<TOKEN>/getUpdates`
    - 在返回的 JSON 中找到 `chat.id`
-3. 确保 Bot 已被添加到目标群组（如果是群聊）
-4. 本地运行时需要能访问 Telegram API（可能需要代理）
+3. 確保 Bot 已被新增到目標群組（如果是群聊）
+4. 本地執行時需要能訪問 Telegram API（可能需要代理）
 
 ---
 
-### Q10: 企业微信 Markdown 格式显示不正常？
+### Q10: 企業微信 Markdown 格式顯示不正常？
 
-**解决方案**：
-1. 企业微信对 Markdown 支持有限，可尝试设置：
+**解決方案**：
+1. 企業微信對 Markdown 支援有限，可嘗試設定：
    ```bash
    WECHAT_MSG_TYPE=text
    ```
-2. 这将发送纯文本格式的消息
+2. 這將傳送純文字格式的訊息
 
 ---
 
-## 🤖 AI 模型相关
+## 🤖 AI 模型相關
 
-### Q11: Gemini API 返回 429 错误（请求过多）？
+### Q11: Gemini API 返回 429 錯誤（請求過多）？
 
-**现象**：日志显示 `Resource has been exhausted` 或 `429 Too Many Requests`
+**現象**：日誌顯示 `Resource has been exhausted` 或 `429 Too Many Requests`
 
-**解决方案**：
-1. Gemini 免费版有速率限制（约 15 RPM）
-2. 减少同时分析的股票数量
-3. 增加请求延迟：
+**解決方案**：
+1. Gemini 免費版有速率限制（約 15 RPM）
+2. 減少同時分析的股票數量
+3. 增加請求延遲：
    ```bash
    GEMINI_REQUEST_DELAY=5
    ANALYSIS_DELAY=10
    ```
-4. 或切换到 OpenAI 兼容 API 作为备选
+4. 或切換到 OpenAI 相容 API 作為備選
 
 ---
 
-### Q12: 如何使用 DeepSeek 等国产模型？
+### Q12: 如何使用 DeepSeek 等國產模型？
 
 **配置方法**：
 
@@ -205,37 +205,37 @@ PROXY_PORT=10809
 OPENAI_API_KEY=sk-xxxxxxxx
 OPENAI_BASE_URL=https://api.deepseek.com/v1
 OPENAI_MODEL=deepseek-chat
-# 思考模式：deepseek-reasoner、deepseek-r1、qwq 等自动识别；deepseek-chat 系统按模型名自动启用
+# 思考模式：deepseek-reasoner、deepseek-r1、qwq 等自動識別；deepseek-chat 系統按模型名自動啟用
 ```
 
-支持的模型服务：
+支援的模型服務：
 - DeepSeek: `https://api.deepseek.com/v1`
-- 通义千问: `https://dashscope.aliyuncs.com/compatible-mode/v1`
+- 通義千問: `https://dashscope.aliyuncs.com/compatible-mode/v1`
 - Moonshot: `https://api.moonshot.cn/v1`
 
 ---
 
-## 🐳 Docker 相关
+## 🐳 Docker 相關
 
-### Q13: Docker 容器启动后立即退出？
+### Q13: Docker 容器啟動後立即退出？
 
-**解决方案**：
-1. 查看容器日志：
+**解決方案**：
+1. 檢視容器日誌：
    ```bash
    docker logs <container_id>
    ```
-2. 常见原因：
-   - 环境变量未正确配置
-   - `.env` 文件格式错误（如有多余空格）
-   - 依赖包版本冲突
+2. 常見原因：
+   - 環境變數未正確配置
+   - `.env` 檔案格式錯誤（如有多餘空格）
+   - 依賴包版本衝突
 
 ---
 
-### Q14: Docker 中 API 服务无法访问？
+### Q14: Docker 中 API 服務無法訪問？
 
-**解决方案**：
-1. 确保启动命令包含 `--host 0.0.0.0`（不能是 127.0.0.1）
-2. 检查端口映射是否正确：
+**解決方案**：
+1. 確保啟動命令包含 `--host 0.0.0.0`（不能是 127.0.0.1）
+2. 檢查埠對映是否正確：
    ```yaml
    ports:
      - "8000:8000"
@@ -243,78 +243,78 @@ OPENAI_MODEL=deepseek-chat
 
 ---
 
-### Q14.1: Docker 中网络/DNS 解析失败（如 api.tushare.pro、searchapi.eastmoney.com 无法解析）？
+### Q14.1: Docker 中網路/DNS 解析失敗（如 api.tushare.pro、searchapi.eastmoney.com 無法解析）？
 
-**现象**：日志显示 `Temporary failure in name resolution` 或 `NameResolutionError`，股票数据 API 和大模型 API 均无法访问。
+**現象**：日誌顯示 `Temporary failure in name resolution` 或 `NameResolutionError`，股票資料 API 和大模型 API 均無法訪問。
 
-**原因**：自定义 bridge 网络下，容器使用 Docker 内置 DNS，在旁路由、特定网络环境时可能解析失败。
+**原因**：自定義 bridge 網路下，容器使用 Docker 內建 DNS，在旁路由、特定網路環境時可能解析失敗。
 
-**解决方案**（按优先级尝试）：
+**解決方案**（按優先順序嘗試）：
 
-1. **显式配置 DNS**：在 `docker/docker-compose.yml` 的 `x-common` 下添加：
+1. **顯式配置 DNS**：在 `docker/docker-compose.yml` 的 `x-common` 下新增：
    ```yaml
    dns:
      - 223.5.5.5
      - 119.29.29.29
      - 8.8.8.8
    ```
-   然后执行 `docker-compose down` 和 `docker-compose up -d --force-recreate` 重新创建容器。
+   然後執行 `docker-compose down` 和 `docker-compose up -d --force-recreate` 重新建立容器。
 
-2. **改用 host 网络模式**：若上述仍无效，可在 `server` 服务下添加 `network_mode: host`，并移除 `ports` 映射。使用 host 模式时，`ports` 无效，**端口由 `command` 中的 `--port` 指定**。若宿主机默认端口已占用，可修改为其他端口（如 `.env` 中设置 `API_PORT=8080`），访问对应 `http://localhost:8080`。
+2. **改用 host 網路模式**：若上述仍無效，可在 `server` 服務下新增 `network_mode: host`，並移除 `ports` 對映。使用 host 模式時，`ports` 無效，**埠由 `command` 中的 `--port` 指定**。若宿主機預設埠已佔用，可修改為其他埠（如 `.env` 中設定 `API_PORT=8080`），訪問對應 `http://localhost:8080`。
 
-> 📌 相关 Issue: [#372](https://github.com/ZhuLinsen/daily_stock_analysis/issues/372)
+> 📌 相關 Issue: [#372](https://github.com/ZhuLinsen/daily_stock_analysis/issues/372)
 
 ---
 
-## 🔧 其他问题
+## 🔧 其他問題
 
-### Q15: 如何只运行大盘复盘，不分析个股？
+### Q15: 如何只執行大盤覆盤，不分析個股？
 
 **方法**：
 ```bash
-# 本地运行
+# 本地執行
 python main.py --market-only
 
 # GitHub Actions
-# 手动触发时选择 mode: market-only
+# 手動觸發時選擇 mode: market-only
 ```
 
 ---
 
-### Q16: 分析结果中买入/观望/卖出数量统计不对？
+### Q16: 分析結果中買入/觀望/賣出數量統計不對？
 
-**原因**：早期版本使用正则匹配统计，可能与实际建议不一致。
+**原因**：早期版本使用正則匹配統計，可能與實際建議不一致。
 
-**解决方案**：已在最新版本中修复，AI 模型现在会直接输出 `decision_type` 字段用于准确统计。
+**解決方案**：已在最新版本中修復，AI 模型現在會直接輸出 `decision_type` 欄位用於準確統計。
 
 ---
 
-### Q17: 为什么周末在 GitHub Actions 手动触发仍显示“非交易日跳过”？
+### Q17: 為什麼週末在 GitHub Actions 手動觸發仍顯示“非交易日跳過”？
 
-**现象**：已经配置了 `TRADING_DAY_CHECK_ENABLED` 或希望手动运行，但日志仍提示“今日所有相关市场均为非交易日，跳过执行”。
+**現象**：已經配置了 `TRADING_DAY_CHECK_ENABLED` 或希望手動執行，但日誌仍提示“今日所有相關市場均為非交易日，跳過執行”。
 
-**解决方案**：
-1. 打开 `Actions → 每日股票分析 → Run workflow`
-2. 手动触发时将 `force_run` 设为 `true`（单次强制运行）
-3. 如果希望长期关闭交易日检查，在 `Settings → Secrets and variables → Actions` 中设置：
+**解決方案**：
+1. 開啟 `Actions → 每日股票分析 → Run workflow`
+2. 手動觸發時將 `force_run` 設為 `true`（單次強制執行）
+3. 如果希望長期關閉交易日檢查，在 `Settings → Secrets and variables → Actions` 中設定：
    ```bash
    TRADING_DAY_CHECK_ENABLED=false
    ```
 
-**规则说明**：
-- `TRADING_DAY_CHECK_ENABLED=true` 且 `force_run=false`：非交易日跳过（默认）
-- `force_run=true`：本次即使非交易日也执行
-- `TRADING_DAY_CHECK_ENABLED=false`：定时和手动都不做交易日检查
+**規則說明**：
+- `TRADING_DAY_CHECK_ENABLED=true` 且 `force_run=false`：非交易日跳過（預設）
+- `force_run=true`：本次即使非交易日也執行
+- `TRADING_DAY_CHECK_ENABLED=false`：定時和手動都不做交易日檢查
 
 ---
 
-## 💬 还有问题？
+## 💬 還有問題？
 
-如果以上内容没有解决你的问题，欢迎：
-1. 查看 [完整配置指南](full-guide.md)
-2. 搜索或提交 [GitHub Issue](https://github.com/ZhuLinsen/daily_stock_analysis/issues)
-3. 查看 [更新日志](CHANGELOG.md) 了解最新修复
+如果以上內容沒有解決你的問題，歡迎：
+1. 檢視 [完整配置指南](full-guide.md)
+2. 搜尋或提交 [GitHub Issue](https://github.com/ZhuLinsen/daily_stock_analysis/issues)
+3. 檢視 [更新日誌](CHANGELOG.md) 瞭解最新修復
 
 ---
 
-*最后更新：2026-02-28*
+*最後更新：2026-02-28*

@@ -81,9 +81,9 @@ export const Input = ({
         }
         onPasswordVisibleChange?.(nextVisible);
       }}
-      aria-label={visible ? '隐藏内容' : '显示内容'}
+      aria-label={visible ? '隱藏內容' : '顯示內容'}
       tabIndex={-1}
-      title={visible ? '隐藏' : '显示'}
+      title={visible ? '隱藏' : '顯示'}
     >
       <EyeToggleIcon visible={visible} />
     </button>

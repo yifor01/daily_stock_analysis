@@ -1,9 +1,9 @@
 /**
- * 股票分析相关类型定义
- * 与 API 规范 (api_spec.json) 对齐
+ * 股票分析相關型別定義
+ * 與 API 規範 (api_spec.json) 對齊
  */
 
-// ============ 请求类型 ============
+// ============ 請求型別 ============
 
 export interface AnalysisRequest {
   stockCode?: string;
@@ -13,11 +13,11 @@ export interface AnalysisRequest {
   asyncMode?: boolean;
 }
 
-// ============ 报告类型 ============
+// ============ 報告型別 ============
 
-/** 报告元信息 */
+/** 報告元資訊 */
 export interface ReportMeta {
-  id?: number;  // 分析历史记录主键 ID（历史报告时有此字段）
+  id?: number;  // 分析歷史記錄主鍵 ID（歷史報告時有此欄位）
   queryId: string;
   stockCode: string;
   stockName: string;
@@ -28,10 +28,10 @@ export interface ReportMeta {
   modelUsed?: string;  // 分析使用的 LLM 模型（Issue #528）
 }
 
-/** 情绪标签 */
-export type SentimentLabel = '极度悲观' | '悲观' | '中性' | '乐观' | '极度乐观';
+/** 情緒標籤 */
+export type SentimentLabel = '極度悲觀' | '悲觀' | '中性' | '樂觀' | '極度樂觀';
 
-/** 报告概览区 */
+/** 報告概覽區 */
 export interface ReportSummary {
   analysisSummary: string;
   operationAdvice: string;
@@ -40,7 +40,7 @@ export interface ReportSummary {
   sentimentLabel?: SentimentLabel;
 }
 
-/** 策略点位区 */
+/** 策略點位區 */
 export interface ReportStrategy {
   idealBuy?: string;
   secondaryBuy?: string;
@@ -48,7 +48,7 @@ export interface ReportStrategy {
   takeProfit?: string;
 }
 
-/** 详情区（可折叠） */
+/** 詳情區（可摺疊） */
 export interface ReportDetails {
   newsContent?: string;
   rawResult?: Record<string, unknown>;
@@ -57,7 +57,7 @@ export interface ReportDetails {
   dividendMetrics?: Record<string, unknown>;
 }
 
-/** 完整分析报告 */
+/** 完整分析報告 */
 export interface AnalysisReport {
   meta: ReportMeta;
   summary: ReportSummary;
@@ -65,9 +65,9 @@ export interface AnalysisReport {
   details?: ReportDetails;
 }
 
-// ============ 分析结果类型 ============
+// ============ 分析結果型別 ============
 
-/** 同步分析返回结果 */
+/** 同步分析返回結果 */
 export interface AnalysisResult {
   queryId: string;
   stockCode: string;
@@ -76,7 +76,7 @@ export interface AnalysisResult {
   createdAt: string;
 }
 
-/** 异步任务接受响应 */
+/** 非同步任務接受響應 */
 export interface TaskAccepted {
   taskId: string;
   status: 'pending' | 'processing';
@@ -106,7 +106,7 @@ export type AnalyzeAsyncResponse = TaskAccepted | BatchTaskAcceptedResponse;
 
 export type AnalyzeResponse = AnalysisResult | AnalyzeAsyncResponse;
 
-/** 任务状态 */
+/** 任務狀態 */
 export interface TaskStatus {
   taskId: string;
   status: 'pending' | 'processing' | 'completed' | 'failed';
@@ -115,7 +115,7 @@ export interface TaskStatus {
   error?: string;
 }
 
-/** 任务详情（用于任务列表和 SSE 事件） */
+/** 任務詳情（用於任務列表和 SSE 事件） */
 export interface TaskInfo {
   taskId: string;
   stockCode: string;
@@ -130,7 +130,7 @@ export interface TaskInfo {
   error?: string;
 }
 
-/** 任务列表响应 */
+/** 任務列表響應 */
 export interface TaskListResponse {
   total: number;
   pending: number;
@@ -138,7 +138,7 @@ export interface TaskListResponse {
   tasks: TaskInfo[];
 }
 
-/** 重复任务错误响应 */
+/** 重複任務錯誤響應 */
 export interface DuplicateTaskError {
   error: 'duplicate_task';
   message: string;
@@ -146,12 +146,12 @@ export interface DuplicateTaskError {
   existingTaskId: string;
 }
 
-// ============ 历史记录类型 ============
+// ============ 歷史記錄型別 ============
 
-/** 历史记录摘要（列表展示用） */
+/** 歷史記錄摘要（列表展示用） */
 export interface HistoryItem {
   id: number;  // Record primary key ID, always present for persisted history items
-  queryId: string;  // 分析记录关联 query_id（批量分析时重复）
+  queryId: string;  // 分析記錄關聯 query_id（批次分析時重複）
   stockCode: string;
   stockName?: string;
   reportType?: string;
@@ -160,7 +160,7 @@ export interface HistoryItem {
   createdAt: string;
 }
 
-/** 历史记录列表响应 */
+/** 歷史記錄列表響應 */
 export interface HistoryListResponse {
   total: number;
   page: number;
@@ -168,33 +168,33 @@ export interface HistoryListResponse {
   items: HistoryItem[];
 }
 
-/** 新闻情报条目 */
+/** 新聞情報條目 */
 export interface NewsIntelItem {
   title: string;
   snippet: string;
   url: string;
 }
 
-/** 新闻情报响应 */
+/** 新聞情報響應 */
 export interface NewsIntelResponse {
   total: number;
   items: NewsIntelItem[];
 }
 
-/** 历史列表筛选参数 */
+/** 歷史列表篩選引數 */
 export interface HistoryFilters {
   stockCode?: string;
   startDate?: string;
   endDate?: string;
 }
 
-/** 历史列表分页参数 */
+/** 歷史列表分頁引數 */
 export interface HistoryPagination {
   page: number;
   limit: number;
 }
 
-// ============ 错误类型 ============
+// ============ 錯誤型別 ============
 
 export interface ApiError {
   error: string;
@@ -202,18 +202,18 @@ export interface ApiError {
   detail?: Record<string, unknown>;
 }
 
-// ============ 辅助函数 ============
+// ============ 輔助函式 ============
 
-/** 根据情绪评分获取情绪标签 */
+/** 根據情緒評分獲取情緒標籤 */
 export const getSentimentLabel = (score: number): SentimentLabel => {
-  if (score <= 20) return '极度悲观';
-  if (score <= 40) return '悲观';
+  if (score <= 20) return '極度悲觀';
+  if (score <= 40) return '悲觀';
   if (score <= 60) return '中性';
-  if (score <= 80) return '乐观';
-  return '极度乐观';
+  if (score <= 80) return '樂觀';
+  return '極度樂觀';
 };
 
-/** 根据情绪评分获取颜色 */
+/** 根據情緒評分獲取顏色 */
 export const getSentimentColor = (score: number): string => {
   if (score <= 20) return '#ef4444'; // red-500
   if (score <= 40) return '#f97316'; // orange-500

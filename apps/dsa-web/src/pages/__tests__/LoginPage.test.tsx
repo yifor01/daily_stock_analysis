@@ -37,11 +37,11 @@ describe('LoginPage', () => {
 
     render(<LoginPage />);
 
-    fireEvent.change(screen.getByLabelText('管理员密码'), { target: { value: 'passwd6' } });
-    fireEvent.change(screen.getByLabelText('确认密码'), { target: { value: 'passwd7' } });
-    fireEvent.click(screen.getByRole('button', { name: '完成设置并登录' }));
+    fireEvent.change(screen.getByLabelText('管理員密碼'), { target: { value: 'passwd6' } });
+    fireEvent.change(screen.getByLabelText('確認密碼'), { target: { value: 'passwd7' } });
+    fireEvent.click(screen.getByRole('button', { name: '完成設定並登入' }));
 
-    expect(await screen.findByText('两次输入的密码不一致')).toBeInTheDocument();
+    expect(await screen.findByText('兩次輸入的密碼不一致')).toBeInTheDocument();
     expect(login).not.toHaveBeenCalled();
   });
 
@@ -54,8 +54,8 @@ describe('LoginPage', () => {
 
     render(<LoginPage />);
 
-    fireEvent.change(screen.getByLabelText('登录密码'), { target: { value: 'passwd6' } });
-    fireEvent.click(screen.getByRole('button', { name: '授权进入工作台' }));
+    fireEvent.change(screen.getByLabelText('登入密碼'), { target: { value: 'passwd6' } });
+    fireEvent.click(screen.getByRole('button', { name: '授權進入工作臺' }));
 
     await waitFor(() => expect(navigate).toHaveBeenCalledWith('/settings', { replace: true }));
   });

@@ -13,8 +13,8 @@ interface ReportMarkdownProps {
 }
 
 /**
- * Markdown 报告抽屉组件
- * 使用通用 Drawer 组件，展示完整的 Markdown 格式分析报告
+ * Markdown 報告抽屜元件
+ * 使用通用 Drawer 元件，展示完整的 Markdown 格式分析報告
  */
 export const ReportMarkdown: React.FC<ReportMarkdownProps> = ({
   recordId,
@@ -47,7 +47,7 @@ export const ReportMarkdown: React.FC<ReportMarkdownProps> = ({
         }
       } catch (err) {
         if (isMounted) {
-          setError(err instanceof Error ? err.message : '加载报告失败');
+          setError(err instanceof Error ? err.message : '載入報告失敗');
         }
       } finally {
         if (isMounted) {
@@ -74,7 +74,7 @@ export const ReportMarkdown: React.FC<ReportMarkdownProps> = ({
         </div>
         <div>
           <h2 className="text-base font-semibold text-white">{stockName || stockCode}</h2>
-          <p className="text-xs text-muted-text">完整分析报告</p>
+          <p className="text-xs text-muted-text">完整分析報告</p>
         </div>
       </div>
 
@@ -82,7 +82,7 @@ export const ReportMarkdown: React.FC<ReportMarkdownProps> = ({
       {isLoading ? (
         <div className="flex flex-col items-center justify-center h-64">
           <div className="w-10 h-10 border-3 border-purple/20 border-t-purple rounded-full animate-spin" />
-          <p className="mt-4 text-secondary-text text-sm">加载报告中...</p>
+          <p className="mt-4 text-secondary-text text-sm">載入報告中...</p>
         </div>
       ) : error ? (
         <div className="flex flex-col items-center justify-center h-64">
@@ -97,7 +97,7 @@ export const ReportMarkdown: React.FC<ReportMarkdownProps> = ({
             onClick={handleClose}
             className="mt-4 px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-sm text-secondary-text transition-colors"
           >
-            关闭
+            關閉
           </button>
         </div>
       ) : (
@@ -135,7 +135,7 @@ export const ReportMarkdown: React.FC<ReportMarkdownProps> = ({
           onClick={handleClose}
           className="px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-sm text-secondary-text hover:text-white transition-colors"
         >
-          关闭
+          關閉
         </button>
       </div>
     </Drawer>

@@ -1,71 +1,71 @@
 # LLM (大模型) 配置指南
 
-欢迎！无论你是刚接触 AI 的新手小白，还是精通各种 API 的高玩老手，这份指南都能帮你快速把大模型（LLM）跑起来。
+歡迎！無論你是剛接觸 AI 的新手小白，還是精通各種 API 的高玩老手，這份指南都能幫你快速把大模型（LLM）跑起來。
 
-本项目的大模型接入基于强大且通用的 [LiteLLM](https://docs.litellm.ai/)，这意味着几乎市面上所有的主流大模型（官方API或中转接口）我们都支持。为了照顾不同阶段的用户，我们设计了“三层优先级”配置，按需选择最适合你的方式即可。
-
----
-
-## 快速导航：你应该看哪一节？
-
-1. **【新手小白】** "我只想赶紧把系统跑起来，越简单越好！" -> [指路【方式一：极简单模型配置】](#方式一极简单模型配置适合新手)
-2. **【进阶用户】** "我有好几个 Key，想配置备用模型，还要改自定义网址(Base URL)。" -> [指路【方式二：渠道(Channels)模式配置】](#方式二渠道channels模式配置适合进阶多模型)
-3. **【高玩老手】** "我要做复杂的负载均衡、请求路由、甚至多异构平台高可用！" -> [指路【方式三：YAML 高级配置】](#方式三yaml高级配置适合老手自定义)
-4. **【视觉模型】** "我想用图片识别股票代码！" -> [指路【扩展功能：看图模型(Vision)配置】](#扩展功能看图模型vision配置)
+本專案的大模型接入基於強大且通用的 [LiteLLM](https://docs.litellm.ai/)，這意味著幾乎市面上所有的主流大模型（官方API或中轉介面）我們都支援。為了照顧不同階段的使用者，我們設計了“三層優先順序”配置，按需選擇最適合你的方式即可。
 
 ---
 
-## 方式一：极简单模型配置（适合新手）
+## 快速導航：你應該看哪一節？
 
-**目标：** 只要记得填入 API Key 和对应的模型名就能立刻用。不需要折腾复杂概念。
+1. **【新手小白】** "我只想趕緊把系統跑起來，越簡單越好！" -> [指路【方式一：極簡單模型配置】](#方式一極簡單模型配置適合新手)
+2. **【進階使用者】** "我有好幾個 Key，想配置備用模型，還要改自定義網址(Base URL)。" -> [指路【方式二：渠道(Channels)模式配置】](#方式二渠道channels模式配置適合進階多模型)
+3. **【高玩老手】** "我要做複雜的負載均衡、請求路由、甚至多異構平臺高可用！" -> [指路【方式三：YAML 高階配置】](#方式三yaml高階配置適合老手自定義)
+4. **【視覺模型】** "我想用圖片識別股票程式碼！" -> [指路【擴充套件功能：看圖模型(Vision)配置】](#擴充套件功能看圖模型vision配置)
 
-如果你只打算用一种模型，这是最快捷的办法。打开项目根目录下的 `.env` 文件（如果没有，复制一份 `.env.example` 并重命名为 `.env`）。
+---
 
-### 示例 1：使用通用第三方平台（兼容 OpenAI 格式，推荐）
+## 方式一：極簡單模型配置（適合新手）
 
-现在市面上绝大多数第三方聚合平台（例如硅基流动、AIHubmix、阿里百炼、智谱等）都兼容 OpenAI 的接口格式。只要平台提供了 API Key 和 Base URL，你都可以按照以下格式无脑配置：
+**目標：** 只要記得填入 API Key 和對應的模型名就能立刻用。不需要折騰複雜概念。
+
+如果你只打算用一種模型，這是最快捷的辦法。開啟專案根目錄下的 `.env` 檔案（如果沒有，複製一份 `.env.example` 並重新命名為 `.env`）。
+
+### 示例 1：使用通用第三方平臺（相容 OpenAI 格式，推薦）
+
+現在市面上絕大多數第三方聚合平臺（例如矽基流動、AIHubmix、阿里百鍊、智譜等）都相容 OpenAI 的介面格式。只要平臺提供了 API Key 和 Base URL，你都可以按照以下格式無腦配置：
 
 ```env
-# 填入平台提供给你的 API Key
+# 填入平臺提供給你的 API Key
 OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxx
-# 填入平台的接口地址 (非常重要：结尾通常必须带有 /v1)
+# 填入平臺的介面地址 (非常重要：結尾通常必須帶有 /v1)
 OPENAI_BASE_URL=https://api.siliconflow.cn/v1
-# 填入该平台上具体的模型名称（非常重要：注意前面必须加上 openai/ 前缀帮系统识别）
+# 填入該平臺上具體的模型名稱（非常重要：注意前面必須加上 openai/ 字首幫系統識別）
 LITELLM_MODEL=openai/deepseek-ai/DeepSeek-V3 
 ```
 
-### 示例 2：使用 DeepSeek 官方接口
+### 示例 2：使用 DeepSeek 官方介面
 ```env
-# 填入你在 DeepSeek 官方平台申请的 API Key
+# 填入你在 DeepSeek 官方平臺申請的 API Key
 DEEPSEEK_API_KEY=sk-xxxxxxxxxxxxxxxx
 ```
-*提示：仅需这一行，系统会自动识别并默认使用 DeepSeek 模型。*
+*提示：僅需這一行，系統會自動識別並預設使用 DeepSeek 模型。*
 
-### 示例 3：使用 Gemini 免费 API
+### 示例 3：使用 Gemini 免費 API
 ```env
-# 填入你获取的 Google Gemini Key
+# 填入你獲取的 Google Gemini Key
 GEMINI_API_KEY=AIzac...
 ```
 
-> **恭喜！小白读到这里就可以去运行程序了！**
-> 想测测看通没通？在主目录打开命令行输入：`python test_env.py --llm`
+> **恭喜！小白讀到這裡就可以去執行程式了！**
+> 想測測看通沒通？在主目錄開啟命令列輸入：`python test_env.py --llm`
 
 ---
 
-## 方式二：渠道(Channels)模式配置（适合进阶/多模型）
+## 方式二：渠道(Channels)模式配置（適合進階/多模型）
 
-**目标：** 我有多个不同平台的 Key 想要混着用，如果主模型卡了/网络挂了，我希望它能自动切换到备用模型。
+**目標：** 我有多個不同平臺的 Key 想要混著用，如果主模型卡了/網路掛了，我希望它能自動切換到備用模型。
 
-**网页端可以直接配：** 你可以启动程序后，在 **Web UI 的“系统设置 -> AI 模型 -> 渠道编辑器”** 中非常直观地进行可视化配置！
+**網頁端可以直接配：** 你可以啟動程式後，在 **Web UI 的“系統設定 -> AI 模型 -> 渠道編輯器”** 中非常直觀地進行視覺化配置！
 
-如果不方便用网页版，在 `.env` 文件中配置也非常丝滑，它能让你同时管理多个第三方平台。规则如下：
+如果不方便用網頁版，在 `.env` 檔案中配置也非常絲滑，它能讓你同時管理多個第三方平臺。規則如下：
 
-1. **先声明你有几个渠道**：`LLM_CHANNELS=渠道名称1,渠道名称2`
-2. **给每个渠道分别填写配置**（注意全大写）：`LLM_{渠道名}_XXX`
+1. **先宣告你有幾個渠道**：`LLM_CHANNELS=渠道名稱1,渠道名稱2`
+2. **給每個渠道分別填寫配置**（注意全大寫）：`LLM_{渠道名}_XXX`
 
-### 示例：同时配置 DeepSeek 和某中转平台，并设置备用切换
+### 示例：同時配置 DeepSeek 和某中轉平臺，並設定備用切換
 ```env
-# 1. 开启渠道模式，声明这里有两个渠道：deepseek 和 aihubmix
+# 1. 開啟渠道模式，宣告這裡有兩個渠道：deepseek 和 aihubmix
 LLM_CHANNELS=deepseek,aihubmix
 
 # 2. 渠道一：配置 DeepSeek 官方
@@ -73,35 +73,35 @@ LLM_DEEPSEEK_BASE_URL=https://api.deepseek.com/v1
 LLM_DEEPSEEK_API_KEY=sk-1111111111111
 LLM_DEEPSEEK_MODELS=deepseek-chat,deepseek-reasoner
 
-# 3. 渠道二：配置一个常用的聚合中转 API
+# 3. 渠道二：配置一個常用的聚合中轉 API
 LLM_AIHUBMIX_BASE_URL=https://api.aihubmix.com/v1
 LLM_AIHUBMIX_API_KEY=sk-2222222222222
 LLM_AIHUBMIX_MODELS=gpt-4o-mini,claude-3-5-sonnet
 
-# 4. 【关键】指定主模型和备用模型列表
-# 平时首选用 deepseek 这款模型：
+# 4. 【關鍵】指定主模型和備用模型列表
+# 平時首選用 deepseek 這款模型：
 LITELLM_MODEL=deepseek/deepseek-chat
-# 主模型崩了立刻挨个尝试下面这俩备用模型：
+# 主模型崩了立刻挨個嘗試下面這倆備用模型：
 LITELLM_FALLBACK_MODELS=openai/gpt-4o-mini,anthropic/claude-3-5-sonnet
 ```
 
-> **致命避坑说明**：如果你启用了 `LLM_CHANNELS`，那么你直接写在外面的 `DEEPSEEK_API_KEY` 或 `OPENAI_API_KEY` 将**全部失效（系统一律无视）**！二者**选其一即可**，千万不要既写了新手模式又写了渠道模式结果产生冲突。
+> **致命避坑說明**：如果你啟用了 `LLM_CHANNELS`，那麼你直接寫在外面的 `DEEPSEEK_API_KEY` 或 `OPENAI_API_KEY` 將**全部失效（系統一律無視）**！二者**選其一即可**，千萬不要既寫了新手模式又寫了渠道模式結果產生衝突。
 
 ---
 
-## 方式三：YAML 高级配置（适合老手自定义）
+## 方式三：YAML 高階配置（適合老手自定義）
 
-**目标：** 我不在乎学习门槛，我要最高控制权，我要用原生规则做企业级高可用！
+**目標：** 我不在乎學習門檻，我要最高控制權，我要用原生規則做企業級高可用！
 
-本项目完全放开了 LiteLLM 原生能力，支持高并发、自动重试、按 RPM/TPM 负载均衡等操作。
+本專案完全放開了 LiteLLM 原生能力，支援高併發、自動重試、按 RPM/TPM 負載均衡等操作。
 
-### 本地运行 / Docker 部署模式配置说明
+### 本地執行 / Docker 部署模式配置說明
 
-1. 在 `.env` 中只保留一行指向声明：
+1. 在 `.env` 中只保留一行指向宣告：
    ```env
    LITELLM_CONFIG=./litellm_config.yaml
    ```
-2. 在项目根目录创建一个 `litellm_config.yaml`（可以参考自带的 `litellm_config.example.yaml`）。
+2. 在專案根目錄建立一個 `litellm_config.yaml`（可以參考自帶的 `litellm_config.example.yaml`）。
 
 示例 `litellm_config.yaml`：
 ```yaml
@@ -110,62 +110,62 @@ model_list:
     litellm_params:
       model: openai/deepseek-chat
       api_base: https://api.deepseek.com/v1
-      api_key: "os.environ/MY_CUSTOM_SECRET_KEY"  # 从环境变量读取 Key，安全防泄漏
+      api_key: "os.environ/MY_CUSTOM_SECRET_KEY"  # 從環境變數讀取 Key，安全防洩漏
 ```
 
-### GitHub Actions配置说明
+### GitHub Actions配置說明
 
-1. `Settings` → `Secrets and variables` → `Actions` → `Secret`标签页下的`New repository secret` 或者 `Variables`标签页下的`New repository variable`
+1. `Settings` → `Secrets and variables` → `Actions` → `Secret`標籤頁下的`New repository secret` 或者 `Variables`標籤頁下的`New repository variable`
 
-2. 按下表配置，只有全部必填配置正确配置，YAML 高级配置模式才可以生效，YAML配置文件的写法，可以参考自带的 `litellm_config.example.yaml`
+2. 按下表配置，只有全部必填配置正確配置，YAML 高階配置模式才可以生效，YAML配置檔案的寫法，可以參考自帶的 `litellm_config.example.yaml`
 
-| Secret 名称 | 说明 | 必填 |
+| Secret 名稱 | 說明 | 必填 |
 |------------|------|:----:|
-| `LITELLM_CONFIG` | 配置文件路径，通常配置`./litellm_config.yaml` | 必填 |
-| `LITELLM_MODEL` | 模型名称 | 必填 |
-| `LITELLM_CONFIG_YAML` | 存放YAML配置文件，可以不用在存储库中提交文件 | 可选 |
-| `LITELLM_API_KEY` | 用于存储API Key，可在配置文件中引用（环境变量引用方式）。由于GitHub Actions必须要指定导入的环境变量，因此你不能像本地运行模式那样自由命名环境变量 | 可选，必须配置到repository secret中 |
-| `ANTHROPIC_API_KEY` | 如果要多个API Key，这个变量名称也能拿来用 | 可选，必须配置到repository secret中 |
-| `OPENAI_API_KEY` | 同上，可以用来存储API Key | 可选，必须配置到repository secret中 |
+| `LITELLM_CONFIG` | 配置檔案路徑，通常配置`./litellm_config.yaml` | 必填 |
+| `LITELLM_MODEL` | 模型名稱 | 必填 |
+| `LITELLM_CONFIG_YAML` | 存放YAML配置檔案，可以不用在儲存庫中提交檔案 | 可選 |
+| `LITELLM_API_KEY` | 用於儲存API Key，可在配置檔案中引用（環境變數引用方式）。由於GitHub Actions必須要指定匯入的環境變數，因此你不能像本地執行模式那樣自由命名環境變數 | 可選，必須配置到repository secret中 |
+| `ANTHROPIC_API_KEY` | 如果要多個API Key，這個變數名稱也能拿來用 | 可選，必須配置到repository secret中 |
+| `OPENAI_API_KEY` | 同上，可以用來儲存API Key | 可選，必須配置到repository secret中 |
 
 
-> **三层配置互斥准则**：YAML 优先级最高！只要配置了 YAML，**渠道模式** 和 **新手极简模式** 统统被忽略。系统优先级为：`YAML配置 > 渠道模式 > 极简单模型`。
+> **三層配置互斥準則**：YAML 優先順序最高！只要配置了 YAML，**渠道模式** 和 **新手極簡模式** 統統被忽略。系統優先順序為：`YAML配置 > 渠道模式 > 極簡單模型`。
 
 ---
 
-## 扩展功能：看图模型 (Vision) 配置
+## 擴充套件功能：看圖模型 (Vision) 配置
 
-系统中有些特定功能（比如上传股票软件截图，让 AI 提取出截图里的股票代码并放入自选股池）必须用到具备“视觉能力”的模型。你需在 `.env` 单独给它指派一个懂图片的模型。
+系統中有些特定功能（比如上傳股票軟體截圖，讓 AI 提取出截圖裡的股票程式碼並放入自選股池）必須用到具備“視覺能力”的模型。你需在 `.env` 單獨給它指派一個懂圖片的模型。
 
 ```env
-# 指定你看图专用的模型名
+# 指定你看圖專用的模型名
 VISION_MODEL=gemini/gemini-2.5-flash
-# 别忘了填写它对应提供商的 API KEY，如果是 gemini 就提供 GEMINI_API_KEY：
+# 別忘了填寫它對應提供商的 API KEY，如果是 gemini 就提供 GEMINI_API_KEY：
 # GEMINI_API_KEY=xxx
 ```
 
-**备用看图机制：** 为了防止偶尔罢工，系统内置了切换策略。如果主视觉模型调用失败，它会按照下方的顺位尝试寻找是否有其他看图模型的 Key：
+**備用看圖機制：** 為了防止偶爾罷工，系統內建了切換策略。如果主視覺模型呼叫失敗，它會按照下方的順位嘗試尋找是否有其他看圖模型的 Key：
 ```env
-# 默认的备用顺序：
+# 預設的備用順序：
 VISION_PROVIDER_PRIORITY=gemini,anthropic,openai
 ```
 
 ---
 
-## 检测与排错 (Troubleshooting)
+## 檢測與排錯 (Troubleshooting)
 
-配好了之后心惊胆战不知道对不对？在命令行（Terminal）里敲入下面代码帮你挂号问诊：
+配好了之後心驚膽戰不知道對不對？在命令列（Terminal）裡敲入下面程式碼幫你掛號問診：
 
-- `python test_env.py --config` ：纯检测 `.env` 配置文件里的逻辑写得对不对，是不是少写了什么。（秒出结果，不调用网络，纯检查本地文本拼写）
-- `python test_env.py --llm` ：系统会真的发一句问候语给大模型，让你亲眼看到他的回答。这能彻底测出你的**网络通不通、账号有没有欠费**。
+- `python test_env.py --config` ：純檢測 `.env` 配置檔案裡的邏輯寫得對不對，是不是少寫了什麼。（秒出結果，不呼叫網路，純檢查本地文字拼寫）
+- `python test_env.py --llm` ：系統會真的發一句問候語給大模型，讓你親眼看到他的回答。這能徹底測出你的**網路通不通、賬號有沒有欠費**。
 
-### 常见踩坑答疑台
+### 常見踩坑答疑臺
 
-| 遇到了什么诡异报错？ | 罪魁祸首可能是啥？ | 该怎么收拾它？ |
+| 遇到了什麼詭異報錯？ | 罪魁禍首可能是啥？ | 該怎麼收拾它？ |
 |----------------------|----------------------|------------------|
-| **屏幕蹦出一句 LLM_MODEL 未配置** | 系统不知道你到底想用哪家的哪个模型 | 在 `.env` 中写上一句明白话：`LITELLM_MODEL=provider/你的模型名`。比如 `openai/gpt-4o-mini` |
-| **我写了好几家的Key，为什么死活只有一个生效？修改还没用？** | 你把 **极简模式** 和 **渠道模式** 混着写了！ | 想好一条路走到黑——只要简单就删掉 `LLM_CHANNELS` 开头的；想要丰富备用切换就要全部转投到 `LLM_CHANNELS` 下的编制里。 |
-| **错误码报 400 或 401 或 Invalid API Key** | API Key 填错、少复制了一截、账号充值没到账、或者模型名字敲错（极度常见）。 | 1. 检查复制的 Key 前后是否有误填空格。<br> 2. 检查 Base URL 最后是不是少了一个 `/v1`。<br> 3. 检查模型名是否少写了 `openai/` 之类的前缀！ |
-| **转圈转不停，最后报 Timeout / ConnectionRefused 等** | 1. 在国内使用国外原版（像 Google、OpenAI），没开代理被墙了。<br>2. 你买的云服务器压根不能出境。 | 非常推荐使用**国内官方**（如DeepSeek、阿里）或者各种**兼容 OpenAI 的聚合中转接口**。因为中转站把网络问题帮你解决好了。 |
+| **螢幕蹦出一句 LLM_MODEL 未配置** | 系統不知道你到底想用哪家的哪個模型 | 在 `.env` 中寫上一句明白話：`LITELLM_MODEL=provider/你的模型名`。比如 `openai/gpt-4o-mini` |
+| **我寫了好幾家的Key，為什麼死活只有一個生效？修改還沒用？** | 你把 **極簡模式** 和 **渠道模式** 混著寫了！ | 想好一條路走到黑——只要簡單就刪掉 `LLM_CHANNELS` 開頭的；想要豐富備用切換就要全部轉投到 `LLM_CHANNELS` 下的編制裡。 |
+| **錯誤碼報 400 或 401 或 Invalid API Key** | API Key 填錯、少複製了一截、賬號充值沒到賬、或者模型名字敲錯（極度常見）。 | 1. 檢查複製的 Key 前後是否有誤填空格。<br> 2. 檢查 Base URL 最後是不是少了一個 `/v1`。<br> 3. 檢查模型名是否少寫了 `openai/` 之類的字首！ |
+| **轉圈轉不停，最後報 Timeout / ConnectionRefused 等** | 1. 在國內使用國外原版（像 Google、OpenAI），沒開代理被牆了。<br>2. 你買的雲伺服器壓根不能出境。 | 非常推薦使用**國內官方**（如DeepSeek、阿里）或者各種**相容 OpenAI 的聚合中轉介面**。因為中轉站把網路問題幫你解決好了。 |
 
-*进阶老手的叮嘱：如果你开启了 **Agent (深度思考网络搜索问股) 模式**，这里有个经验之谈，推荐选用如 `deepseek-reasoner` 这种自带强悍逻辑推导和思考机制的大模型。如果为了省钱用小微模型跑 Agent，它逻辑能力大概率跟不上，不仅达不到预期，还会白跑一堆空流程。*
+*進階老手的叮囑：如果你開啟了 **Agent (深度思考網路搜尋問股) 模式**，這裡有個經驗之談，推薦選用如 `deepseek-reasoner` 這種自帶強悍邏輯推導和思考機制的大模型。如果為了省錢用小微模型跑 Agent，它邏輯能力大機率跟不上，不僅達不到預期，還會白跑一堆空流程。*

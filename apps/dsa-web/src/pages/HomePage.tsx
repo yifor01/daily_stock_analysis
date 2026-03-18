@@ -28,7 +28,7 @@ const HomePage: React.FC = () => {
 
   // Set page title
   useEffect(() => {
-    document.title = '每日选股分析 - DSA';
+    document.title = '每日選股分析 - DSA';
   }, []);
 
   // Input state
@@ -99,7 +99,7 @@ const HomePage: React.FC = () => {
     onTaskFailed: (task) => {
       updateTask(task);
       // Show error prompt
-      setStoreError(getParsedApiError(task.error || '分析失败'));
+      setStoreError(getParsedApiError(task.error || '分析失敗'));
       // Delay removal of task
       setTimeout(() => removeTask(task.taskId), 5000);
     },
@@ -369,7 +369,7 @@ const HomePage: React.FC = () => {
       if (currentRequestId === analysisRequestIdRef.current) {
         if (err instanceof DuplicateTaskError) {
           // Show duplicate task error
-          setDuplicateError(`股票 ${err.stockCode} 正在分析中，请等待完成`);
+          setDuplicateError(`股票 ${err.stockCode} 正在分析中，請等待完成`);
         } else {
           setStoreError(getParsedApiError(err));
         }
@@ -422,7 +422,7 @@ const HomePage: React.FC = () => {
           <button
             onClick={() => setSidebarOpen(true)}
             className="md:hidden p-1.5 -ml-1 rounded-lg hover:bg-hover transition-colors text-secondary-text hover:text-foreground flex-shrink-0"
-            title="历史记录"
+            title="歷史記錄"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
@@ -437,7 +437,7 @@ const HomePage: React.FC = () => {
                 setInputError(undefined);
               }}
               onKeyDown={handleKeyDown}
-              placeholder="输入股票代码，如 600519、00700、AAPL"
+              placeholder="輸入股票程式碼，如 600519、00700、AAPL"
               disabled={isAnalyzing}
               className={`input-terminal w-full ${inputError ? 'border-danger/50' : ''}`}
             />
@@ -498,7 +498,7 @@ const HomePage: React.FC = () => {
         {isLoadingReport ? (
           <div className="flex flex-col items-center justify-center h-full">
             <div className="h-10 w-10 animate-spin rounded-full border-3 border-[var(--home-loading-ring-track)] border-t-[var(--home-loading-ring-head)]" />
-            <p className="mt-3 text-secondary-text text-sm">加载报告中...</p>
+            <p className="mt-3 text-secondary-text text-sm">載入報告中...</p>
           </div>
         ) : selectedReport ? (
           <div className="max-w-[980px] pb-8">
@@ -517,7 +517,7 @@ const HomePage: React.FC = () => {
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                 </svg>
-                追问 AI
+                追問 AI
               </button>
               <button
                 disabled={selectedReport.meta.id === undefined}
@@ -527,7 +527,7 @@ const HomePage: React.FC = () => {
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
-                详细报告
+                詳細報告
               </button>
             </div>
             <ReportSummary data={selectedReport} isHistory />
@@ -539,9 +539,9 @@ const HomePage: React.FC = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
               </svg>
             </div>
-            <h3 className="text-base font-medium text-foreground mb-1.5">开始分析</h3>
+            <h3 className="text-base font-medium text-foreground mb-1.5">開始分析</h3>
             <p className="text-xs text-muted-text max-w-xs">
-              输入股票代码进行分析，或从左侧选择历史报告查看
+              輸入股票程式碼進行分析，或從左側選擇歷史報告檢視
             </p>
           </div>
         )}
@@ -560,13 +560,13 @@ const HomePage: React.FC = () => {
       {/* Delete Confirmation Dialog */}
       <ConfirmDialog
         isOpen={showDeleteConfirm}
-        title="删除历史记录"
+        title="刪除歷史記錄"
         message={
           selectedHistoryIds.length === 1
-            ? '确认删除这条历史记录吗？删除后将不可恢复。'
-            : `确认删除选中的 ${selectedHistoryIds.length} 条历史记录吗？删除后将不可恢复。`
+            ? '確認刪除這條歷史記錄嗎？刪除後將不可恢復。'
+            : `確認刪除選中的 ${selectedHistoryIds.length} 條歷史記錄嗎？刪除後將不可恢復。`
         }
-        confirmText={isDeletingHistory ? '删除中...' : '确认删除'}
+        confirmText={isDeletingHistory ? '刪除中...' : '確認刪除'}
         cancelText="取消"
         isDanger={true}
         onConfirm={handleDeleteSelectedHistory}

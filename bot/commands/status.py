@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
 ===================================
-状态命令
+狀態命令
 ===================================
 
-显示系统运行状态和配置信息。
+顯示系統執行狀態和配置資訊。
 """
 
 import platform
@@ -18,11 +18,11 @@ from bot.models import BotMessage, BotResponse
 
 class StatusCommand(BotCommand):
     """
-    状态命令
+    狀態命令
     
-    显示系统运行状态，包括：
-    - 服务状态
-    - 配置信息
+    顯示系統執行狀態，包括：
+    - 服務狀態
+    - 配置資訊
     - 可用功能
     """
     
@@ -32,45 +32,45 @@ class StatusCommand(BotCommand):
     
     @property
     def aliases(self) -> List[str]:
-        return ["s", "状态", "info"]
+        return ["s", "狀態", "info"]
     
     @property
     def description(self) -> str:
-        return "显示系统状态"
+        return "顯示系統狀態"
     
     @property
     def usage(self) -> str:
         return "/status"
     
     def execute(self, message: BotMessage, args: List[str]) -> BotResponse:
-        """执行状态命令"""
+        """執行狀態命令"""
         from src.config import get_config
         
         config = get_config()
         
-        # 收集状态信息
+        # 收集狀態資訊
         status_info = self._collect_status(config)
         
-        # 格式化输出
+        # 格式化輸出
         text = self._format_status(status_info, message.platform)
         
         return BotResponse.markdown_response(text)
     
     def _collect_status(self, config) -> dict:
-        """收集系统状态信息"""
+        """收集系統狀態資訊"""
         status = {
             "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "python_version": f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}",
             "platform": platform.system(),
             "stock_count": len(config.stock_list),
-            "stock_list": config.stock_list[:5],  # 只显示前5个
+            "stock_list": config.stock_list[:5],  # 只顯示前5個
         }
         
-        # AI 配置状态
+        # AI 配置狀態
         status["ai_gemini"] = bool(config.gemini_api_key)
         status["ai_openai"] = bool(config.openai_api_key)
         
-        # 搜索服务状态
+        # 搜尋服務狀態
         status["search_bocha"] = len(config.bocha_api_keys) > 0
         status["search_tavily"] = len(config.tavily_api_keys) > 0
         status["search_brave"] = len(config.brave_api_keys) > 0
@@ -78,7 +78,7 @@ class StatusCommand(BotCommand):
         status["search_minimax"] = len(config.minimax_api_keys) > 0
         status["search_searxng"] = len(config.searxng_base_urls) > 0
         
-        # 通知渠道状态
+        # 通知渠道狀態
         status["notify_wechat"] = bool(config.wechat_webhook_url)
         status["notify_feishu"] = bool(config.feishu_webhook_url)
         status["notify_telegram"] = bool(config.telegram_bot_token and config.telegram_chat_id)
@@ -87,22 +87,22 @@ class StatusCommand(BotCommand):
         return status
     
     def _format_status(self, status: dict, platform: str) -> str:
-        """格式化状态信息"""
-        # 状态图标
+        """格式化狀態資訊"""
+        # 狀態圖示
         def icon(enabled: bool) -> str:
             return "✅" if enabled else "❌"
         
         lines = [
-            "📊 **股票分析助手 - 系统状态**",
+            "📊 **股票分析助手 - 系統狀態**",
             "",
-            f"🕐 时间: {status['timestamp']}",
+            f"🕐 時間: {status['timestamp']}",
             f"🐍 Python: {status['python_version']}",
-            f"💻 平台: {status['platform']}",
+            f"💻 平臺: {status['platform']}",
             "",
             "---",
             "",
-            "**📈 自选股配置**",
-            f"• 股票数量: {status['stock_count']} 只",
+            "**📈 自選股配置**",
+            f"• 股票數量: {status['stock_count']} 只",
         ]
         
         if status['stock_list']:
@@ -113,11 +113,11 @@ class StatusCommand(BotCommand):
         
         lines.extend([
             "",
-            "**🤖 AI 分析服务**",
+            "**🤖 AI 分析服務**",
             f"• Gemini API: {icon(status['ai_gemini'])}",
             f"• OpenAI API: {icon(status['ai_openai'])}",
             "",
-            "**🔍 搜索服务**",
+            "**🔍 搜尋服務**",
             f"• Bocha: {icon(status['search_bocha'])}",
             f"• Tavily: {icon(status['search_tavily'])}",
             f"• Brave: {icon(status['search_brave'])}",
@@ -126,26 +126,26 @@ class StatusCommand(BotCommand):
             f"• SearXNG: {icon(status['search_searxng'])}",
             "",
             "**📢 通知渠道**",
-            f"• 企业微信: {icon(status['notify_wechat'])}",
-            f"• 飞书: {icon(status['notify_feishu'])}",
+            f"• 企業微信: {icon(status['notify_wechat'])}",
+            f"• 飛書: {icon(status['notify_feishu'])}",
             f"• Telegram: {icon(status['notify_telegram'])}",
-            f"• 邮件: {icon(status['notify_email'])}",
+            f"• 郵件: {icon(status['notify_email'])}",
         ])
         
-        # AI 服务总体状态
+        # AI 服務總體狀態
         ai_available = status['ai_gemini'] or status['ai_openai']
         if ai_available:
             lines.extend([
                 "",
                 "---",
-                "✅ **系统就绪，可以开始分析！**",
+                "✅ **系統就緒，可以開始分析！**",
             ])
         else:
             lines.extend([
                 "",
                 "---",
-                "⚠️ **AI 服务未配置，分析功能不可用**",
-                "请配置 Gemini 或 OpenAI API Key",
+                "⚠️ **AI 服務未配置，分析功能不可用**",
+                "請配置 Gemini 或 OpenAI API Key",
             ])
         
         return "\n".join(lines)

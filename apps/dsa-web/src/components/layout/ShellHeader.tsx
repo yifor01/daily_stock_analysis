@@ -10,10 +10,10 @@ type ShellHeaderProps = {
 };
 
 const TITLES: Record<string, { title: string; description: string }> = {
-  '/': { title: '首页', description: '股票分析与历史报告工作台' },
-  '/chat': { title: '问股', description: '多轮策略问答与历史会话管理' },
-  '/backtest': { title: '回测', description: '回测任务与结果浏览' },
-  '/settings': { title: '设置', description: '系统配置、模型与认证管理' },
+  '/': { title: '首頁', description: '股票分析與歷史報告工作臺' },
+  '/chat': { title: '問股', description: '多輪策略問答與歷史會話管理' },
+  '/backtest': { title: '回測', description: '回測任務與結果瀏覽' },
+  '/settings': { title: '設定', description: '系統配置、模型與認證管理' },
 };
 
 export const ShellHeader: React.FC<ShellHeaderProps> = ({
@@ -31,7 +31,7 @@ export const ShellHeader: React.FC<ShellHeaderProps> = ({
           type="button"
           onClick={onOpenMobileNav}
           className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-border/70 bg-card/70 text-secondary-text transition-colors hover:bg-hover hover:text-foreground lg:hidden"
-          aria-label="打开导航菜单"
+          aria-label="開啟導航選單"
         >
           <Menu className="h-5 w-5" />
         </button>
@@ -40,7 +40,7 @@ export const ShellHeader: React.FC<ShellHeaderProps> = ({
           type="button"
           onClick={onToggleSidebar}
           className="hidden h-10 w-10 items-center justify-center rounded-xl border border-border/70 bg-card/70 text-secondary-text transition-colors hover:bg-hover hover:text-foreground lg:inline-flex"
-          aria-label={collapsed ? '展开侧边栏' : '折叠侧边栏'}
+          aria-label={collapsed ? '展開側邊欄' : '摺疊側邊欄'}
         >
           {collapsed ? <PanelLeftOpen className="h-5 w-5" /> : <PanelLeftClose className="h-5 w-5" />}
         </button>

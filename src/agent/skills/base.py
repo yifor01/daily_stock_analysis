@@ -4,7 +4,7 @@ Strategy (Skill) base classes and SkillManager.
 
 Strategies are pluggable trading analysis modules defined in **natural language**
 (YAML files). Each strategy describes a common or custom trading pattern
-(e.g., 龙头策略, 缩量回踩, 均线金叉) used for analysis and push notifications.
+(e.g., 龍頭策略, 縮量回踩, 均線金叉) used for analysis and push notifications.
 
 Users can write custom strategies by creating a YAML file — no Python code needed.
 See ``strategies/README.md`` for the format specification.
@@ -32,10 +32,10 @@ class Skill:
 
     Attributes:
         name: Unique strategy identifier (e.g., "dragon_head").
-        display_name: Human-readable name (e.g., "龙头策略").
+        display_name: Human-readable name (e.g., "龍頭策略").
         description: Brief description of when to apply this strategy.
         instructions: Detailed natural language instructions injected into the system prompt.
-        category: Strategy category — "trend" (趋势), "pattern" (形态), "reversal" (反转), "framework" (框架).
+        category: Strategy category — "trend" (趨勢), "pattern" (形態), "reversal" (反轉), "framework" (框架).
         core_rules: List of core trading rule numbers this strategy relates to (1-7).
         required_tools: List of tool names this strategy depends on.
         enabled: Whether this strategy is currently active.
@@ -254,7 +254,7 @@ class SkillManager:
             return ""
 
         # Group by category
-        categories = {"trend": "趋势", "pattern": "形态", "reversal": "反转", "framework": "框架"}
+        categories = {"trend": "趨勢", "pattern": "形態", "reversal": "反轉", "framework": "框架"}
         grouped: Dict[str, List[Skill]] = {}
         for skill in active:
             cat = skill.category or "trend"
@@ -269,14 +269,14 @@ class SkillManager:
             if not skills_in_cat:
                 continue
             cat_label = categories.get(cat_key, cat_key)
-            parts.append(f"#### {cat_label}类策略\n")
+            parts.append(f"#### {cat_label}類策略\n")
             for skill in skills_in_cat:
                 rules_ref = ""
                 if skill.core_rules:
-                    rules_ref = f"（关联核心理念：第{'、'.join(str(r) for r in skill.core_rules)}条）"
+                    rules_ref = f"（關聯核心理念：第{'、'.join(str(r) for r in skill.core_rules)}條）"
                 parts.append(
                     f"### 策略 {idx}: {skill.display_name} {rules_ref}\n\n"
-                    f"**适用场景**: {skill.description}\n\n"
+                    f"**適用場景**: {skill.description}\n\n"
                     f"{skill.instructions}\n"
                 )
                 idx += 1

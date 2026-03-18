@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 """
 ===================================
-通用响应模型
+通用響應模型
 ===================================
 
-职责：
-1. 定义通用的响应模型（HealthResponse, ErrorResponse 等）
-2. 提供统一的响应格式
+職責：
+1. 定義通用的響應模型（HealthResponse, ErrorResponse 等）
+2. 提供統一的響應格式
 """
 
 from typing import Optional, Any
@@ -15,9 +15,9 @@ from pydantic import BaseModel, Field
 
 
 class RootResponse(BaseModel):
-    """API 根路由响应"""
+    """API 根路由響應"""
     
-    message: str = Field(..., description="API 运行状态消息", example="Daily Stock Analysis API is running")
+    message: str = Field(..., description="API 執行狀態訊息", example="Daily Stock Analysis API is running")
     version: Optional[str] = Field(None, description="API 版本", example="1.0.0")
     
     class Config:
@@ -30,10 +30,10 @@ class RootResponse(BaseModel):
 
 
 class HealthResponse(BaseModel):
-    """健康检查响应"""
+    """健康檢查響應"""
     
-    status: str = Field(..., description="服务状态", example="ok")
-    timestamp: Optional[str] = Field(None, description="时间戳")
+    status: str = Field(..., description="服務狀態", example="ok")
+    timestamp: Optional[str] = Field(None, description="時間戳")
     
     class Config:
         json_schema_extra = {
@@ -45,28 +45,28 @@ class HealthResponse(BaseModel):
 
 
 class ErrorResponse(BaseModel):
-    """错误响应"""
+    """錯誤響應"""
     
-    error: str = Field(..., description="错误类型", example="validation_error")
-    message: str = Field(..., description="错误详情", example="请求参数错误")
-    detail: Optional[Any] = Field(None, description="附加错误信息")
+    error: str = Field(..., description="錯誤型別", example="validation_error")
+    message: str = Field(..., description="錯誤詳情", example="請求引數錯誤")
+    detail: Optional[Any] = Field(None, description="附加錯誤資訊")
     
     class Config:
         json_schema_extra = {
             "example": {
                 "error": "not_found",
-                "message": "资源不存在",
+                "message": "資源不存在",
                 "detail": None
             }
         }
 
 
 class SuccessResponse(BaseModel):
-    """通用成功响应"""
+    """通用成功響應"""
     
     success: bool = Field(True, description="是否成功")
-    message: Optional[str] = Field(None, description="成功消息")
-    data: Optional[Any] = Field(None, description="响应数据")
+    message: Optional[str] = Field(None, description="成功訊息")
+    data: Optional[Any] = Field(None, description="響應資料")
     
     class Config:
         json_schema_extra = {

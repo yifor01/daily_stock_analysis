@@ -18,19 +18,19 @@ from src.services.agent_model_service import list_agent_model_deployments
 
 # Tool name -> Chinese display name mapping
 TOOL_DISPLAY_NAMES: Dict[str, str] = {
-    "get_realtime_quote":         "获取实时行情",
-    "get_daily_history":          "获取历史K线",
-    "get_chip_distribution":      "分析筹码分布",
-    "get_analysis_context":       "获取分析上下文",
-    "get_stock_info":             "获取股票基本面",
-    "search_stock_news":          "搜索股票新闻",
-    "search_comprehensive_intel": "搜索综合情报",
-    "analyze_trend":              "分析技术趋势",
-    "calculate_ma":               "计算均线系统",
-    "get_volume_analysis":        "分析量能变化",
-    "analyze_pattern":            "识别K线形态",
-    "get_market_indices":         "获取市场指数",
-    "get_sector_rankings":        "分析行业板块",
+    "get_realtime_quote":         "獲取實時行情",
+    "get_daily_history":          "獲取歷史K線",
+    "get_chip_distribution":      "分析籌碼分佈",
+    "get_analysis_context":       "獲取分析上下文",
+    "get_stock_info":             "獲取股票基本面",
+    "search_stock_news":          "搜尋股票新聞",
+    "search_comprehensive_intel": "搜尋綜合情報",
+    "analyze_trend":              "分析技術趨勢",
+    "calculate_ma":               "計算均線系統",
+    "get_volume_analysis":        "分析量能變化",
+    "analyze_pattern":            "識別K線形態",
+    "get_market_indices":         "獲取市場指數",
+    "get_sector_rankings":        "分析行業板塊",
 }
 
 logger = logging.getLogger(__name__)
@@ -164,7 +164,7 @@ class SessionMessagesResponse(BaseModel):
 
 @router.get("/chat/sessions", response_model=SessionsResponse)
 async def list_chat_sessions(limit: int = 50, user_id: Optional[str] = None):
-    """获取聊天会话列表
+    """獲取聊天會話列表
 
     Args:
         limit: Maximum number of sessions to return.
@@ -185,7 +185,7 @@ async def list_chat_sessions(limit: int = 50, user_id: Optional[str] = None):
 
 @router.get("/chat/sessions/{session_id}", response_model=SessionMessagesResponse)
 async def get_chat_session_messages(session_id: str, limit: int = 100):
-    """获取单个会话的完整消息"""
+    """獲取單個會話的完整訊息"""
     from src.storage import get_db
     messages = get_db().get_conversation_messages(session_id, limit=limit)
     return SessionMessagesResponse(session_id=session_id, messages=messages)
@@ -193,7 +193,7 @@ async def get_chat_session_messages(session_id: str, limit: int = 100):
 
 @router.delete("/chat/sessions/{session_id}")
 async def delete_chat_session(session_id: str):
-    """删除指定会话"""
+    """刪除指定會話"""
     from src.storage import get_db
     count = get_db().delete_conversation_session(session_id)
     return {"deleted": count}
@@ -223,7 +223,7 @@ async def send_chat_to_notification(request: SendChatRequest):
         return {
             "success": False,
             "error": "no_channels",
-            "message": "未配置通知渠道，请先在设置中配置",
+            "message": "未配置通知渠道，請先在設定中配置",
         }
     return {"success": True}
 
@@ -303,7 +303,7 @@ async def agent_chat_stream(request: ChatRequest):
                 try:
                     event = await asyncio.wait_for(queue.get(), timeout=300.0)
                 except asyncio.TimeoutError:
-                    yield "data: " + json.dumps({"type": "error", "message": "分析超时"}, ensure_ascii=False) + "\n\n"
+                    yield "data: " + json.dumps({"type": "error", "message": "分析超時"}, ensure_ascii=False) + "\n\n"
                     break
                 yield "data: " + json.dumps(event, ensure_ascii=False) + "\n\n"
                 if event.get("type") in ("done", "error"):

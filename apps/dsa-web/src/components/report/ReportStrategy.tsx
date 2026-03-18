@@ -27,7 +27,7 @@ const StrategyItem: React.FC<StrategyItemProps> = ({
         {value || '—'}
       </span>
     </div>
-    {/* 底部指示条 */}
+    {/* 底部指示條 */}
     <div
       className="absolute bottom-0 left-0 right-0 h-0.5"
       style={{ background: `linear-gradient(90deg, ${color}00, ${color}, ${color}00)` }}
@@ -36,7 +36,7 @@ const StrategyItem: React.FC<StrategyItemProps> = ({
 );
 
 /**
- * 策略点位区组件 - 终端风格
+ * 策略點位區元件 - 終端風格
  */
 export const ReportStrategy: React.FC<ReportStrategyProps> = ({ strategy }) => {
   if (!strategy) {
@@ -45,22 +45,22 @@ export const ReportStrategy: React.FC<ReportStrategyProps> = ({ strategy }) => {
 
   const strategyItems = [
     {
-      label: '理想买入',
+      label: '理想買入',
       value: strategy.idealBuy,
       color: '#00ff88', // success
     },
     {
-      label: '二次买入',
+      label: '二次買入',
       value: strategy.secondaryBuy,
       color: '#00d4ff', // cyan
     },
     {
-      label: '止损价位',
+      label: '止損價位',
       value: strategy.stopLoss,
       color: '#ff4466', // danger
     },
     {
-      label: '止盈目标',
+      label: '止盈目標',
       value: strategy.takeProfit,
       color: '#ffaa00', // warning
     },
@@ -70,7 +70,7 @@ export const ReportStrategy: React.FC<ReportStrategyProps> = ({ strategy }) => {
     <Card variant="bordered" padding="md">
       <div className="mb-3 flex items-baseline gap-2">
         <span className="label-uppercase">STRATEGY POINTS</span>
-        <h3 className="text-base font-semibold text-white">狙击点位</h3>
+        <h3 className="text-base font-semibold text-white">狙擊點位</h3>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {strategyItems.map((item) => (

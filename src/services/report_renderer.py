@@ -24,30 +24,30 @@ def _get_signal_level(result: AnalysisResult) -> tuple:
     advice = result.operation_advice
     score = result.sentiment_score
     advice_map = {
-        "强烈买入": ("强烈买入", "💚", "强买"),
-        "买入": ("买入", "🟢", "买入"),
-        "加仓": ("买入", "🟢", "买入"),
+        "強烈買入": ("強烈買入", "💚", "強買"),
+        "買入": ("買入", "🟢", "買入"),
+        "加倉": ("買入", "🟢", "買入"),
         "持有": ("持有", "🟡", "持有"),
-        "观望": ("观望", "⚪", "观望"),
-        "减仓": ("减仓", "🟠", "减仓"),
-        "卖出": ("卖出", "🔴", "卖出"),
-        "强烈卖出": ("卖出", "🔴", "卖出"),
+        "觀望": ("觀望", "⚪", "觀望"),
+        "減倉": ("減倉", "🟠", "減倉"),
+        "賣出": ("賣出", "🔴", "賣出"),
+        "強烈賣出": ("賣出", "🔴", "賣出"),
     }
     if advice in advice_map:
         return advice_map[advice]
     if score >= 80:
-        return ("强烈买入", "💚", "强买")
+        return ("強烈買入", "💚", "強買")
     elif score >= 65:
-        return ("买入", "🟢", "买入")
+        return ("買入", "🟢", "買入")
     elif score >= 55:
         return ("持有", "🟡", "持有")
     elif score >= 45:
-        return ("观望", "⚪", "观望")
+        return ("觀望", "⚪", "觀望")
     elif score >= 35:
-        return ("减仓", "🟠", "减仓")
+        return ("減倉", "🟠", "減倉")
     elif score < 35:
-        return ("卖出", "🔴", "卖出")
-    return ("观望", "⚪", "观望")
+        return ("賣出", "🔴", "賣出")
+    return ("觀望", "⚪", "觀望")
 
 
 def _escape_md(text: str) -> str:
@@ -67,8 +67,8 @@ def _clean_sniper_value(val: Any) -> str:
     if not s or s == "N/A":
         return s or "N/A"
     prefixes = [
-        "理想买入点：", "次优买入点：", "止损位：", "目标位：",
-        "理想买入点:", "次优买入点:", "止损位:", "目标位:",
+        "理想買入點：", "次優買入點：", "止損位：", "目標位：",
+        "理想買入點:", "次優買入點:", "止損位:", "目標位:",
     ]
     for prefix in prefixes:
         if s.startswith(prefix):

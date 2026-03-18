@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 """
 ===================================
-A股自选股智能分析系统 - 通知服务单元测试
+A股自選股智慧分析系統 - 通知服務單元測試
 ===================================
 
-职责：
-1. 验证通知服务的配置检测逻辑
-2. 验证通知服务的渠道检测逻辑
-3. 验证通知服务的消息发送逻辑
+職責：
+1. 驗證通知服務的配置檢測邏輯
+2. 驗證通知服務的渠道檢測邏輯
+3. 驗證通知服務的訊息傳送邏輯
 
 TODO: 
-1. 添加发送渠道以外的测试，如：
-    - 生成日报
-2. 添加 send_to_context 的测试
+1. 新增傳送渠道以外的測試，如：
+    - 生成日報
+2. 新增 send_to_context 的測試
 """
 import os
 import sys
@@ -49,31 +49,31 @@ def _make_response(status_code: int, json: Optional[dict] = None) -> requests.Re
 
 
 class TestNotificationServiceSendToMethods(unittest.TestCase):
-    """测试通知发送服务
+    """測試通知傳送服務
 
-    测试设计：
+    測試設計：
 
-    测试按照渠道的字母顺序排列，在合适位置添加新的测试方法。
-    如果采用长消息分批发送，必须单独测试分批发送的逻辑，
+    測試按照渠道的字母順序排列，在合適位置新增新的測試方法。
+    如果採用長訊息分批傳送，必須單獨測試分批傳送的邏輯，
         e.g. test_send_to_discord_via_notification_service_with_bot_requires_chunking
 
-    1. 添加模拟配置：
-    使用 mock.patch 装饰器来模拟 get_config 函数，
-    使用 _make_config 函数添加配置，并返回 Config 实例。
+    1. 新增模擬配置：
+    使用 mock.patch 裝飾器來模擬 get_config 函式，
+    使用 _make_config 函式新增配置，並返回 Config 例項。
 
-    2. 检查配置是否正确：
-    使用 assertIn 检查 NotificationChannel.xxxx 是否在
+    2. 檢查配置是否正確：
+    使用 assertIn 檢查 NotificationChannel.xxxx 是否在
     `NotificationService.get_available_channels()` 返回值中。
 
-    3. 模拟请求响应：
-    使用 mock.patch 装饰器来模拟 requests.post 函数，
-    使用 _make_response 函数模拟请求响应，并返回 Response 实例。
-    若使用其他函数模拟请求响应，则使用 mock.patch 装饰器来模拟该函数。
+    3. 模擬請求響應：
+    使用 mock.patch 裝飾器來模擬 requests.post 函式，
+    使用 _make_response 函式模擬請求響應，並返回 Response 例項。
+    若使用其他函式模擬請求響應，則使用 mock.patch 裝飾器來模擬該函式。
 
-    4. 使用 assertTrue 检查 send 的返回值。
+    4. 使用 assertTrue 檢查 send 的返回值。
 
-    5. 使用 assert_called_once 检查请求函数是否被调用一次。
-    测试分批发送时，使用 assertAlmostEqual(mock_post.call_count, ...) 检查请求函数被调用次数
+    5. 使用 assert_called_once 檢查請求函式是否被呼叫一次。
+    測試分批傳送時，使用 assertAlmostEqual(mock_post.call_count, ...) 檢查請求函式被呼叫次數
 
     """
 
@@ -174,7 +174,7 @@ class TestNotificationServiceSendToMethods(unittest.TestCase):
 
 
 class TestNotificationServiceReportGeneration(unittest.TestCase):
-    """报告生成与选路相关测试。"""
+    """報告生成與選路相關測試。"""
 
     @mock.patch("src.notification.get_config")
     def test_generate_aggregate_report_routes_by_report_type(self, mock_get_config: mock.MagicMock):
@@ -182,11 +182,11 @@ class TestNotificationServiceReportGeneration(unittest.TestCase):
         service = NotificationService()
         result = AnalysisResult(
             code="600519",
-            name="贵州茅台",
+            name="貴州茅臺",
             sentiment_score=72,
             trend_prediction="看多",
             operation_advice="持有",
-            analysis_summary="稳健",
+            analysis_summary="穩健",
         )
 
         with mock.patch.object(service, "generate_dashboard_report", return_value="dashboard") as mock_dashboard, mock.patch.object(
@@ -206,18 +206,18 @@ class TestNotificationServiceReportGeneration(unittest.TestCase):
         service = NotificationService()
         result = AnalysisResult(
             code="600519",
-            name="贵州茅台",
+            name="貴州茅臺",
             sentiment_score=72,
             trend_prediction="看多",
             operation_advice="持有",
-            analysis_summary="稳健",
+            analysis_summary="穩健",
         )
 
         with mock.patch("src.services.report_renderer.render") as mock_render:
             out = service.generate_single_stock_report(result)
 
         mock_render.assert_not_called()
-        self.assertIn("贵州茅台", out)
+        self.assertIn("貴州茅臺", out)
         self.assertIn("600519", out)
 
     @mock.patch("src.notification.get_config")
@@ -226,11 +226,11 @@ class TestNotificationServiceReportGeneration(unittest.TestCase):
         service = NotificationService()
         result = AnalysisResult(
             code="600519",
-            name="贵州茅台",
+            name="貴州茅臺",
             sentiment_score=72,
             trend_prediction="看多",
             operation_advice="持有",
-            analysis_summary="稳健",
+            analysis_summary="穩健",
             query_id="q-1",
         )
 

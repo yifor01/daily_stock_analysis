@@ -1,9 +1,9 @@
-# Shrink Volume Pullback Strategy / 缩量回踩
+# Shrink Volume Pullback Strategy / 縮量回踩
 # Volume shrinks during pullback to MA5/MA10, then price bounces.
 
 name: shrink_pullback
-display_name: 缩量回踩
-description: 检测缩量回踩均线支撑信号，趋势延续的理想入场点。
+display_name: 縮量回踩
+description: 檢測縮量回踩均線支撐訊號，趨勢延續的理想入場點。
 category: trend
 core_rules: [1, 2, 4]
 required_tools:
@@ -12,31 +12,31 @@ required_tools:
   - get_realtime_quote
 
 instructions: |
-  **缩量回踩（Shrink Volume Pullback Strategy）**
+  **縮量回踩（Shrink Volume Pullback Strategy）**
 
-  入场判定标准：
+  入場判定標準：
 
-  1. **前提条件**（关联理念2：趋势交易）：
-     - 股票必须处于上升趋势（MA5 > MA10 > MA20）。
-     - 使用 `analyze_trend` 确认多头排列。
+  1. **前提條件**（關聯理念2：趨勢交易）：
+     - 股票必須處於上升趨勢（MA5 > MA10 > MA20）。
+     - 使用 `analyze_trend` 確認多頭排列。
 
-  2. **回踩检测**（关联理念4：买点偏好）：
+  2. **回踩檢測**（關聯理念4：買點偏好）：
      - 使用 `get_daily_history` 和 `get_realtime_quote`。
-     - 价格回踩至 MA5 附近（误差 1% 以内）或 MA10 附近（误差 2% 以内）。
-     - 回调期间成交量 < 5 日均量的 70%（缩量特征）。
-     - `analyze_trend` → volume_status 应显示缩量。
+     - 價格回踩至 MA5 附近（誤差 1% 以內）或 MA10 附近（誤差 2% 以內）。
+     - 回撥期間成交量 < 5 日均量的 70%（縮量特徵）。
+     - `analyze_trend` → volume_status 應顯示縮量。
 
-  3. **反弹信号**（关联理念1：严进策略）：
-     - 当前价格守住均线支撑位。
-     - MA5 乖离率 < 2% — 最佳买入区间。
+  3. **反彈訊號**（關聯理念1：嚴進策略）：
+     - 當前價格守住均線支撐位。
+     - MA5 乖離率 < 2% — 最佳買入區間。
 
-  4. **确认条件**（关联理念5：风险排查）：
-     - `search_stock_news` 无利空消息。
-     - 筹码分布健康（获利比例 50-80%）。
+  4. **確認條件**（關聯理念5：風險排查）：
+     - `search_stock_news` 無利空訊息。
+     - 籌碼分佈健康（獲利比例 50-80%）。
 
-  评分调整：
-  - 缩量回踩 MA5：sentiment_score +10
-  - 缩量回踩 MA10 且量能 < 0.6 倍均量：sentiment_score +8
-  - 理想买点设在 MA5 水平，次优买点设在 MA10。
-  - 止损设在 MA20 水平。
-  - 在 `buy_reason` 中注明"缩量回踩"。
+  評分調整：
+  - 縮量回踩 MA5：sentiment_score +10
+  - 縮量回踩 MA10 且量能 < 0.6 倍均量：sentiment_score +8
+  - 理想買點設在 MA5 水平，次優買點設在 MA10。
+  - 止損設在 MA20 水平。
+  - 在 `buy_reason` 中註明"縮量回踩"。

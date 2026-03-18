@@ -47,7 +47,7 @@ class TestIsValuePlaceholder(unittest.TestCase):
         self.assertTrue(_is_value_placeholder("na"))
 
     def test_data_missing_is_placeholder(self) -> None:
-        self.assertTrue(_is_value_placeholder("数据缺失"))
+        self.assertTrue(_is_value_placeholder("資料缺失"))
         self.assertTrue(_is_value_placeholder("未知"))
 
     def test_valid_values_not_placeholder(self) -> None:
@@ -127,11 +127,11 @@ class TestFillChipStructureIfNeeded(unittest.TestCase):
     def _make_result(self, dashboard: dict = None) -> AnalysisResult:
         return AnalysisResult(
             code="600519",
-            name="贵州茅台",
+            name="貴州茅臺",
             trend_prediction="看多",
             sentiment_score=70,
             operation_advice="持有",
-            analysis_summary="稳健",
+            analysis_summary="穩健",
             decision_type="hold",
             dashboard=dashboard,
         )
@@ -215,7 +215,7 @@ class TestFillChipStructureIfNeeded(unittest.TestCase):
     def test_data_perspective_null_handled(self) -> None:
         """When LLM returns data_perspective: null, fill should still work."""
         result = self._make_result(
-            dashboard={"data_perspective": None, "core_conclusion": {"one_sentence": "观望"}}
+            dashboard={"data_perspective": None, "core_conclusion": {"one_sentence": "觀望"}}
         )
         chip = self._make_chip()
         fill_chip_structure_if_needed(result, chip)

@@ -16,7 +16,7 @@ async function login(page: Page) {
   await page.locator('#password').fill(smokePassword!);
 
   // Wait for and click the submit button
-  const submitButton = page.getByRole('button', { name: /授权进入工作台|完成设置并登录/ });
+  const submitButton = page.getByRole('button', { name: /授權進入工作臺|完成設定並登入/ });
   await expect(submitButton).toBeVisible();
 
   await Promise.all([
@@ -46,17 +46,17 @@ test.describe('web smoke', () => {
     await expect(page.locator('#password')).toBeVisible();
 
     // Check for submit button
-    await expect(page.getByRole('button', { name: /授权进入工作台|完成设置并登录/ })).toBeVisible();
+    await expect(page.getByRole('button', { name: /授權進入工作臺|完成設定並登入/ })).toBeVisible();
   });
 
   test('home page shows analysis entry and history panel after login', async ({ page }) => {
     await login(page);
 
-    const stockInput = page.getByPlaceholder('输入股票代码，如 600519、00700、AAPL');
+    const stockInput = page.getByPlaceholder('輸入股票程式碼，如 600519、00700、AAPL');
     await expect(stockInput).toBeVisible({ timeout: 10_000 });
-    await expect(page.getByRole('link', { name: '首页' })).toBeVisible();
-    await expect(page.getByRole('link', { name: '问股' })).toBeVisible();
-    await expect(page.getByText('历史分析')).toBeVisible();
+    await expect(page.getByRole('link', { name: '首頁' })).toBeVisible();
+    await expect(page.getByRole('link', { name: '問股' })).toBeVisible();
+    await expect(page.getByText('歷史分析')).toBeVisible();
 
     await stockInput.fill('600519');
     const analyzeButton = page.getByRole('button', { name: '分析', exact: true });
@@ -67,7 +67,7 @@ test.describe('web smoke', () => {
     await login(page);
 
     // Navigate to chat page by clicking the link
-    await page.getByRole('link', { name: '问股' }).click();
+    await page.getByRole('link', { name: '問股' }).click();
     await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(1000);
 
@@ -79,9 +79,9 @@ test.describe('web smoke', () => {
     await expect(input).toBeVisible({ timeout: 5000 });
     await expect(page.getByText('策略', { exact: true })).toBeVisible();
 
-    const prompt = '请简要分析 600519';
+    const prompt = '請簡要分析 600519';
     await input.fill(prompt);
-    await page.getByRole('button', { name: '发送' }).click();
+    await page.getByRole('button', { name: '傳送' }).click();
 
     await expect(page.locator('p').filter({ hasText: prompt }).last()).toBeVisible({ timeout: 5000 });
   });
@@ -91,34 +91,34 @@ test.describe('web smoke', () => {
     await login(page);
 
     // Try to open navigation menu
-    const menuButton = page.getByRole('button', { name: /打开导航|菜单/i });
+    const menuButton = page.getByRole('button', { name: /開啟導航|選單/i });
     if (await menuButton.isVisible({ timeout: 2000 }).catch(() => false)) {
       await menuButton.click();
     }
 
     // Check if navigation is visible
-    await expect(page.getByRole('link', { name: '回测' })).toBeVisible({ timeout: 5000 });
+    await expect(page.getByRole('link', { name: '回測' })).toBeVisible({ timeout: 5000 });
   });
 
   test('settings page renders title and save actions after login', async ({ page }) => {
     await login(page);
 
     // Navigate to settings page by clicking the link
-    await page.getByRole('link', { name: '设置' }).click();
+    await page.getByRole('link', { name: '設定' }).click();
     await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(1000);
 
     // Use text content instead of role for heading
-    await expect(page.getByText('系统设置')).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByText('系統設定')).toBeVisible({ timeout: 10_000 });
     await expect(page.getByRole('button', { name: '重置' })).toBeVisible();
-    await expect(page.getByRole('button', { name: /保存配置/ })).toBeVisible();
+    await expect(page.getByRole('button', { name: /儲存配置/ })).toBeVisible();
   });
 
   test('backtest page renders filter controls after login', async ({ page }) => {
     await login(page);
 
     // Navigate to backtest page by clicking the link
-    await page.getByRole('link', { name: '回测' }).click();
+    await page.getByRole('link', { name: '回測' }).click();
     await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(1000);
 

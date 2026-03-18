@@ -1,4 +1,4 @@
-name: Build and Push Multi-Arch Docker Images 2026.1.26同时推送镜像至ghcr和dockerhub
+name: Build and Push Multi-Arch Docker Images 2026.1.26同時推送映象至ghcr和dockerhub
 
 on:
   workflow_dispatch:
@@ -11,9 +11,9 @@ on:
 env:
   GHCR_REGISTRY: ghcr.io
   DOCKERHUB_REGISTRY: docker.io
-  # GitHub 仓库全名作为 GHCR 镜像名
+  # GitHub 倉庫全名作為 GHCR 映象名
   GHCR_IMAGE_NAME: ${{ github.repository }}
-  # Docker Hub 镜像名（需要根据实际情况设置）
+  # Docker Hub 映象名（需要根據實際情況設定）
   DOCKERHUB_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}
 
 jobs:
@@ -38,7 +38,7 @@ jobs:
       - name: Set up QEMU for multi-platform build
         uses: docker/setup-qemu-action@v3
 
-      # 登录到 GHCR
+      # 登入到 GHCR
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
@@ -46,7 +46,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # 登录到 Docker Hub（需要预先设置 secrets.DOCKERHUB_USERNAME 和 secrets.DOCKERHUB_TOKEN）
+      # 登入到 Docker Hub（需要預先設定 secrets.DOCKERHUB_USERNAME 和 secrets.DOCKERHUB_TOKEN）
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -54,7 +54,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # 为 GHCR 生成元数据
+      # 為 GHCR 生成後設資料
       - name: Extract metadata for GHCR
         id: meta-ghcr
         uses: docker/metadata-action@v5
@@ -66,7 +66,7 @@ jobs:
           flavor: |
             latest=true
 
-      # 为 Docker Hub 生成元数据
+      # 為 Docker Hub 生成後設資料
       - name: Extract metadata for Docker Hub
         id: meta-dockerhub
         uses: docker/metadata-action@v5
@@ -78,7 +78,7 @@ jobs:
           flavor: |
             latest=true
 
-      # 构建并推送多架构镜像到两个注册表
+      # 構建並推送多架構映象到兩個登錄檔
       - name: Build and push multi-arch images
         uses: docker/build-push-action@v5
         with:

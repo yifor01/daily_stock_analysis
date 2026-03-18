@@ -79,7 +79,7 @@ describe('SettingsField', () => {
       />
     );
 
-    expect(screen.getAllByRole('button', { name: '显示内容' })).toHaveLength(2);
-    expect(screen.getAllByRole('button', { name: '删除' })).toHaveLength(2);
+    expect(screen.getAllByRole('button', { name: '顯示內容' })).toHaveLength(2);
+    expect(screen.getAllByRole('button', { name: '刪除' })).toHaveLength(2);
   });
 });

@@ -1,39 +1,39 @@
-# 钉钉企业机器人配置
+# 釘釘企業機器人配置
 
-## 钉钉机器人
-钉钉机器人接收消息需要使用企业机器人能力
+## 釘釘機器人
+釘釘機器人接收訊息需要使用企業機器人能力
 https://open.dingtalk.com/document/dingstart/configure-the-robot-application
 
-接收消息分为 `Http模式`（需要配置公网地址） 和 `Stream模式` 两种, 推荐使用 `Stream模式`
+接收訊息分為 `Http模式`（需要配置公網地址） 和 `Stream模式` 兩種, 推薦使用 `Stream模式`
 
-创建应用步骤：https://open.dingtalk.com/document/dingstart/create-application
+建立應用步驟：https://open.dingtalk.com/document/dingstart/create-application
 
-应用开发 > 企业内部应用 > 钉钉应用 > 创建应用 > 添加应用能力 > 机器人
+應用開發 > 企業內部應用 > 釘釘應用 > 建立應用 > 新增應用能力 > 機器人
 
-### 添加机器人
+### 新增機器人
 
 ![img.png](add-dingding-bot.png)
 
-### 配置机器人使用 Stream模式
+### 配置機器人使用 Stream模式
 
 ![configbot.png](configbot.png)
 
-### 获取应用凭证
+### 獲取應用憑證
 ![img.png](appkey.png)
 
-### 配置钉钉凭证
-把钉钉应用凭证配置到配置文件中
+### 配置釘釘憑證
+把釘釘應用憑證配置到配置檔案中
 ![img.png](envconfig.png)
 
-### 发布应用
+### 釋出應用
 ![img.png](img.png)
 
 ![img.png](group.png)
 
 ![img.png](add-group-bot.png)
 
-### 往下滚动会看到增加的企业机器人
+### 往下滾動會看到增加的企業機器人
 ![img_1.png](img_1.png)
 
-### 测试机器人命令
+### 測試機器人命令
 ![img_3.png](img_3.png)

@@ -626,7 +626,7 @@ _FIELD_DEFINITIONS: Dict[str, Dict[str, Any]] = {
     },
     "ANTHROPIC_MODEL": {
         "title": "Anthropic Model",
-        "description": "Claude 模型名称（如 claude-3-5-sonnet-20241022）。",
+        "description": "Claude 模型名稱（如 claude-3-5-sonnet-20241022）。",
         "category": "ai_model",
         "data_type": "string",
         "ui_control": "text",
@@ -640,7 +640,7 @@ _FIELD_DEFINITIONS: Dict[str, Dict[str, Any]] = {
     },
     "ANTHROPIC_TEMPERATURE": {
         "title": "Anthropic Temperature",
-        "description": "温度参数，范围 [0.0, 1.0]。",
+        "description": "溫度引數，範圍 [0.0, 1.0]。",
         "category": "ai_model",
         "data_type": "number",
         "ui_control": "number",
@@ -654,7 +654,7 @@ _FIELD_DEFINITIONS: Dict[str, Dict[str, Any]] = {
     },
     "ANTHROPIC_MAX_TOKENS": {
         "title": "Anthropic Max Tokens",
-        "description": "Anthropic API 响应最大 token 数（默认 8192）。",
+        "description": "Anthropic API 響應最大 token 數（預設 8192）。",
         "category": "ai_model",
         "data_type": "number",
         "ui_control": "number",
@@ -1004,11 +1004,11 @@ _FIELD_DEFINITIONS: Dict[str, Dict[str, Any]] = {
         "display_order": 41,
     },
     # ------------------------------------------------------------------
-    # Notification – Server酱 / misc
+    # Notification – Server醬 / misc
     # ------------------------------------------------------------------
     "SERVERCHAN3_SENDKEY": {
         "title": "ServerChan3 SendKey",
-        "description": "Server酱3 SendKey for push notifications.",
+        "description": "Server醬3 SendKey for push notifications.",
         "category": "notification",
         "data_type": "string",
         "ui_control": "password",

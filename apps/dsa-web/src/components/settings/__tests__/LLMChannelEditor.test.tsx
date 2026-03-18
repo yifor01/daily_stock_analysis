@@ -32,7 +32,7 @@ describe('LLMChannelEditor', () => {
     const input = await screen.findByLabelText('API Key');
     expect(input).toHaveAttribute('type', 'password');
 
-    fireEvent.click(screen.getByRole('button', { name: '显示内容' }));
+    fireEvent.click(screen.getByRole('button', { name: '顯示內容' }));
     expect(input).toHaveAttribute('type', 'text');
   });
 });

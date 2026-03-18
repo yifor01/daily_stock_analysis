@@ -15,7 +15,7 @@ const LoginPage: React.FC = () => {
 
   // Set page title
   useEffect(() => {
-    document.title = '登录 - DSA';
+    document.title = '登入 - DSA';
   }, []);
   const [searchParams] = useSearchParams();
   const rawRedirect = searchParams.get('redirect') ?? '';
@@ -52,7 +52,7 @@ const LoginPage: React.FC = () => {
     e.preventDefault();
     setError(null);
     if (isFirstTime && password !== passwordConfirm) {
-      setError('两次输入的密码不一致');
+      setError('兩次輸入的密碼不一致');
       return;
     }
     setIsSubmitting(true);
@@ -61,7 +61,7 @@ const LoginPage: React.FC = () => {
       if (result.success) {
         navigate(redirect, { replace: true });
       } else {
-        setError(result.error ?? '登录失败');
+        setError(result.error ?? '登入失敗');
       }
     } finally {
       setIsSubmitting(false);
@@ -170,19 +170,19 @@ const LoginPage: React.FC = () => {
                 {isFirstTime ? (
                   <>
                     <ShieldCheck className="h-6 w-6 text-emerald-400" />
-                    <span>设置初始密码</span>
+                    <span>設定初始密碼</span>
                   </>
                 ) : (
                   <>
                     <Lock className="h-5 w-5 text-cyan-400" />
-                    <span>管理员登录</span>
+                    <span>管理員登入</span>
                   </>
                 )}
               </h1>
               <p className="mt-2 text-sm text-[var(--login-text-secondary)]">
                 {isFirstTime
-                  ? '首次启用认证，请为系统工作台设置管理员密码。'
-                  : '访问 DSA 量化决策引擎需要有效的身份凭证。'}
+                  ? '首次啟用認證，請為系統工作臺設定管理員密碼。'
+                  : '訪問 DSA 量化決策引擎需要有效的身份憑證。'}
               </p>
             </div>
 
@@ -193,8 +193,8 @@ const LoginPage: React.FC = () => {
                   type="password"
                   allowTogglePassword
                   iconType="password"
-                  label={isFirstTime ? '管理员密码' : '登录密码'}
-                  placeholder={isFirstTime ? '请设置 6 位以上密码' : '请输入密码'}
+                  label={isFirstTime ? '管理員密碼' : '登入密碼'}
+                  placeholder={isFirstTime ? '請設定 6 位以上密碼' : '請輸入密碼'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={isSubmitting}
@@ -209,8 +209,8 @@ const LoginPage: React.FC = () => {
                     type="password"
                     allowTogglePassword
                     iconType="password"
-                    label="确认密码"
-                    placeholder="再次确认管理员密码"
+                    label="確認密碼"
+                    placeholder="再次確認管理員密碼"
                     value={passwordConfirm}
                     onChange={(e) => setPasswordConfirm(e.target.value)}
                     disabled={isSubmitting}
@@ -227,7 +227,7 @@ const LoginPage: React.FC = () => {
                   className="overflow-hidden"
                 >
                   <SettingsAlert
-                    title={isFirstTime ? '配置失败' : '验证未通过'}
+                    title={isFirstTime ? '配置失敗' : '驗證未透過'}
                     message={isParsedApiError(error) ? error.message : error}
                     variant="error"
                     className="!border-[var(--login-error-border)] !bg-[var(--login-error-bg)] !text-[var(--login-error-text)]"
@@ -246,10 +246,10 @@ const LoginPage: React.FC = () => {
                   {isSubmitting ? (
                     <>
                       <Loader2 className="h-4 w-4 animate-spin" />
-                      <span>{isFirstTime ? '初始化中...' : '正在建立连接...'}</span>
+                      <span>{isFirstTime ? '初始化中...' : '正在建立連線...'}</span>
                     </>
                   ) : (
-                    <span>{isFirstTime ? '完成设置并登录' : '授权进入工作台'}</span>
+                    <span>{isFirstTime ? '完成設定並登入' : '授權進入工作臺'}</span>
                   )}
                 </div>
                 {/* Button shine effect */}

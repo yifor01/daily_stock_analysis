@@ -10,10 +10,10 @@ interface HistoryListProps {
   isLoading: boolean;
   isLoadingMore: boolean;
   hasMore: boolean;
-  selectedId?: number;  // 当前选中的历史记录 ID
+  selectedId?: number;  // 當前選中的歷史記錄 ID
   selectedIds: Set<number>;
   isDeleting?: boolean;
-  onItemClick: (recordId: number) => void;  // 点击记录的回调
+  onItemClick: (recordId: number) => void;  // 點選記錄的回撥
   onLoadMore: () => void;
   onToggleItemSelection: (recordId: number) => void;
   onToggleSelectAll: () => void;
@@ -22,8 +22,8 @@ interface HistoryListProps {
 }
 
 /**
- * 历史记录列表组件 (升级版)
- * 使用新设计系统组件实现，支持批量选择和滚动加载
+ * 歷史記錄列表元件 (升級版)
+ * 使用新設計系統元件實現，支援批次選擇和滾動載入
  */
 export const HistoryList: React.FC<HistoryListProps> = ({
   items,
@@ -48,7 +48,7 @@ export const HistoryList: React.FC<HistoryListProps> = ({
   const allVisibleSelected = items.length > 0 && selectedCount === items.length;
   const someVisibleSelected = selectedCount > 0 && !allVisibleSelected;
 
-  // 使用 IntersectionObserver 检测滚动到底部
+  // 使用 IntersectionObserver 檢測滾動到底部
   const handleObserver = useCallback(
     (entries: IntersectionObserverEntry[]) => {
       const target = entries[0];
@@ -86,21 +86,21 @@ export const HistoryList: React.FC<HistoryListProps> = ({
   const getOperationBadgeLabel = (advice?: string) => {
     const normalized = advice?.trim();
     if (!normalized) {
-      return '情绪';
+      return '情緒';
     }
-    if (normalized.includes('减仓')) {
-      return '减仓';
+    if (normalized.includes('減倉')) {
+      return '減倉';
     }
-    if (normalized.includes('卖')) {
-      return '卖出';
+    if (normalized.includes('賣')) {
+      return '賣出';
     }
-    if (normalized.includes('观望') || normalized.includes('等待')) {
-      return '观望';
+    if (normalized.includes('觀望') || normalized.includes('等待')) {
+      return '觀望';
     }
-    if (normalized.includes('买') || normalized.includes('布局')) {
-      return '买入';
+    if (normalized.includes('買') || normalized.includes('佈局')) {
+      return '買入';
     }
-    return normalized.split(/[，。；、\s]/)[0] || '建议';
+    return normalized.split(/[，。；、\s]/)[0] || '建議';
   };
 
   return (
@@ -116,11 +116,11 @@ export const HistoryList: React.FC<HistoryListProps> = ({
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              历史分析
+              歷史分析
             </h2>
             {selectedCount > 0 && (
               <Badge variant="history" size="sm" className="animate-in fade-in zoom-in duration-200">
-                已选 {selectedCount}
+                已選 {selectedCount}
               </Badge>
             )}
           </div>
@@ -134,10 +134,10 @@ export const HistoryList: React.FC<HistoryListProps> = ({
                   checked={allVisibleSelected}
                   onChange={onToggleSelectAll}
                   disabled={isDeleting}
-                  aria-label="全选当前已加载历史记录"
+                  aria-label="全選當前已載入歷史記錄"
                   className="w-3.5 h-3.5 rounded border-white/20 bg-transparent text-purple focus:ring-purple/40 cursor-pointer disabled:opacity-50"
                 />
-                <span className="text-[11px] text-muted-text select-none">全选当前</span>
+                <span className="text-[11px] text-muted-text select-none">全選當前</span>
               </div>
               <Button
                 variant="danger"
@@ -147,7 +147,7 @@ export const HistoryList: React.FC<HistoryListProps> = ({
                 isLoading={isDeleting}
                 className="h-6 text-[9px] px-2"
               >
-                {isDeleting ? '删除中' : '删除'}
+                {isDeleting ? '刪除中' : '刪除'}
               </Button>
             </div>
           )}
@@ -165,8 +165,8 @@ export const HistoryList: React.FC<HistoryListProps> = ({
               </svg>
             </div>
             <div className="space-y-1">
-              <p className="text-sm text-secondary-text">暂无历史分析记录</p>
-              <p className="text-xs text-muted-text">完成首次分析后，这里会保留最近结果。</p>
+              <p className="text-sm text-secondary-text">暫無歷史分析記錄</p>
+              <p className="text-xs text-muted-text">完成首次分析後，這裡會保留最近結果。</p>
             </div>
           </div>
         ) : (

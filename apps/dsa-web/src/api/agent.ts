@@ -78,7 +78,7 @@ export const agentApi = {
     }>('/api/v1/agent/chat/send', { content });
     const data = response.data;
     if (data.success === false) {
-      throw new Error(data.message || '发送失败');
+      throw new Error(data.message || '傳送失敗');
     }
     return { success: true };
   },

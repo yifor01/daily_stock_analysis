@@ -40,7 +40,7 @@ const AppContent: React.FC = () => {
           className="btn-primary"
           onClick={() => void refreshStatus()}
         >
-          重试
+          重試
         </button>
       </div>
     );

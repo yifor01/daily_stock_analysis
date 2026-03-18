@@ -4,7 +4,7 @@ Ask command - analyze a stock using a specific Agent strategy.
 
 Usage:
     /ask 600519                        -> Analyze with default strategy
-    /ask 600519 用缠论分析              -> Parse strategy from message
+    /ask 600519 用纏論分析              -> Parse strategy from message
     /ask 600519 chan_theory             -> Specify strategy id directly
 """
 
@@ -22,27 +22,27 @@ logger = logging.getLogger(__name__)
 
 # Strategy name to id mapping (CN name -> strategy id)
 STRATEGY_NAME_MAP = {
-    "缠论": "chan_theory",
-    "缠论分析": "chan_theory",
+    "纏論": "chan_theory",
+    "纏論分析": "chan_theory",
     "波浪": "wave_theory",
-    "波浪理论": "wave_theory",
+    "波浪理論": "wave_theory",
     "艾略特": "wave_theory",
-    "箱体": "box_oscillation",
-    "箱体震荡": "box_oscillation",
-    "情绪": "emotion_cycle",
-    "情绪周期": "emotion_cycle",
-    "趋势": "bull_trend",
-    "多头趋势": "bull_trend",
-    "均线金叉": "ma_golden_cross",
+    "箱體": "box_oscillation",
+    "箱體震盪": "box_oscillation",
+    "情緒": "emotion_cycle",
+    "情緒週期": "emotion_cycle",
+    "趨勢": "bull_trend",
+    "多頭趨勢": "bull_trend",
+    "均線金叉": "ma_golden_cross",
     "金叉": "ma_golden_cross",
-    "缩量回踩": "shrink_pullback",
+    "縮量回踩": "shrink_pullback",
     "回踩": "shrink_pullback",
     "放量突破": "volume_breakout",
     "突破": "volume_breakout",
-    "地量见底": "bottom_volume",
-    "龙头": "dragon_head",
-    "龙头战法": "dragon_head",
-    "一阳穿三阴": "one_yang_three_yin",
+    "地量見底": "bottom_volume",
+    "龍頭": "dragon_head",
+    "龍頭戰法": "dragon_head",
+    "一陽穿三陰": "one_yang_three_yin",
 }
 
 
@@ -52,9 +52,9 @@ class AskCommand(BotCommand):
 
     Usage:
         /ask 600519                    -> Analyze with default strategy (bull_trend)
-        /ask 600519 用缠论分析          -> Automatically selects chan_theory strategy
+        /ask 600519 用纏論分析          -> Automatically selects chan_theory strategy
         /ask 600519 chan_theory         -> Directly specify strategy id
-        /ask hk00700 波浪理论看看       -> HK stock with wave_theory
+        /ask hk00700 波浪理論看看       -> HK stock with wave_theory
     """
 
     @property
@@ -63,7 +63,7 @@ class AskCommand(BotCommand):
 
     @property
     def aliases(self) -> List[str]:
-        return ["问股"]
+        return ["問股"]
 
     @property
     def description(self) -> str:
@@ -71,12 +71,12 @@ class AskCommand(BotCommand):
 
     @property
     def usage(self) -> str:
-        return "/ask <股票代码> [策略名称]"
+        return "/ask <股票程式碼> [策略名稱]"
 
     def validate_args(self, args: List[str]) -> Optional[str]:
         """Validate arguments."""
         if not args:
-            return "请输入股票代码。用法: /ask <股票代码> [策略名称]\n示例: /ask 600519 用缠论分析"
+            return "請輸入股票程式碼。用法: /ask <股票程式碼> [策略名稱]\n示例: /ask 600519 用纏論分析"
 
         code = args[0].upper()
         is_a_stock = re.match(r"^\d{6}$", code)
@@ -84,7 +84,7 @@ class AskCommand(BotCommand):
         is_us_stock = re.match(r"^[A-Z]{1,5}(\.[A-Z]{1,2})?$", code)
 
         if not (is_a_stock or is_hk_stock or is_us_stock):
-            return f"无效的股票代码: {code}（A股6位数字 / 港股HK+5位数字 / 美股1-5个字母）"
+            return f"無效的股票程式碼: {code}（A股6位數字 / 港股HK+5位數字 / 美股1-5個字母）"
 
         return None
 
@@ -120,7 +120,7 @@ class AskCommand(BotCommand):
 
         if not config.agent_mode:
             return BotResponse.text_response(
-                "⚠️ Agent 模式未开启，无法使用问股功能。\n请在配置中设置 `AGENT_MODE=true`。"
+                "⚠️ Agent 模式未開啟，無法使用問股功能。\n請在配置中設定 `AGENT_MODE=true`。"
             )
 
         code = canonical_stock_code(args[0])
@@ -134,9 +134,9 @@ class AskCommand(BotCommand):
             executor = build_agent_executor(config, skills=[strategy_id] if strategy_id else None)
 
             # Build message
-            user_msg = f"请使用 {strategy_id} 策略分析股票 {code}"
+            user_msg = f"請使用 {strategy_id} 策略分析股票 {code}"
             if strategy_text:
-                user_msg = f"请分析股票 {code}，{strategy_text}"
+                user_msg = f"請分析股票 {code}，{strategy_text}"
 
             # Each /ask invocation is a self-contained single-shot analysis; isolate
             # sessions per request so that different stocks or retry attempts never
@@ -160,9 +160,9 @@ class AskCommand(BotCommand):
                 header = f"📊 {code} | 策略: {strategy_name}\n{'─' * 30}\n"
                 return BotResponse.text_response(header + result.content)
             else:
-                return BotResponse.text_response(f"⚠️ 分析失败: {result.error}")
+                return BotResponse.text_response(f"⚠️ 分析失敗: {result.error}")
 
         except Exception as e:
             logger.error(f"Ask command failed: {e}")
             logger.exception("Ask error details:")
-            return BotResponse.text_response(f"⚠️ 问股执行出错: {str(e)}")
+            return BotResponse.text_response(f"⚠️ 問股執行出錯: {str(e)}")

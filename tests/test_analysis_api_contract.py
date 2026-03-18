@@ -55,7 +55,7 @@ class AnalysisApiContractTestCase(unittest.TestCase):
         pipeline_instance = MagicMock()
         pipeline_instance.process_single_stock.return_value = SimpleNamespace(
             code="600519",
-            name="贵州茅台",
+            name="貴州茅臺",
             current_price=1234.56,
             change_pct=1.23,
             model_used="test-model",
@@ -89,7 +89,7 @@ class AnalysisApiContractTestCase(unittest.TestCase):
             },
             query_id="q1",
             stock_code="600519",
-            stock_name="贵州茅台",
+            stock_name="貴州茅臺",
             context_snapshot={
                 "enhanced_context": {
                     "fundamental_context": {
@@ -180,7 +180,7 @@ class AnalysisApiContractTestCase(unittest.TestCase):
         self.assertEqual(ctx.exception.status_code, 400)
         self.assertEqual(
             ctx.exception.detail["message"],
-            "股票代码不能为空或仅包含空白字符",
+            "股票程式碼不能為空或僅包含空白字元",
         )
 
     def test_spa_fallback_returns_json_404_for_bare_api_path(self) -> None:
@@ -254,7 +254,7 @@ class BatchTaskQueueContractTestCase(unittest.TestCase):
         queue = AnalysisTaskQueue(max_workers=1)
         queue._executor = type("ExecutorStub", (), {"submit": lambda self, *args, **kwargs: Future()})()
 
-        with self.assertRaisesRegex(ValueError, "股票代码不能为空或仅包含空白字符"):
+        with self.assertRaisesRegex(ValueError, "股票程式碼不能為空或僅包含空白字元"):
             queue.submit_task("   ", report_type="detailed")
 
         self.assertEqual(queue._tasks, {})

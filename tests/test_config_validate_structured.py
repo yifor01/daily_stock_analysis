@@ -253,14 +253,14 @@ class TestValidateStructuredNotification:
         cfg = _make_config()
         issues = cfg.validate_structured()
         info = [i for i in issues if i.severity == "info"]
-        assert any("搜索引擎" in i.message for i in info)
+        assert any("搜尋引擎" in i.message for i in info)
 
     def test_searxng_configured_no_search_info(self):
         """When searxng_base_urls is configured, no 'unconfigured search engine' info."""
         cfg = _make_config(searxng_base_urls=["https://searx.example.org"])
         issues = cfg.validate_structured()
         info = [i for i in issues if i.severity == "info"]
-        assert not any("搜索引擎" in i.message and "未配置" in i.message for i in info)
+        assert not any("搜尋引擎" in i.message and "未配置" in i.message for i in info)
 
 
 # ---------------------------------------------------------------------------

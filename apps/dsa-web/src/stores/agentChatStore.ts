@@ -231,10 +231,10 @@ export const useAgentChatStore = create<AgentChatState & AgentChatActions>((set,
             const parsedStreamError = getParsedApiError(
               doneEvent.error ||
                 doneEvent.content ||
-                '大模型调用出错，请检查 API Key 配置',
+                '大模型呼叫出錯，請檢查 API Key 配置',
             );
             throw createParsedApiError({
-              title: '问股执行失败',
+              title: '問股執行失敗',
               message: parsedStreamError.message,
               rawMessage: parsedStreamError.rawMessage,
               status: parsedStreamError.status,
@@ -246,7 +246,7 @@ export const useAgentChatStore = create<AgentChatState & AgentChatActions>((set,
         }
 
         if (event.type === 'error') {
-          throw getParsedApiError(event.message || '分析出错');
+          throw getParsedApiError(event.message || '分析出錯');
         }
 
         currentProgressSteps.push(event);
@@ -292,7 +292,7 @@ export const useAgentChatStore = create<AgentChatState & AgentChatActions>((set,
             {
               id: (Date.now() + 1).toString(),
               role: 'assistant',
-              content: finalContent || '（无内容）',
+              content: finalContent || '（無內容）',
               strategy: payload.strategies?.[0],
               strategyName,
               thinkingSteps: [...currentProgressSteps],

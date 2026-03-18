@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 """
 ===================================
-Discord 平台适配器
+Discord 平臺介面卡
 ===================================
 
-负责：
-1. 验证 Discord Webhook 请求
-2. 解析 Discord 消息为统一格式
-3. 将响应转换为 Discord 格式
+負責：
+1. 驗證 Discord Webhook 請求
+2. 解析 Discord 訊息為統一格式
+3. 將響應轉換為 Discord 格式
 """
 
 import logging
@@ -21,66 +21,66 @@ logger = logging.getLogger(__name__)
 
 
 class DiscordPlatform(BotPlatform):
-    """Discord 平台适配器"""
+    """Discord 平臺介面卡"""
     
     @property
     def platform_name(self) -> str:
-        """平台标识名称"""
+        """平臺標識名稱"""
         return "discord"
     
     def verify_request(self, headers: Dict[str, str], body: bytes) -> bool:
-        """验证 Discord Webhook 请求签名
+        """驗證 Discord Webhook 請求籤名
         
-        Discord Webhook 签名验证：
-        1. 从请求头获取 X-Signature-Ed25519 和 X-Signature-Timestamp
-        2. 使用公钥验证签名
+        Discord Webhook 簽名驗證：
+        1. 從請求頭獲取 X-Signature-Ed25519 和 X-Signature-Timestamp
+        2. 使用公鑰驗證簽名
         
         Args:
-            headers: HTTP 请求头
-            body: 请求体原始字节
+            headers: HTTP 請求頭
+            body: 請求體原始位元組
             
         Returns:
-            签名是否有效
+            簽名是否有效
         """
-        # TODO: 实现 Discord Webhook 签名验证
-        # 当前暂时返回 True，后续需要完善
+        # TODO: 實現 Discord Webhook 簽名驗證
+        # 當前暫時返回 True，後續需要完善
         return True
     
     def parse_message(self, data: Dict[str, Any]) -> Optional[BotMessage]:
-        """解析 Discord 消息为统一格式
+        """解析 Discord 訊息為統一格式
         
         Args:
-            data: 解析后的 JSON 数据
+            data: 解析後的 JSON 資料
             
         Returns:
-            BotMessage 对象，或 None（不需要处理）
+            BotMessage 物件，或 None（不需要處理）
         """
-        # 检查是否是消息事件
+        # 檢查是否是訊息事件
         if data.get("type") != 1 and data.get("type") != 2:
             return None
         
-        # 提取消息内容
+        # 提取訊息內容
         content = data.get("content", "").strip()
         if not content:
             return None
         
-        # 提取用户信息
+        # 提取使用者資訊
         author = data.get("author", {})
         user_id = author.get("id", "")
         user_name = author.get("username", "unknown")
         
-        # 提取频道信息
+        # 提取頻道資訊
         channel_id = data.get("channel_id", "")
         guild_id = data.get("guild_id", "")
         
-        # 提取消息 ID
+        # 提取訊息 ID
         message_id = data.get("id", "")
         
-        # 提取附件信息（如果有）
+        # 提取附件資訊（如果有）
         attachments = data.get("attachments", [])
         attachment_urls = [att["url"] for att in attachments if "url" in att]
         
-        # 构建 BotMessage 对象
+        # 構建 BotMessage 物件
         message = BotMessage(
             platform="discord",
             message_id=message_id,
@@ -90,12 +90,12 @@ class DiscordPlatform(BotPlatform):
             attachment_urls=attachment_urls,
             channel_id=channel_id,
             group_id=guild_id,
-            # 从 data 中提取其他相关信息
+            # 從 data 中提取其他相關資訊
             timestamp=data.get("timestamp"),
             mention_everyone=data.get("mention_everyone", False),
             mentions=data.get("mentions", []),
             
-            # 添加 Discord 特定的原始数据
+            # 新增 Discord 特定的原始資料
             raw_data={
                 "message_id": message_id,
                 "channel_id": channel_id,
@@ -114,16 +114,16 @@ class DiscordPlatform(BotPlatform):
         return message
     
     def format_response(self, response: Any, message: BotMessage) -> WebhookResponse:
-        """将统一响应转换为 Discord 格式
+        """將統一響應轉換為 Discord 格式
         
         Args:
-            response: 统一响应对象
-            message: 原始消息对象
+            response: 統一響應物件
+            message: 原始訊息物件
             
         Returns:
-            WebhookResponse 对象
+            WebhookResponse 物件
         """
-        # 构建 Discord 响应格式
+        # 構建 Discord 響應格式
         discord_response = {
             "content": response.text if hasattr(response, "text") else str(response),
             "tts": False,
@@ -136,23 +136,23 @@ class DiscordPlatform(BotPlatform):
         return WebhookResponse.success(discord_response)
     
     def handle_challenge(self, data: Dict[str, Any]) -> Optional[WebhookResponse]:
-        """处理 Discord 验证请求
+        """處理 Discord 驗證請求
         
-        Discord 在配置 Webhook 时会发送验证请求
+        Discord 在配置 Webhook 時會傳送驗證請求
         
         Args:
-            data: 请求数据
+            data: 請求資料
             
         Returns:
-            验证响应，或 None（不是验证请求）
+            驗證響應，或 None（不是驗證請求）
         """
-        # Discord Webhook 验证请求类型是 1
+        # Discord Webhook 驗證請求型別是 1
         if data.get("type") == 1:
             return WebhookResponse.success({
                 "type": 1
             })
         
-        # Discord 命令交互验证
+        # Discord 命令互動驗證
         if "challenge" in data:
             return WebhookResponse.success({
                 "challenge": data["challenge"]
